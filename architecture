@@ -1,0 +1,28 @@
+se il login è admin mostra i pulsanti per dare i cuoricini
+
+/ --> contiene foto/scritte + icona che se ci premi fa vedere le regole
+/stats --> contiene il totale di punti (in futuro anche un resoconto piu' accurato)
+/login
+
+ogni blocco contiene:
+
+- immagine (opzionale)
+- testo (opzionale se con immagine)
+- un punteggio (rosso, verde o bianco)
+
+ogni volta che si aggiorna un blocco viene aggiornato anche lo schema stats
+che contiene il punteggio
+
+se il nuovo post non contiene testo o immagine non fare l'upload 
+
+se admin fa il login mettere la variabile admin = true
+
+stats è una collezione con un solo documento che contiene un solo documento con i campi green e white
+
+mettere una regola per cui solo l'admin può modificare il voto
+
+nelle regole controlla se user/id/admin è uguale a true
+
+controllare se almeno un'immagine o un titolo è stato pubblicato
+
+add date
