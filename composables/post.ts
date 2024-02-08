@@ -1,4 +1,4 @@
-import { collection, query, limit, orderBy, addDoc } from 'firebase/firestore'
+import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc } from 'firebase/firestore'
 import type { Post, Vote } from '@/types'
 
 const fakePosts: Post[] = [
@@ -7,7 +7,7 @@ const fakePosts: Post[] = [
 		title: 'Post 1',
 		notes: 'This is the first post',
 		green: 1,
-		white: 2,
+		white: 1,
 		image: '/test.png',
 		date: '2021-10-01'
 	},
@@ -30,10 +30,11 @@ const fakePosts: Post[] = [
 ]
 
 export function usePost() {	
+	const db = useFirestore()
 	const lim = ref(10)	
-	const _query = computed(() => query(collection(useFirestore(), 'posts'), orderBy('date', 'desc'), limit(lim.value)))
-	// const posts = useCollection<Post>(_query)
-	const posts = ref(fakePosts)
+	const _query = computed(() => query(collection(db, 'posts'), orderBy('date', 'desc'), limit(lim.value)))
+	const posts = useCollection<Post>(_query)
+	// const posts = ref(fakePosts)
 
 	function getMorePosts() {
 		lim.value += 10
@@ -44,10 +45,16 @@ export function usePost() {
 	}
 
 	async function votePost(id: string, vote: Vote, negative: boolean) {
-		// update the post field with the new value incrementing the relative type field
-		// if negative is true, decrement the field
-		
-		console.log('votePost', id, vote, negative)
+		const _score = vote.score || 1	
+		const update = negative ? -_score : _score
+
+		await updateDoc(doc(db, 'posts', id), {
+			[vote.type]: increment(update)
+		})
+
+		await updateDoc(doc(db, 'stats', 'base'), {
+			[vote.type]: increment(update)
+		})
 	}
 
 	return {

@@ -1,4 +1,4 @@
-export type VoteType = 'g' | 'w' | 'r'
+export type VoteType = 'green' | 'white' | 'red'
 
 export type Vote = {
 	score?: number

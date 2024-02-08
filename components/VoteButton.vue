@@ -9,9 +9,9 @@ const emit = defineEmits<{
 }>()
 
 const icons = {
- g: 'ic:round-favorite',
- w: 'ic:sharp-favorite',
- r: 'ic:baseline-heart-broken'
+	green: 'ic:round-favorite',
+ white: 'ic:sharp-favorite',
+ red: 'ic:baseline-heart-broken'
 }
 
 const btn = ref<HTMLElement | null>(null)
@@ -32,7 +32,7 @@ function onClick(negative: boolean) {
       toggle="true"
       :class="[type, !isAdmin && 'pointer-events-none']"
       :selected="score"
-      @click="() => onClick((btn as any).selected)"
+      @click="() => onClick(!(btn as any).selected)"
     >
       <Icon
         :name="icon"
@@ -48,7 +48,7 @@ function onClick(negative: boolean) {
 </template>
 
 <style scoped>
-md-icon-button[selected].r {
+md-icon-button[selected].red {
 	--md-icon-button-selected-icon-color: var(--md-sys-color-error);
 	--md-icon-button-selected-pressed-icon-color: var(--md-sys-color-error);
 	--md-icon-button-selected-hover-icon-color: var(--md-sys-color-error);
@@ -56,7 +56,7 @@ md-icon-button[selected].r {
 	--md-icon-button-selected-hover-state-layer-color: var(--md-sys-color-error);
 }
 
-md-icon-button[selected].w {
+md-icon-button[selected].white {
 	--md-icon-button-selected-icon-color: var(--md-sys-color-background);
 	--md-icon-button-selected-pressed-icon-color: var(--md-sys-color-background);
 	--md-icon-button-selected-hover-icon-color: var(--md-sys-color-background);

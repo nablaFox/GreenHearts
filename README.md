@@ -7,5 +7,6 @@ ToDo:
 - score
 - types
 - white heart
+- ts/css formatting
 
 

@@ -7,12 +7,6 @@ interface ClientPost extends Post {
 
 const props = defineProps<ClientPost>()
 
-const scores = computed(() => ({
-	g: props.green,
-	w: props.white,
-	r: props.red
-}))
-
 const { votePost } = usePost()
 
 function onVote(vote: Vote, negative: boolean) {		
@@ -43,10 +37,10 @@ function onVote(vote: Vote, negative: boolean) {
 
     <div class="absolute right-[20px] bottom-[10px] flex items-center">
       <VoteButton
-        v-for="color in ['g', 'w', 'r']"
+        v-for="color in ['green', 'white', 'red']"
         :key="color"
         :type="color as VoteType"
-        :score="scores[color as VoteType]"
+        :score="props[color as VoteType]"
         @vote="onVote"
       />
     </div>
