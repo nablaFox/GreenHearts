@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import '@material/web/iconbutton/icon-button.js'
-
 const props = defineProps<{
 	head?: string
 	title?: string
@@ -9,16 +7,7 @@ const props = defineProps<{
 
 <template>
   <header class="flex flex-col justify-between w-full">
-    <md-icon-button
-      class="mt-2 z-[100] self-end"
-      @click=""
-    >
-      <Icon
-        name="ic:round-more-vert"
-        size="24"
-      />
-    </md-icon-button>
-		
+    <LogoutMenu />
     <div>
       <h3 class="font-extrabold text-xl text-on-background">
         {{ head }}

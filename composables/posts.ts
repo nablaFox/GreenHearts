@@ -24,7 +24,7 @@ export function usePosts() {
 		)
 
 		await getTotalCount()	
-		lim.value = 1
+		lim.value = 25
 
 		// TODO: fix vue inject issue
 		await useCollection(_query, {
@@ -36,7 +36,7 @@ export function usePosts() {
 
 	async function fetchMore() {
 		if (lim.value >= total.value) return	
-		lim.value += 1
+		lim.value += 25
 	}
 
 	type CreatePostParams = {
