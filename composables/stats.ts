@@ -20,7 +20,12 @@ export function useStats() {
 	const notCounted = computed(() => total.value && (posts.total.value - total.value))
 
 	async function fetch() {
-		await useDocument<Stats | undefined>(doc(db, 'stats', 'base'), { target: stats }).promise.value
+		if (fetched.value) return
+
+		await useDocument(doc(db, 'stats', 'base'), {
+			target: stats,
+		}).promise.value
+
 		fetched.value = true
 	}
 

@@ -1,4 +1,4 @@
-import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc, getCountFromServer } from 'firebase/firestore'
+import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc, getCountFromServer, onSnapshot } from 'firebase/firestore'
 import type { Post, Vote } from '@/types'
 
 export function usePosts() {
@@ -9,7 +9,6 @@ export function usePosts() {
 	const posts = useState<Post[]>('posts')
 	const fetched = useState<boolean>('postsFetched')
 	const length = computed(() => posts.value?.length)
-	const _query = computed(() => query(coll, orderBy('date', 'desc'), limit(lim.value)))
 
 	const {upload, url} = usePostStorage()
 
@@ -18,18 +17,26 @@ export function usePosts() {
 	}
 
 	async function fetch() {
-		lim.value = 25
-		await getTotalCount()
-		await useCollection<Post>(_query, {
-			target: posts
+		if (fetched.value) return
+
+		const _query = computed(
+			() => query(coll, orderBy('date', 'desc'), limit(lim.value))
+		)
+
+		await getTotalCount()	
+		lim.value = 1
+
+		// TODO: fix vue inject issue
+		await useCollection(_query, {
+			target: posts,
 		}).promise.value
+
 		fetched.value = true
 	}
 
 	async function fetchMore() {
-		if (lim.value >= total.value) return
-		
-		useState('postsLimit', () => lim.value + 20)
+		if (lim.value >= total.value) return	
+		lim.value += 1
 	}
 
 	type CreatePostParams = {

@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core'
 
-definePageMeta({
-	middleware: 'posts-data'
-})
-
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
 

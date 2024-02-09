@@ -15,7 +15,6 @@ definePageMeta({
 	layout: false
 })
 
-
 const auth = useFirebaseAuth() as Auth
 
 async function login() {
@@ -23,7 +22,7 @@ async function login() {
 	useRouter().push('/')
 }
 
-const loginFailed = useState('login-failed')
+const loginFailed = useState<boolean | undefined>('login-failed')
 </script>
 
 <template>
@@ -38,7 +37,7 @@ const loginFailed = useState('login-failed')
     />
 
     <WarningBox
-      :visible="loginFailed"
+      :visible="loginFailed || false"
       text="Login Failed. Don't try again!"
       class="absolute bottom-20"
     />

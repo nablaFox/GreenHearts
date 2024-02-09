@@ -1,8 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-	middleware: 'stats-data'
-})
-
 const {
 	stats,
 	totalValue,
@@ -24,7 +20,7 @@ const statsData = computed(() => ([
       class="h-[180px]"
       head="What's up"
       title="Amore mio"
-    />
+    />	
 		
     <div class="grid grid-cols-[repeat(2,1fr)] gap-2.5">
       <StatCard
