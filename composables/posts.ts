@@ -10,8 +10,6 @@ export function usePosts() {
 	const fetched = useState<boolean>('postsFetched')
 	const length = computed(() => posts.value?.length)
 
-	const {upload, url} = usePostStorage()
-
 	async function getTotalCount() {
 		total.value = (await getCountFromServer(coll)).data().count
 	}
@@ -55,11 +53,10 @@ export function usePosts() {
 			date: new Date().toString(),
 		}
 
-		if (image) {
-			await upload(image)
-			params.image = url.value as string
-		}
-
+		// TODO: handle image upload error
+		if (image)
+			params.image = (await useUploadPostImage(image)).url as string
+		
 		await addDoc(coll, params)
 		total.value++
 	}

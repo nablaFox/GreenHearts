@@ -16,12 +16,19 @@ const notes = ref('')
 
 const {createPost} = usePosts()
 
-async function onSubmit() {
-	await createPost({
-		title: title.value,
-		notes: notes.value,
-		image: image.value
-	})
+function onSubmit() {
+	setTimeout(async () => {
+		await createPost({
+			title: title.value,
+			notes: notes.value,
+			image: image.value
+		})
+
+		image.value = null
+		title.value = ''
+		notes.value = ''
+	}, 100)
+
 	useRouter().push('/')
 	form.value?.reset()
 }

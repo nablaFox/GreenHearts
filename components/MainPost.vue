@@ -11,14 +11,19 @@ function onVote(vote: Vote, negative: boolean) {
 
 const onlyImage = !props.title && !props.notes && props.image
 const onlyTitle = props.title && !props.notes && !props.image 
+
+const img = useImage()
 </script>
 
 <template>
-  <div class="rounded-3xl flex flex-col border md:w-[500px] bg-secondary-container">
-    <img
-      :src="image"
-      class="rounded-3xl object-cover max-h-[320px]"
-    >
+  <div
+    class="rounded-3xl flex flex-col border md:w-[500px] bg-secondary-container"
+  >
+    <div
+      v-if="image"
+      :style="{ backgroundImage: `url(${img(props.image)})` }"
+      class="bg-cover bg-center h-[340px] w-full rounded-3xl"
+    />
     <div
       class="px-6 pt-3 pb-6 flex flex-col"
       :class="{ '!pb-8': onlyImage, '!py-4': onlyTitle }"

@@ -1,25 +1,20 @@
-import {ref as storageRef, type StorageReference} from 'firebase/storage'
+import {ref as storageRef} from 'firebase/storage'
 
-export function usePostStorage() {
+export async function useUploadPostImage(file: File) {
 	const storage = useFirebaseStorage()
-	const fileRef = ref<StorageReference | null>(null)
+	const fileRef = storageRef(storage, `posts/${file.name}`)
+
 	const {
-		url,
-		uploadProgress,
-		uploadError,
 		upload: uploadFile,
+		url,
+		uploadError,
 	} = useStorageFile(fileRef)
 
-	async function upload(file: File) {
-		fileRef.value = storageRef(storage, `posts/${file.name}`)
-		return uploadFile(file)
-	}
+	await uploadFile(file)
 
 	return {
-		upload,
-		url,
-		uploadProgress,
-		uploadError,
-		fileRef
+		url: url.value,
+		uploadError: uploadError.value,
 	}
 }
+
