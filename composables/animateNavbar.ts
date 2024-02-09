@@ -13,8 +13,4 @@ export function useAnimateNavbar(element: Ref<HTMLElement | null>) {
 	onMounted(() => {
 		element.value?.addEventListener('scroll', onScroll)
 	})
-
-	return {
-		isNavVisible: computed(() => isNavVisible.value)
-	}
 }

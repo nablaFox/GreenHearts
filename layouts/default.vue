@@ -24,6 +24,7 @@ provide('navbar', {
 <template>
   <div>
     <slot />
+    <PostsFab :is-nav-visible="isNavVisible" />
     <NavBar
       class="navbar fixed bottom-0"
       :class="{ 'translate-y-full': !isNavVisible }"

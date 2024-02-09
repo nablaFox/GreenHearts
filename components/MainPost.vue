@@ -3,7 +3,7 @@ import type { Post, Vote, VoteType } from '@/types'
 
 const props = defineProps<Post>()
 
-const { votePost } = usePost()
+const { votePost } = usePosts()
 
 function onVote(vote: Vote, negative: boolean) {		
 	votePost(props.id, vote, negative)
@@ -20,12 +20,13 @@ const onlyTitle = props.title && !props.notes && !props.image
       class="rounded-3xl object-cover max-h-[320px]"
     >
     <div
-      class="px-6 pt-3 pb-6 flex flex-col overflow-hidden"
+      class="px-6 pt-3 pb-6 flex flex-col"
       :class="{ '!pb-8': onlyImage, '!py-4': onlyTitle }"
     >
       <h2
         v-if="title"
-        class="font-extrabold text-lg"
+        class="font-extrabold text-lg text-ellipsis overflow-hidden"
+        :class="{'w-[calc(100%-120px)]': onlyTitle }"
       >
         {{ title }}
       </h2>

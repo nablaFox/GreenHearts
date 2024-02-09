@@ -5,6 +5,12 @@ export type Vote = {
 	type: VoteType
 }
 
+export type Stats = {
+	green: number
+	white: number
+	red: number
+}
+
 export interface Post {
 	id: string
 	title?: string

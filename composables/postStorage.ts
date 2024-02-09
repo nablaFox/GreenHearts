@@ -1,4 +1,3 @@
-import {useFirebaseStorage, useStorageFile} from 'vuefire'
 import {ref as storageRef, type StorageReference} from 'firebase/storage'
 
 export function usePostStorage() {

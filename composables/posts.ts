@@ -1,7 +1,7 @@
-import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc, Timestamp, getCountFromServer } from 'firebase/firestore'
+import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc, getCountFromServer } from 'firebase/firestore'
 import type { Post, Vote } from '@/types'
 
-export function usePost() {
+export function usePosts() {
 	const db = useFirestore()
 	const coll = collection(db, 'posts')
 	const lim = useState<number>('postsLimit')
@@ -13,11 +13,17 @@ export function usePost() {
 
 	const {upload, url} = usePostStorage()
 
-	async function fetch() {
+	async function getTotalCount() {
 		total.value = (await getCountFromServer(coll)).data().count
+	}
+
+	async function fetch() {
 		lim.value = 25
+		await getTotalCount()
+		await useCollection<Post>(_query, {
+			target: posts
+		}).promise.value
 		fetched.value = true
-		useState('posts', () => useCollection<Post>(_query))
 	}
 
 	async function fetchMore() {
@@ -66,6 +72,7 @@ export function usePost() {
 
 	return {
 		fetch,
+		getTotalCount,
 		posts,
 		lim,
 		length,

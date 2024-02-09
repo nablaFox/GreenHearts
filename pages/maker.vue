@@ -14,7 +14,7 @@ const image = ref<File | null>(null)
 const title = ref('')
 const notes = ref('')
 
-const {createPost} = usePost()
+const {createPost} = usePosts()
 
 async function onSubmit() {
 	await createPost({
