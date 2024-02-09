@@ -16,12 +16,12 @@ const { posts } = usePost()
         v-for="post in posts"
         :id="post.id"
         :key="post.id"
-        :title="post.title"
-        :notes="post.notes"
-        :image="post.image"
-        :green="post.green"
-        :white="post.white"
-        :red="post.red"
+        :title="post?.title"
+        :notes="post?.notes"
+        :image="post?.image"
+        :green="post?.green"
+        :white="post?.white"
+        :red="post?.red"
       />
     </div>
 

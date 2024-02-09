@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import { useScroll } from '@vueuse/core'
+import {useScroll} from '@vueuse/core'
 
 definePageMeta({
 	layout: false
 })
 
 const form = ref<HTMLFormElement | null>(null)
-const { y } = useScroll(form)
+const {y} = useScroll(form)
 
+const image = ref<File | null>(null)
 const title = ref('')
 const notes = ref('')
 
-function onSubmit() {
+const {createPost} = usePost()
+
+async function onSubmit() {
+	await createPost({
+		title: title.value,
+		notes: notes.value,
+		image: image.value
+	})
+	useRouter().push('/')
 	form.value?.reset()
 }
 </script>
@@ -31,12 +40,16 @@ function onSubmit() {
       <PhotoFrame
         class="h-[calc(100svh-180px-48px-260px)]"
         image="/test.png"
+        @take-photo="image = $event"
       />
 
       <PostInput v-model="title" />
       <PostTextarea v-model="notes" />
     </main>
-    <PostButton @submit="onSubmit" />
+    <PostButton
+      :disabled="!title && !image"
+      @submit="onSubmit"
+    />
   </form>
 </template>
 

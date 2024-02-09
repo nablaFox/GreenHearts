@@ -6,7 +6,7 @@ const { textarea } = useTextareaAutosize()
 </script>
 
 <template>
-  <div class="mx-4 bg-surface border rounded-xl flex-center py-3 px-4 gap-2 text-on-surface">
+  <div class="mx-4 bg-surface border rounded-xl flex-center py-3 px-4 gap-2 text-on-surface font-medium">
     <textarea
       ref="textarea"
       v-model="model"

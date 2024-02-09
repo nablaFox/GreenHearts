@@ -8,5 +8,8 @@ ToDo:
 - types
 - white heart
 - ts/css formatting
+- group post transition
+- open posts
+- reset image
 
 

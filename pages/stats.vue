@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div>
-    ciao
-  </div>
+	<div>
+		ciao
+	</div>
 </template>
 

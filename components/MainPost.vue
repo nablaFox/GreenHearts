@@ -12,6 +12,8 @@ const { votePost } = usePost()
 function onVote(vote: Vote, negative: boolean) {		
 	votePost(props.id, vote, negative)
 }
+
+const onlyImage = computed(() => !props.title && !props.notes && props.image)
 </script>
 
 <template>
@@ -20,7 +22,10 @@ function onVote(vote: Vote, negative: boolean) {
       :src="image"
       class="rounded-3xl object-cover max-h-[320px]"
     >
-    <div class="px-5 pt-3 pb-6 flex flex-col">
+    <div
+      class="px-5 pt-3 pb-6 flex flex-col"
+      :class="{ '!pb-8': onlyImage }"
+    >
       <h2
         v-if="title"
         class="font-extrabold text-lg font-[Montserrat]"
@@ -35,7 +40,10 @@ function onVote(vote: Vote, negative: boolean) {
       </p>
     </div>
 
-    <div class="absolute right-[20px] bottom-[10px] flex items-center">
+    <div
+      class="absolute right-[20px] bottom-[10px] flex items-center"
+      :class="{ '!bottom-[2px]': onlyImage }"
+    >
       <VoteButton
         v-for="color in ['green', 'white', 'red']"
         :key="color"
