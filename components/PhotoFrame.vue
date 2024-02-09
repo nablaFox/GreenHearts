@@ -5,11 +5,14 @@ import { useFileDialog } from '@vueuse/core'
 
 defineProps<{
 	image: string
+	scroll: number
 }>()
 
 const emit = defineEmits<{
 	(e: 'takePhoto', image: File | null): void
 }>()
+
+const model = defineModel()
 
 const { files, open, reset, onChange } = useFileDialog({
 	accept: 'image/*',
@@ -23,6 +26,7 @@ onChange(() => {
 	if (!file) {
 		emit('takePhoto', null)
 		imageTaken.value = ''
+		model.value = false
 		return
 	}
 	emit('takePhoto', file)
@@ -31,13 +35,16 @@ onChange(() => {
 </script>
 
 <template>
-  <div class="border-b rounded-b-[30px] overflow-hidden">
+  <div
+    class="border-b rounded-b-[30px] overflow-hidden"
+    @click="() => imageTaken && !scroll && (model = !model)"
+  >
     <img
-      :src="imageTaken || image"
-      width="100%"
-      class="w-full h-full object-cover object-center"
       :class="{ box: !imageTaken }"
+      :src="imageTaken || image"
+      class="h-full w-[200%] object-center object-cover test"
     >
+
     <div
       v-if="!imageTaken"
       class="abs-center flex-center py-4 w-full backdrop-blur-[15px] text-2xl font-[Montserrat] font-extrabold text-on-primary font-medium"
@@ -46,7 +53,7 @@ onChange(() => {
         class="text-lg font-bold"
         @click="open"
       >
-        Take the photo           
+        Take the photo 
         <Icon
           slot="icon"
           size="32"

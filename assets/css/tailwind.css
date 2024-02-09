@@ -9,6 +9,10 @@
 		position: relative;
 	}
 
+	html {
+		scroll-behavior: smooth;
+	}
+
 	body, html {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
