@@ -15,15 +15,16 @@ const paddingLeft = computed(() => ((props.initialPadding || 28) + (props.minPad
 </script>
 
 <template>
-  <div class="flex flex-col justify-between">
-    <header class="pl-2 pt-3 z-[100]">
-      <md-icon-button @click="$router.push('/')">
-        <Icon
-          name="ic:baseline-arrow-back"
-          size="24"
-        />
-      </md-icon-button>
-    </header>
+  <header class="flex flex-col justify-between">
+    <md-icon-button
+      class="ml-3 mt-3 z-[100]"
+      @click="$router.push('/')"
+    >
+      <Icon
+        name="ic:baseline-arrow-back"
+        size="24"
+      />
+    </md-icon-button>
     <div 
       :style="{opacity }"
       class="abs-center w-full h-full bg-secondary-container will-change-[opacity]" 
@@ -34,6 +35,6 @@ const paddingLeft = computed(() => ((props.initialPadding || 28) + (props.minPad
     >
       {{ title }}
     </h1>
-  </div>
+  </header>
 </template>
 

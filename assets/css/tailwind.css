@@ -9,6 +9,11 @@
 		position: relative;
 	}
 
+	:root {
+		--section-width-size: 93%;
+		--section-width-max-size: 780px;
+	}
+
 	html {
 		scroll-behavior: smooth;
 	}
@@ -41,6 +46,10 @@
       display: none;
     }
   }
+	
+	.page-size {
+		@apply w-[var(--section-width-size)] max-w-[var(--section-width-max-size)] mx-auto;
+	}
 
 	.full-scroller {
 		overflow: auto;

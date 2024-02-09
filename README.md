@@ -2,6 +2,7 @@
 
 ToDo:
 
+- dynamic greedings
 - fix linting
 - remove montserrat
 - score
