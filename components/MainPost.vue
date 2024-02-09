@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import type { Post, Vote, VoteType } from '@/types'
 
-interface ClientPost extends Post {
-	exDate?: string
-}
-
-const props = defineProps<ClientPost>()
+const props = defineProps<Post>()
 
 const { votePost } = usePost()
 
@@ -13,28 +9,29 @@ function onVote(vote: Vote, negative: boolean) {
 	votePost(props.id, vote, negative)
 }
 
-const onlyImage = computed(() => !props.title && !props.notes && props.image)
+const onlyImage = !props.title && !props.notes && props.image
+const onlyTitle = props.title && !props.notes && !props.image 
 </script>
 
 <template>
-  <div class="rounded-3xl flex flex-col border w-[380px] md:w-[500px] bg-secondary-container">
+  <div class="rounded-3xl flex flex-col border md:w-[500px] bg-secondary-container">
     <img
       :src="image"
       class="rounded-3xl object-cover max-h-[320px]"
     >
     <div
-      class="px-5 pt-3 pb-6 flex flex-col"
-      :class="{ '!pb-8': onlyImage }"
+      class="px-6 pt-3 pb-6 flex flex-col overflow-hidden"
+      :class="{ '!pb-8': onlyImage, '!py-4': onlyTitle }"
     >
       <h2
         v-if="title"
-        class="font-extrabold text-lg font-[Montserrat]"
+        class="font-extrabold text-lg"
       >
         {{ title }}
       </h2>
       <p
         v-if="notes"
-        class="text font-[Montserrat] font-semibold"
+        class="text font-semibold pb-6"
       >
         {{ notes }}
       </p>
@@ -54,4 +51,11 @@ const onlyImage = computed(() => !props.title && !props.notes && props.image)
     </div>
   </div>
 </template>
+
+<style scoped>
+p {
+	hyphens: auto;
+  word-break: break-word;
+}
+</style>
 

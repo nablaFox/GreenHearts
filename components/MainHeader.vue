@@ -4,9 +4,9 @@ import '@material/web/iconbutton/outlined-icon-button.js'
 
 <template>
   <div class="flex justify-between w-full px-4 pt-4 pb-8 align-center max-w-[1200px] mx-auto">
-    <div class="text-primary font-bold font-[Pacifico] text-xl">
+    <h2 class="text-primary font-bold font-[Pacifico] text-xl cursor-pointer">
       Green Hearts
-    </div>
+    </h2>
     <md-outlined-icon-button>
       <Icon
         name="ic:baseline-book"

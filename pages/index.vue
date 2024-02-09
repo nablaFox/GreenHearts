@@ -24,18 +24,19 @@ useInfiniteScroll(
   >
     <MainHeader />
     <div class="w-[93%] min-h-[calc(100svh-20px)] max-w-[1200px] mx-auto flex flex-col items-center gap-5 min-h-[100svh] overflow-y-scroll scrollbar-none pb-24">
-      <MainPost
+      <template
         v-for="(post, index) in posts"
-        :id="post.id"
         :key="index"
-        :title="post?.title"
-        :notes="post?.notes"
-        :image="post?.image"
-        :green="post?.green"
-        :white="post?.white"
-        :red="post?.red"
-        :prev-date="index ? posts[index - 1]?.date : undefined"
-      />
+      >
+        <WavyDivider
+          :date="post?.date"
+          :prev-date="posts[index - 1]?.date"
+        />
+        <MainPost
+          v-bind="post"
+          class="w-full"
+        />
+      </template>
     </div>
 
     <PostsFab :is-nav-visible="isNavVisible" />

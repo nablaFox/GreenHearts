@@ -10,6 +10,7 @@ ToDo:
 - ts/css formatting
 - group post transition
 - open posts
-- reset image
+- preload images
+- animated thumnail when no image is loaded
 
 
