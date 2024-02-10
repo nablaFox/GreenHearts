@@ -34,6 +34,7 @@ function onSubmit() {
 }
 
 const fullScreen = ref(false)
+const placeholder = `/placeholder-${Math.floor(Math.random() * 10) + 1}.png`
 </script>
 
 <template>
@@ -54,7 +55,7 @@ const fullScreen = ref(false)
       <PhotoFrame
         v-model="fullScreen"
         class="h-[calc(100svh-180px-48px-240px)] z-[100] transition"
-        image="/test.png"
+        :image="placeholder"
         :scroll="y"
         :class="{ fullScreen }"
         @take-photo="image = $event"

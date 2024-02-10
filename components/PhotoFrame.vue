@@ -39,11 +39,11 @@ onChange(() => {
     class="border-b rounded-b-[30px] overflow-hidden"
     @click="() => imageTaken && !scroll && (model = !model)"
   >
-    <img
+    <div
       :class="{ box: !imageTaken }"
-      :src="imageTaken || image"
       class="h-full w-[200%] object-center object-cover test"
-    >
+      :style="{ backgroundImage: `url(${imageTaken || image})` }"
+    />
 
     <div
       v-if="!imageTaken"
@@ -81,12 +81,12 @@ onChange(() => {
 
 <style scoped>
 .box {
-	animation: press 2s infinite;
+	animation: press 2.5s infinite;
 }
 
 @keyframes press {
    0%,  100% { opacity:  1; }
-   50% { opacity:  0.70; } 
+   50% { opacity:  0.75; } 
 }
 
 md-filled-tonal-button {
