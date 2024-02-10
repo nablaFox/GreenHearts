@@ -42,11 +42,11 @@ const { loading } = usePosts()
           :prev-date="posts[index - 1]?.date"
         />
       </div>
-    </TransitionGroup>
+    </TransitionGroup> 
 
     <LoadBar
-      :loading="loading"
-      :duration="500"
+      :loading="!!loading"
+      :duration="300"
     />
     <WarningBox
       :error="!!error"

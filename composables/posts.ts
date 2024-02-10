@@ -8,7 +8,7 @@ export function usePosts() {
 	const total = useState<number>('postsTotal')
 	const posts = useState<Post[]>('posts')
 	const fetched = useState<boolean>('postsFetched')
-	const loading = useState<boolean>('createPostProgress')
+	const loading = useState<boolean | undefined>('createPostProgress')
 	const length = computed(() => posts.value?.length)
 
 	async function getTotalCount() {
