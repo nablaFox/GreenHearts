@@ -3,7 +3,7 @@
 // TODO: change the layout based on the screen size
 definePageMeta({
 	layout: 'mobile',
-	middleware: 'user'
+	middleware: 'auth'
 })
 
 const {

@@ -1,9 +1,14 @@
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot, getDoc } from 'firebase/firestore'
+import { 
+	GoogleAuthProvider ,
+	signInWithPopup,
+	type Auth
+} from 'firebase/auth'
 import type { Stats } from '@/types'
 
 interface User {
 	name: string,
-	stats: Stats
+	stats: Stats,
 }
 
 export function useUser() {
@@ -11,14 +16,37 @@ export function useUser() {
 	const data = useState<User | undefined>('userData')
 	const stats = computed(() => data.value?.stats)
 	const fetched = computed(() => !!data.value)
-	const id = useState<string>('uid')
+	const id = useState<string>()
+	const isLogged = computed(() => !!id.value)
+	const checkAdmin = (id: string) => id == 'tmz6u1K6roO7c0lr2v7DkEc9Raj2' 
+	const isAdmin = useState<boolean>('admin', () => false)
+	const auth = useFirebaseAuth() as Auth
 
+	async function signup() {
+	}
+
+	async function login() {
+		const googleProvider = new GoogleAuthProvider()
+		await signInWithPopup(auth, googleProvider)
+		return await fetch()
+	}
+
+	function logout() {
+		auth?.signOut()
+	}
+
+	// returns true only if user exists
 	async function fetch() {
-		const uid = localStorage.getItem('admin') === 'true' ?
-			'Fw7RBsTJbVQFuI42dKsgZfU70SZ2' :
-			(await getCurrentUser()).uid			
+		if (fetched.value) return true
 
+		const user = await getCurrentUser()
+		if (!user) return false
+
+		isAdmin.value = checkAdmin(user.uid)
+		const uid = isAdmin.value ? 'Fw7RBsTJbVQFuI42dKsgZfU70SZ2' : user.uid
 		const docRef = doc(db, 'users', uid)
+
+		if (!(await getDoc(docRef)).exists()) return false
 
 		onSnapshot(docRef, (doc) => {
 			data.value = doc.data() as User
@@ -31,13 +59,19 @@ export function useUser() {
 		}
 
 		id.value = uid
+		return true
 	}
 
 	return { 
+		login,
+		logout,
+		signup,
+		isAdmin,
 		data,
 		stats,
 		fetch, 
 		fetched,
+		isLogged,
 		id
 	}
 }

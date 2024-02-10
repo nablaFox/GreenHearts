@@ -1,24 +1,14 @@
-<script lang="ts">
-import {GoogleAuthProvider} from 'firebase/auth'
-export const googleAuthProvider = new GoogleAuthProvider()
-</script>
-
 <script setup lang="ts">
 import '@material/web/button/outlined-button.js'
-import {
-	signInWithPopup,
-	type Auth
-} from 'firebase/auth'
-import {useFirebaseAuth} from 'vuefire'
+const { login } = useUser()
 
-const auth = useFirebaseAuth() as Auth
+const loginSuccess = ref(true)
 
-async function login() {
-	const { user } = (await signInWithPopup(auth, googleAuthProvider))
-	user && useRouter().push('/app')	
+async function onLogin() {
+	loginSuccess.value = await login()
+	setTimeout(() => (loginSuccess.value = true), 10)
+	loginSuccess.value && useRouter().push('/app')
 }
-
-const loginFailed = useState<boolean | undefined>('login-failed')
 </script>
 
 <template>
@@ -29,13 +19,12 @@ const loginFailed = useState<boolean | undefined>('login-failed')
     >
     <LoginMenu
       class="h-full"
-      @login="login"
+      @login="onLogin"
     />
 
     <WarningBox
-      :error="loginFailed || false"
+      :error="!loginSuccess"
       text="Login Failed 💥"
-      class="absolute bottom-20"
     />
 
     <GitSignature
