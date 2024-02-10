@@ -17,7 +17,7 @@ const icons = {
 const btn = ref<HTMLElement | null>(null)
 
 const icon = computed(() => icons[props.type])
-const isAdmin = localStorage.getItem('admin') === 'true' ? true : false
+const { isAdmin } = useUser()
 
 function onClick(negative: boolean) {
 	emit('vote', props, negative)

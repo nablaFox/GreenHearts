@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import {useScroll} from '@vueuse/core'
 
+definePageMeta({
+	middleware: [
+		function(_, from) { 
+			return (from.path === '/app') || (from.path === '/stats')
+		}
+	]
+})
+
 const form = ref<HTMLFormElement | null>(null)
 const {y} = useScroll(form, {
 	behavior: 'smooth'
@@ -25,7 +33,7 @@ function onSubmit() {
 		notes.value = ''
 	}, 100)
 
-	useRouter().back()
+	useRouter().push('/app')
 	form.value?.reset()
 }
 

@@ -31,13 +31,13 @@ const img = useImage()
       <h2
         v-if="title"
         class="font-extrabold text-lg text-ellipsis overflow-hidden"
-        :class="{'w-[calc(100%-120px)]': onlyTitle }"
+        :class="{'w-[calc(100%-120px)]': onlyTitle, 'pb-4': !notes }"
       >
         {{ title }}
       </h2>
       <p
         v-if="notes"
-        class="text font-semibold pb-6"
+        class="text font-semibold pb-7"
       >
         {{ notes }}
       </p>
@@ -45,7 +45,7 @@ const img = useImage()
 
     <div
       class="absolute right-[20px] bottom-[10px] flex items-center"
-      :class="{ '!bottom-[2px]': onlyImage }"
+      :class="{ '!bottom-[2px]': onlyImage || !notes }" 
     >
       <VoteButton
         v-for="color in ['green', 'blue', 'red']"

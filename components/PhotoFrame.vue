@@ -41,7 +41,7 @@ onChange(() => {
   >
     <div
       :class="{ box: !imageTaken }"
-      class="h-full w-[200%] object-center object-cover test"
+      class="h-full w-[100%] bg-center bg-cover test"
       :style="{ backgroundImage: `url(${imageTaken || image})` }"
     />
 

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 const destinations = [
-	{icon: 'material-symbols:favorite', href: '/', label: 'Posts'},
+	{icon: 'material-symbols:favorite', href: '/app', label: 'Posts'},
 	{icon: 'material-symbols:auto-graph-rounded', href: '/stats', label: 'Stats'}
 ]
-
 </script>
 
 <template>
