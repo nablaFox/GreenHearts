@@ -20,6 +20,7 @@ export default defineNuxtConfig({
 			 Pacifico: true,
 		}
 	},
+
 	vuefire: {
 		auth: {
 			enabled: true,
@@ -34,5 +35,9 @@ export default defineNuxtConfig({
 			appId: "1:948982701209:web:40a0f4356ba2d7c2006c08",
 			measurementId: "G-7LDL7ZD29H"
 		}
+	},
+
+	tailwindcss: {
+		exposeConfig: true
 	}
 })

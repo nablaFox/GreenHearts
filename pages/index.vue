@@ -14,12 +14,28 @@ useInfiniteScroll(
 
 const { error } = usePostsStorage()
 const { loading } = usePosts()
+
+// test by creating a post with a date 8 days in the future
+
+const test = () => {
+	const date = new Date()
+	date.setDate(date.getDate() + 8)
+	const post = {
+		id: 'test',
+		title: 'Test',
+		date: date.toISOString(),
+		content: 'Test'
+	}
+
+	posts.value.unshift(post)
+}
 </script>
 
 <template>
   <main
     ref="el"
     class="full-scroller"
+    @click="test"
   >
     <MainHeader />
     <TransitionGroup

@@ -9,6 +9,10 @@
 		position: relative;
 	}
 
+	p {
+		line-height: 1.3;
+	}
+
 	:root {
 		--section-width-size: 93%;
 		--section-width-max-size: 780px;
