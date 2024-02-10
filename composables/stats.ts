@@ -1,12 +1,6 @@
-import { doc, onSnapshot } from 'firebase/firestore'
-import type { Stats } from '@/types' 
-
 export function useStats() {
-	const db = useFirestore()
-	const stats = useState<Stats | undefined>('stats')	
-	const fetched = useState<boolean>('statsFetched')	
-	const docRef = doc(db, 'stats', 'base')
 	const posts = usePosts()
+	const { stats } = useUser()
 
 	if (!posts.total.value) {
 		posts.getTotalCount()
@@ -20,21 +14,5 @@ export function useStats() {
 
 	const notCounted = computed(() => total.value && (posts.total.value - total.value))
 
-	async function fetch() {
-		if (fetched.value) return
-
-		onSnapshot(docRef, (doc) => {
-			stats.value = doc.data() as Stats
-		})
-
-		let _stats = null
-		while (!_stats) {
-			_stats = stats.value
-			await new Promise((r) => setTimeout(r, 100))
-		}		
-
-		fetched.value = true
-	}
-
-	return { stats, total, notCounted, fetch, totalValue, fetched }
+	return { stats, total, notCounted, totalValue }
 }

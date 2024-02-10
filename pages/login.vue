@@ -11,15 +11,11 @@ import {
 } from 'firebase/auth'
 import {useFirebaseAuth} from 'vuefire'
 
-definePageMeta({
-	layout: false
-})
-
 const auth = useFirebaseAuth() as Auth
 
 async function login() {
-	await signInWithPopup(auth, googleAuthProvider).catch(err => console.error(err))
-	useRouter().push('/')
+	const { user } = (await signInWithPopup(auth, googleAuthProvider))
+	user && useRouter().push('/app')	
 }
 
 const loginFailed = useState<boolean | undefined>('login-failed')

@@ -2,8 +2,12 @@
 
 ToDo:
 
-- firestore rules
 
+- make maker a component
+- 404 page error
+- add admin comments
+- animated svgs (autodrawn) for example when there are not posts
+- change logo
 - open posts on main page like on maker
 - move full screen image
 - squiggle on stats for large screens

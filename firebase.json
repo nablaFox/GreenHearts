@@ -1,5 +1,17 @@
 {
 	"hosting": {
-		"site": "green-hearts"
+		"site": "green-hearts",
+		"public": ".output/public",
+		"ignore": [
+			"firebase.json",
+			"**/.*",
+			"**/node_modules/**"
+		],
+		"rewrites": [
+			{
+				"source": "**",
+				"destination": "/index.html"
+			}
+		]
 	}
 }

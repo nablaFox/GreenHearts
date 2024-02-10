@@ -1,14 +1,18 @@
+
 <script setup lang="ts">
+// TODO: change the layout based on the screen size
+definePageMeta({
+	layout: 'mobile',
+	middleware: 'user'
+})
+
 const {
 	stats,
 	totalValue,
 	notCounted,
-	fetch
 } = useStats()
 
 type StatType = 'red' | 'green' | 'blue' | 'nc' | 'total'
-
-await callOnce(async () => await fetch())
 
 const statsData = computed(() => ([
 	{ title: 'green', type: 'green', score: stats.value?.green },
@@ -52,4 +56,5 @@ svg:deep(path) {
 	stroke: var(--md-sys-color-secondary);
 }
 </style>
+
 
