@@ -11,6 +11,7 @@ useInfiniteScroll(
 	async () => await fetchMore(), 
 	{ distance: 80}
 )
+const { error } = usePostsStorage()
 </script>
 
 <template>
@@ -40,6 +41,11 @@ useInfiniteScroll(
         />
       </div>
     </TransitionGroup>
+    <WarningBox
+      :error="!!error"
+      :duration="1500"
+      text="Something Went Wrong 😟"
+    />
   </main>
 </template>
 
@@ -47,7 +53,7 @@ useInfiniteScroll(
 .fade-move,
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
 
 .fade-enter-from,

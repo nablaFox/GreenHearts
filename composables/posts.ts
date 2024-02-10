@@ -53,10 +53,12 @@ export function usePosts() {
 			date: new Date().toString(),
 		}
 
-		// TODO: handle image upload error
-		if (image)
-			params.image = (await useUploadPostImage(image)).url as string
-		
+		if (image) {
+			const { url } = await usePostsStorage().upload(image)
+			if (!url) return
+			params.image = url
+		}
+
 		await addDoc(coll, params)
 		total.value++
 	}

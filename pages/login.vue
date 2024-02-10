@@ -37,8 +37,8 @@ const loginFailed = useState<boolean | undefined>('login-failed')
     />
 
     <WarningBox
-      :visible="loginFailed || false"
-      text="Login Failed. Don't try again!"
+      :error="loginFailed || false"
+      text="Login Failed 💥"
       class="absolute bottom-20"
     />
 
