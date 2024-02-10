@@ -41,7 +41,7 @@ const test = () => {
     <TransitionGroup
       name="fade"
       tag="div"
-      class="page-size min-h-[calc(100svh-20px)] flex flex-col items-center gap-5 overflow-y-scroll scrollbar-none pb-24"
+      class="page-size flex flex-col items-center gap-5 overflow-y-scroll scrollbar-none pb-24"
     >
       <div
         v-for="(post, index) in posts"

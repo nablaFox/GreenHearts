@@ -5,9 +5,11 @@ const {
 	notCounted
 } = useStats()
 
+type StatType = 'red' | 'green' | 'white' | 'nc' | 'total'
+
 const statsData = computed(() => ([
-	{ title: 'red', type: 'red', score: stats.value?.red },
 	{ title: 'green', type: 'green', score: stats.value?.green },
+	{ title: 'red', type: 'red', score: stats.value?.red },
 	{ title: 'white', type: 'white', score: stats.value?.white },
 	{ title: 'not counted', type: 'nc', score: notCounted.value },
 	{ title: 'total', type: 'total', score: totalValue.value }
@@ -21,12 +23,18 @@ const statsData = computed(() => ([
       head="What's up"
       title="Amore mio"
     />	
-		
+
+    <Teleport to="body">
+      <SvgSquiggleThick class="bg-surface-variant absolute bottom-[20%] left-0" />
+    </Teleport>
+	
     <div class="grid grid-cols-[repeat(2,1fr)] gap-2.5">
       <StatCard
         v-for="stat in statsData"
-        v-bind="stat"
         :key="stat.title"
+        :type="stat.type as StatType"
+        :score="stat.score"
+        :title="stat.title"
       />
     </div>
   </main>
@@ -35,6 +43,10 @@ const statsData = computed(() => ([
 <style scoped>
 .stat:last-child {
   grid-column: span 2;
+}
+
+svg:deep(path) {
+	stroke: var(--md-sys-color-secondary);
 }
 </style>
 

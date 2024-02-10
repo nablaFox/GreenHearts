@@ -1,6 +1,10 @@
 module.exports = {
 	theme: {
 		extend: {
+			screens: {
+				'xs': '380px',
+				'2xs': '320px'
+			},
 			colors: {
 				'primary': 'var(--md-sys-color-primary)',
 				'secondary': 'var(--md-sys-color-secondary)',

@@ -52,7 +52,10 @@
   }
 	
 	.page-size {
-		@apply w-[var(--section-width-size)] max-w-[var(--section-width-max-size)] mx-auto;
+		min-height: calc(100svh - 20px);
+		width: var(--section-width-size);
+		max-width: var(--section-width-max-size);
+		margin: 0 auto;
 	}
 
 	.full-scroller {

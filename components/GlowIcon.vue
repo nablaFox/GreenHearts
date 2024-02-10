@@ -1,12 +1,17 @@
 <script setup lang="ts">
-const props = defineProps<{
+import { theme } from '#tailwind-config'
+
+export interface Props {
 	name?: string
 	size?: string
 	color: string
 	colorModifier?: string
-}>()
+	glow?: boolean
+}
 
-import { theme } from '#tailwind-config'
+const props = withDefaults(defineProps<Props>(), {
+	glow: true
+})
 
 const _color = computed(() => {
 	const colors = theme.colors as any
@@ -21,12 +26,9 @@ const _color = computed(() => {
   <Icon
     :name="name || ''"
     :size="size"
-    :style="{ filter: `drop-shadow(0 0 6px ${_color})` }"
-    :color="_color.value"
+    :style="[glow && `filter: drop-shadow(0 0 6px ${_color})`]"
   />
 </template>
 
 <style scoped>
-
-
 </style>

@@ -2,6 +2,16 @@
 
 ToDo:
 
+- squiggle on stats for large screens
+- navbar height as variable
+- change white to blue
+- defaults
+- export props interfaces
+- readonly
+- random maker image
+- invert red and green
+- remove the slot warning
+- virtual scroller
 - dynamic greedings
 - fix linting
 - remove montserrat
@@ -12,6 +22,5 @@ ToDo:
 - group post transition
 - open posts
 - preload images
-- animated thumnail when no image is loaded
 
 
