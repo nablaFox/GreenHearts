@@ -1,10 +1,11 @@
-import { doc } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 import type { Stats } from '@/types' 
 
 export function useStats() {
 	const db = useFirestore()
 	const stats = useState<Stats | undefined>('stats')	
 	const fetched = useState<boolean>('statsFetched')	
+	const docRef = doc(db, 'stats', 'base')
 	const posts = usePosts()
 
 	if (!posts.total.value) {
@@ -22,9 +23,15 @@ export function useStats() {
 	async function fetch() {
 		if (fetched.value) return
 
-		await useDocument(doc(db, 'stats', 'base'), {
-			target: stats,
-		}).promise.value
+		onSnapshot(docRef, (doc) => {
+			stats.value = doc.data() as Stats
+		})
+
+		let _stats = null
+		while (!_stats) {
+			_stats = stats.value
+			await new Promise((r) => setTimeout(r, 100))
+		}		
 
 		fetched.value = true
 	}

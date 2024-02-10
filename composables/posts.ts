@@ -22,13 +22,20 @@ export function usePosts() {
 			() => query(coll, orderBy('date', 'desc'), limit(lim.value))
 		)
 
+		watch(_query, q => {
+			onSnapshot(q, (snap) => {
+				posts.value = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post))
+			})
+		})
+
 		await getTotalCount()	
 		lim.value = 25
 
-		// TODO: fix vue inject issue
-		await useCollection(_query, {
-			target: posts,
-		}).promise.value
+		let _posts = null
+		while (!_posts && total.value) {
+			_posts = posts.value
+			await new Promise((r) => setTimeout(r, 100))
+		}
 
 		fetched.value = true
 	}

@@ -13,7 +13,9 @@ useInfiniteScroll(
 )
 
 const { error } = usePostsStorage()
-const { loading } = usePosts()
+const { loading, fetch } = usePosts()
+
+await callOnce(async () => await fetch())
 </script>
 
 <template>

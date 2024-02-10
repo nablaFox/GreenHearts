@@ -2,10 +2,13 @@
 const {
 	stats,
 	totalValue,
-	notCounted
+	notCounted,
+	fetch
 } = useStats()
 
 type StatType = 'red' | 'green' | 'blue' | 'nc' | 'total'
+
+await callOnce(async () => await fetch())
 
 const statsData = computed(() => ([
 	{ title: 'green', type: 'green', score: stats.value?.green },
