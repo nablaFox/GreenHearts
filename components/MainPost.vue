@@ -17,7 +17,7 @@ const img = useImage()
 
 <template>
   <div
-    class="rounded-3xl flex flex-col border md:w-[500px] bg-secondary-container"
+    class="rounded-3xl flex flex-col border md:w-[500px] bg-secondary-container border border-outline"
   >
     <div
       v-if="image"
@@ -48,7 +48,7 @@ const img = useImage()
       :class="{ '!bottom-[2px]': onlyImage }"
     >
       <VoteButton
-        v-for="color in ['green', 'white', 'red']"
+        v-for="color in ['green', 'blue', 'red']"
         :key="color"
         :type="color as VoteType"
         :score="props[color as VoteType]"

@@ -10,7 +10,7 @@ const emit = defineEmits<{
 
 const icons = {
 	green: 'ic:round-favorite',
- white: 'ic:sharp-favorite',
+ blue: 'ic:sharp-favorite',
  red: 'ic:baseline-heart-broken'
 }
 
@@ -34,7 +34,10 @@ function onClick(negative: boolean) {
       :selected="score"
       @click="() => onClick(!(btn as any).selected)"
     >
-      <Icon
+      <GlowIcon
+        :color="type"
+        color-modifier="500"
+        :glow="!!score"
         :name="icon"
       />
     </md-icon-button>
@@ -49,19 +52,19 @@ function onClick(negative: boolean) {
 
 <style scoped>
 md-icon-button[selected].red {
-	--md-icon-button-selected-icon-color: var(--md-sys-color-error);
-	--md-icon-button-selected-pressed-icon-color: var(--md-sys-color-error);
-	--md-icon-button-selected-hover-icon-color: var(--md-sys-color-error);
-	--md-icon-button-selected-focus-icon-color: var(--md-sys-color-error);
-	--md-icon-button-selected-hover-state-layer-color: var(--md-sys-color-error);
+	--md-icon-button-selected-icon-color: #ef4444;
+	--md-icon-button-selected-pressed-icon-color: #ef4444;
+	--md-icon-button-selected-hover-icon-color: #ef4444;
+	--md-icon-button-selected-focus-icon-color: #ef4444;
+	--md-icon-button-selected-hover-state-layer-color: #ef4444;
 }
 
-md-icon-button[selected].white {
-	--md-icon-button-selected-icon-color: var(--md-sys-color-background);
-	--md-icon-button-selected-pressed-icon-color: var(--md-sys-color-background);
-	--md-icon-button-selected-hover-icon-color: var(--md-sys-color-background);
-	--md-icon-button-selected-focus-icon-color: var(--md-sys-color-background);
-	--md-icon-button-selected-hover-state-layer-color: var(--md-sys-color-background);
+md-icon-button[selected].blue {
+	--md-icon-button-selected-icon-color: #3b82f6;
+	--md-icon-button-selected-pressed-icon-color: #3b82f6;
+	--md-icon-button-selected-hover-icon-color: #3b82f6;
+	--md-icon-button-selected-focus-icon-color: #3b82f6;
+	--md-icon-button-selected-hover-state-layer-color: #3b82f6;
 }
 </style>
 

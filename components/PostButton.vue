@@ -6,11 +6,11 @@ defineEmits(['submit'])
 </script>
 
 <template>
-  <footer class="fixed bottom-1 w-[98%] left-[50%] -translate-x-2/4 bg-white">
+  <footer class="fixed bottom-1 w-[98%] left-[50%] -translate-x-2/4 bg-surface">
     <md-filled-button
       :disabled="disabled"
       type="submit"
-      class="w-full text-[16px] py-3 font-normal font-[Montserrat]"
+      class="w-full text-[16px] py-3 font-normal"
       @click="$emit('submit')"
     >
       Publish Post

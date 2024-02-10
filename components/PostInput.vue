@@ -3,7 +3,7 @@ const model = defineModel()
 </script>
 
 <template>
-  <div class="mx-4 rounded-xl bg-surface border px-4 py-3 flex-center gap-2">
+  <div class="mx-4 rounded-xl bg-surface border border-outline-variant px-4 py-3 flex-center gap-2">
     <input
       v-model="model"
       class="grow font-bold"

@@ -1,4 +1,4 @@
-export type VoteType = 'green' | 'white' | 'red'
+export type VoteType = 'green' | 'blue' | 'red'
 
 export type Vote = {
 	score?: number
@@ -7,7 +7,7 @@ export type Vote = {
 
 export type Stats = {
 	green: number
-	white: number
+	blue: number
 	red: number
 }
 
@@ -16,7 +16,7 @@ export interface Post {
 	title?: string
 	notes?: string
 	green?: number
-	white?: number
+	blue?: number
 	red?: number
 	image?: string
 	date?: string

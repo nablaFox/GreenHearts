@@ -22,7 +22,7 @@
         </p>
       </AppRule>
 
-      <AppRule title="White">
+      <AppRule title="Blue">
         <p>
           You can get the red only for certain actions. Be careful
         </p>

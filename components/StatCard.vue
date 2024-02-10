@@ -1,15 +1,13 @@
 <script setup lang="ts">
 
 const props = defineProps<{
-	type: 'red' | 'green' | 'white' | 'nc' | 'total' 
+	type: 'red' | 'green' | 'blue' | 'nc' | 'total' 
 	title?: string
 	score?: number
 }>()
 
-
 const colorType = () => {
 	if (props.type == 'nc') return 'gray'
-	if (props.type == 'white') return 'blue'
 	return props.type
 }
 </script>

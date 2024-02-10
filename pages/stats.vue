@@ -5,12 +5,12 @@ const {
 	notCounted
 } = useStats()
 
-type StatType = 'red' | 'green' | 'white' | 'nc' | 'total'
+type StatType = 'red' | 'green' | 'blue' | 'nc' | 'total'
 
 const statsData = computed(() => ([
 	{ title: 'green', type: 'green', score: stats.value?.green },
 	{ title: 'red', type: 'red', score: stats.value?.red },
-	{ title: 'white', type: 'white', score: stats.value?.white },
+	{ title: 'blue', type: 'blue', score: stats.value?.blue },
 	{ title: 'not counted', type: 'nc', score: notCounted.value },
 	{ title: 'total', type: 'total', score: totalValue.value }
 ]))
