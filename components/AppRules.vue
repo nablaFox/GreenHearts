@@ -9,22 +9,22 @@
       Rules
     </h1>
 
-    <div class="mt-4 flex flex-col gap-4">
+    <div class="mt-4 flex flex-col gap-4 pr-8 pb-2">
       <AppRule title="Green">
         <p>
-          You can get the red only for certain actions. Be careful
-        </p>
-      </AppRule>
-
-      <AppRule title="Red">
-        <p>
-          You can get the red only for certain actions. Be careful
+          Achievable trhough Healthy Food, Fitness, and Goodwill
         </p>
       </AppRule>
 
       <AppRule title="Blue">
         <p>
-          You can get the red only for certain actions. Be careful
+          It's what a green could have been, if you had tried harder
+        </p>
+      </AppRule>
+
+      <AppRule title="Red">
+        <p>
+          You are not a bad person, but you could be better
         </p>
       </AppRule>
     </div>
