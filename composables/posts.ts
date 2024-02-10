@@ -8,6 +8,7 @@ export function usePosts() {
 	const total = useState<number>('postsTotal')
 	const posts = useState<Post[]>('posts')
 	const fetched = useState<boolean>('postsFetched')
+	const loading = useState<boolean>('createPostProgress')
 	const length = computed(() => posts.value?.length)
 
 	async function getTotalCount() {
@@ -45,6 +46,7 @@ export function usePosts() {
 
 	async function createPost({title, notes, image}: CreatePostParams) {
 		if (!title && !image) return
+		loading.value = true
 
 		const params = {
 			title,
@@ -55,12 +57,13 @@ export function usePosts() {
 
 		if (image) {
 			const { url } = await usePostsStorage().upload(image)
-			if (!url) return
+			if (!url) return (loading.value = false)
 			params.image = url
 		}
 
 		await addDoc(coll, params)
 		total.value++
+		loading.value = false
 	}
 
 	async function votePost(id: string, vote: Vote, negative: boolean) {
@@ -77,6 +80,7 @@ export function usePosts() {
 	}
 
 	return {
+		loading,
 		fetch,
 		getTotalCount,
 		posts,

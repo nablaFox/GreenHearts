@@ -26,6 +26,8 @@ export function usePostsStorage() {
 			url = _url.value
 		}
 
+		progress.value = null
+
 		return {
 			url,
 			uploadError: uploadError.value,

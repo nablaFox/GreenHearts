@@ -11,7 +11,9 @@ useInfiniteScroll(
 	async () => await fetchMore(), 
 	{ distance: 80}
 )
+
 const { error } = usePostsStorage()
+const { loading } = usePosts()
 </script>
 
 <template>
@@ -41,6 +43,11 @@ const { error } = usePostsStorage()
         />
       </div>
     </TransitionGroup>
+
+    <LoadBar
+      :loading="loading"
+      :duration="500"
+    />
     <WarningBox
       :error="!!error"
       :duration="1500"

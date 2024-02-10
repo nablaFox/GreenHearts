@@ -5,7 +5,7 @@ const props = defineProps<{
 	duration?: number
 }>()
 
-const visible = ref<boolean>(false)
+const visible = ref(false)
 
 watch(
 	() => props.error,
@@ -21,7 +21,6 @@ watch(
 
 <template>
   <Teleport to="body">
-    {{ error }}
     <Transition>
       <div
         v-if="visible"
