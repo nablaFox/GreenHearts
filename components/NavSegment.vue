@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 defineProps<{
-	href?: string,
 	icon?: string,
 	label?: string,
+	name?: string,
 	circular?: boolean
 }>()
 
@@ -12,7 +12,7 @@ defineEmits(['select'])
 <template>
   <div class="segment flex-center flex-col gap-[4px] text-on-surface-variant">
     <RouterLink
-      :to="href || '/'"
+      :to="{ name }"
       class="segment-btn overflow-hidden rounded-[16px] px-5 py-1 text"
       @click="$emit('select')"
     >

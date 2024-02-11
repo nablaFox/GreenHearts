@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const destinations = [
-	{icon: 'material-symbols:favorite', href: '/', label: 'Posts'},
-	{icon: 'material-symbols:auto-graph-rounded', href: '/stats', label: 'Stats'}
+	{icon: 'material-symbols:favorite', name: 'index', label: 'Posts'},
+	{icon: 'material-symbols:auto-graph-rounded', name: 'stats', label: 'Stats'}
 ]
 </script>
 
@@ -10,10 +10,10 @@ const destinations = [
     <NavSegment
       v-for="dest in destinations"
       :key="dest.icon"
-      :href="dest.href"
+      :name="dest.name"
       :icon="dest.icon"
       :label="dest.label"
-      :class="{active: $route.fullPath === dest.href}"
+      :class="{active: $route.name === dest.name}"
     />
   </nav>
 </template>
