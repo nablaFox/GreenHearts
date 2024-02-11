@@ -11,8 +11,6 @@ function onVote(vote: Vote, negative: boolean) {
 
 const onlyImage = !props.title && !props.notes && props.image
 const onlyTitle = props.title && !props.notes && !props.image 
-
-const img = useImage()
 </script>
 
 <template>
@@ -21,7 +19,7 @@ const img = useImage()
   >
     <div
       v-if="image"
-      :style="{ backgroundImage: `url(${img(props.image)})` }"
+      :style="{ backgroundImage: `url(${image})` }"
       class="bg-cover bg-center h-[340px] w-full rounded-3xl"
     />
     <div
