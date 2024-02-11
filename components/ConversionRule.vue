@@ -17,11 +17,8 @@ defineProps<{
         name="ic:round-compare-arrows"
         size="32"
       />
-      <span
-        class="font-black text-sm absolute right-0 bottom-0"
-        :class="{ 'right-2': negative}"
-      >
-        {{ negative ? '-2' : '0.1' }}
+      <span class="font-black text-sm absolute right-2 bottom-0">
+        {{ negative ? '-2' : '4' }}
       </span>
     </div>
     <GlowIcon

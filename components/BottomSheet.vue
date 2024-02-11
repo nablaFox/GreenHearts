@@ -7,7 +7,7 @@ const { direction, lengthY } = useSwipe(el)
 const opened = defineModel<boolean>()
 
 watch(
-	() => (direction.value === 'down' && -lengthY.value > 150),
+	() => (direction.value === 'down' && -lengthY.value > 100),
 	() => opened.value = false
 )
 </script>

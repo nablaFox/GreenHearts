@@ -1,7 +1,3 @@
-<script setup lang="ts">
-	
-</script>
-
 <template>
   <SvgSquiggleThick class="bg-blue-100 absolute right-[-40px] top-24 rotate-90" />
   <div class="flex flex-col gap-2 mt-3 text-on-surface h-full pb-4">
@@ -12,7 +8,7 @@
     <div class="mt-4 flex flex-col gap-4 pr-8 pb-2">
       <AppRule title="Green">
         <p>
-          Achievable trhough Healthy Food, Fitness, and Goodwill
+          Achievable trhough Fitness and Heroic deeds
         </p>
       </AppRule>
 
@@ -43,7 +39,3 @@
     </div>
   </div>
 </template>
-
-<style scoped lang="postcss">
-</style>
-
