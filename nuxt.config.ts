@@ -26,6 +26,13 @@ export default defineNuxtConfig({
 			enabled: true,
 		},
 
+		emulators: {
+			auth: {
+				options: {
+					disableWarnings: true
+				}
+			}
+		},
 		config: {
 			apiKey: "AIzaSyByZIB5CLkAsFlCsih_uc8zsyACBtV3Po8",
 			authDomain: "peyton-9dfe4.firebaseapp.com",

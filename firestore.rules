@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+		function isAdmin(request) {
+        return request.auth.token.admin == true
+    }
+    
+    function isSameUser(request, userId) {
+    	return request.auth.uid == userId
+    }
+    
+    match /users/{userId} {
+    	allow read: if isSameUser(request, userId)
+			allow write, delete, read: if isAdmin(request)
+    }
+    
+    match /users/{userId}/posts/{post} {
+    	allow read, delete, write: if isAdmin(request) 
+      allow read, write: if isSameUser(request, userId) //tmp: allow write only if Admin
+    }
+    
+    match /users/private {
+    	allow read: if request.auth.uid in resource.data.users
+      allow write: if resource.data.users[request.auth.uid].admin == true
+    }
+    
+    match /users/private/posts/{post} {
+    	allow read: if request.auth.uid in get(/databases/$(database)/documents/users/private).data.users
+      allow write: if get(/databases/$(database)/documents/users/private).data.users[request.auth.uid].admin == true
+    }
+  }
+}
