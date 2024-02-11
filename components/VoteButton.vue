@@ -17,7 +17,7 @@ const icons = {
 const btn = ref<HTMLElement | null>(null)
 
 const icon = computed(() => icons[props.type])
-const { isAdmin } = useUser()
+const { isAdmin } = usePrivate()
 
 function onClick(negative: boolean) {
 	emit('vote', props, negative)

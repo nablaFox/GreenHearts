@@ -4,7 +4,7 @@ import {useScroll} from '@vueuse/core'
 definePageMeta({
 	middleware: [
 		function(_, from) { 
-			return (from.path === '/app') || (from.path === '/stats')
+			return (from.path === '/') || (from.path === '/stats')
 		}
 	]
 })
@@ -33,7 +33,7 @@ function onSubmit() {
 		notes.value = ''
 	}, 100)
 
-	useRouter().push('/app')
+	useRouter().push('/')
 	form.value?.reset()
 }
 

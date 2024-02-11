@@ -18,7 +18,7 @@ const paddingLeft = computed(() => ((props.initialPadding || 28) + (props.minPad
   <header class="flex flex-col justify-between">
     <md-icon-button
       class="ml-3 mt-3 z-[100]"
-      @click="$router.push('/app')"
+      @click="$router.push('/')"
     >
       <Icon
         name="ic:baseline-arrow-back"

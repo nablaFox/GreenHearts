@@ -1,6 +1,6 @@
 export function useStats() {
 	const posts = usePosts()
-	const { stats } = useUser()
+	const { stats } = usePrivate()
 
 	if (!posts.total.value) {
 		posts.getTotalCount()

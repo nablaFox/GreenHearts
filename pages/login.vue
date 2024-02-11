@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import '@material/web/button/outlined-button.js'
-const { login } = useUser()
+const { login } = usePrivate()
 
 const loginSuccess = ref(true)
 
 async function onLogin() {
 	loginSuccess.value = await login()
 	setTimeout(() => (loginSuccess.value = true), 10)
-	loginSuccess.value && useRouter().push('/app')
+	loginSuccess.value && useRouter().push('/')
 }
 </script>
 

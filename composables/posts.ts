@@ -1,4 +1,4 @@
-import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc, getCountFromServer, onSnapshot, type CollectionReference } from 'firebase/firestore'
+import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc, getCountFromServer, onSnapshot } from 'firebase/firestore'
 import type { Post, Vote } from '@/types'
 
 export function usePosts() {
@@ -8,16 +8,15 @@ export function usePosts() {
 	const posts = useState<Post[]>('posts')
 	const loading = useState<boolean | undefined>('createPostProgress')
 	const length = computed(() => posts.value?.length)
-	const { id: userId } = useUser()
-	const userPostsColl = computed(() => collection(db, userId && `users/${userId.value}/posts`))
+	const postsColl = collection(db, 'users/private/posts')
 
 	async function getTotalCount() {
-		total.value = (await getCountFromServer(userPostsColl.value)).data().count
+		total.value = (await getCountFromServer(postsColl)).data().count
 	}
 
 	async function fetch() {
 		const _query = computed(
-			() => query(userPostsColl.value, orderBy('date', 'desc'), limit(lim.value))
+			() => query(postsColl, orderBy('date', 'desc'), limit(lim.value))
 		)
 
 		watch(_query, q => {
@@ -67,7 +66,7 @@ export function usePosts() {
 			params.image = url
 		}
 
-		await addDoc(userPostsColl.value, params)	
+		await addDoc(postsColl, params)	
 
 		total.value++
 		loading.value = false
@@ -77,11 +76,11 @@ export function usePosts() {
 		const _score = vote.score || 1
 		const update = negative ? -_score : _score
 
-		await updateDoc(doc(db, `users/${userId.value}/posts`, id), {
+		await updateDoc(doc(db, 'users/private/posts', id), {
 			[vote.type]: increment(update)
 		})
 
-		await updateDoc(doc(db, `users/${userId.value}`), {
+		await updateDoc(doc(db, 'users/private'), {
 			[`stats.${vote.type}`]: increment(update)
 		})
 	}
