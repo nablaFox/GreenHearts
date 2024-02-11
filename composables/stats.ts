@@ -7,7 +7,7 @@ export function useStats() {
 	}
 
 	const totalValue = computed(
-		() => stats.value && Math.floor(stats.value.red * -2 + stats.value.green + stats.value.blue * .1)
+		() => stats.value && (stats.value.red * -2 + stats.value.green + stats.value.blue * .1).toFixed(1)
 	)
 
 	const total = computed(() => stats.value && stats.value.red + stats.value.green + stats.value.blue)

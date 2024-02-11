@@ -21,13 +21,11 @@ service cloud.firestore {
     }
     
     match /users/private {
-    	allow read: if request.auth.uid in resource.data.users
-      allow write: if resource.data.users[request.auth.uid].admin == true
+    	allow read, write: if request.auth.uid in resource.data.users
     }
     
     match /users/private/posts/{post} {
-    	allow read: if request.auth.uid in get(/databases/$(database)/documents/users/private).data.users
-      allow write: if get(/databases/$(database)/documents/users/private).data.users[request.auth.uid].admin == true
+    	allow read, write: if request.auth.uid in get(/databases/$(database)/documents/users/private).data.users
     }
   }
 }

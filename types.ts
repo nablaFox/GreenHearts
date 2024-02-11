@@ -11,6 +11,19 @@ export type Stats = {
 	red: number
 }
 
+export type PrivateUser = {
+	admin: boolean,
+}
+
+export type PrivateUsers = {
+	[id: string]: PrivateUser
+}
+
+export interface PrivateData {
+	stats: Stats,
+	users: PrivateUsers
+} 
+
 export interface Post {
 	id: string
 	title?: string

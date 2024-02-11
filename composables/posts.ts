@@ -67,8 +67,8 @@ export function usePosts() {
 		}
 
 		await addDoc(postsColl, params)	
-
-		total.value++
+	
+		getTotalCount()
 		loading.value = false
 	}
 

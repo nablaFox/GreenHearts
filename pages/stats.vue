@@ -1,9 +1,7 @@
-
 <script setup lang="ts">
 // TODO: change the layout based on the screen size
 definePageMeta({
 	layout: 'mobile',
-	middleware: 'auth'
 })
 
 const {

@@ -3,7 +3,6 @@ import { useInfiniteScroll } from '@vueuse/core'
 
 definePageMeta({
 	layout: 'mobile',
-	middleware: 'auth'
 })
 
 const { 
