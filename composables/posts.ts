@@ -47,12 +47,12 @@ export function usePosts() {
 			await new Promise((r) => setTimeout(r, 100))
 		}
 
-		lim.value = opts?.lim || 25
+		lim.value = opts?.lim || 10
 	}
 
 	function fetchMore(num?: number) {
 		if (lim.value >= total.value) return
-		lim.value += num || 10
+		lim.value += num || 15
 	}
 
 	type CreatePostParams = {
@@ -69,7 +69,7 @@ export function usePosts() {
 			title,
 			notes,
 			image: null as string | null,
-			date: new Date().toString(),
+			date: new Date(),
 		}
 
 		if (image) {

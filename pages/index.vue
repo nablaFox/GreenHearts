@@ -32,7 +32,7 @@ await callOnce(async () => await fetch())
     >
       <div
         v-for="(post, index) in posts"
-        :key="post.date"
+        :key="post.id"
         class="flex flex-col gap-6 w-full items-center"
       >
         <MainPost
