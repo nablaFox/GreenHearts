@@ -2,8 +2,9 @@
 import '@material/web/iconbutton/icon-button.js'
 import '@material/web/iconbutton/filled-tonal-icon-button.js'
 import '@material/web/menu/menu.js'
+import type { MdMenu } from '@material/web/menu/menu.js'
 
-const menu = ref<HTMLElement | null>(null)
+const menu = ref<MdMenu | null>(null)
 const auth = useFirebaseAuth()
 
 function onClick() {
@@ -17,7 +18,7 @@ function onClick() {
     id="usage-anchor"
     ref="btn"
     class="mt-2 z-[100] self-end"
-    @click="menu!.open = !menu.open"
+    @click="menu!.open = !menu!.open"
   >
     <Icon
       name="ic:round-more-vert"

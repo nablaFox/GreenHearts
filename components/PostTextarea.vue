@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useTextareaAutosize } from '@vueuse/core'
 const model = defineModel<string>()	
-
 const { textarea } = useTextareaAutosize()
 </script>
 

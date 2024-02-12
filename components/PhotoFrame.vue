@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import '@material/web/button/filled-tonal-button.js'
 import '@material/web/iconbutton/outlined-icon-button.js'
-import { useFileDialog } from '@vueuse/core'
 
 defineProps<{
 	image: string
@@ -12,7 +11,7 @@ const emit = defineEmits<{
 	(e: 'takePhoto', image: File | null): void
 }>()
 
-const model = defineModel()
+const model = defineModel<boolean>()
 
 const { files, open, reset, onChange } = useFileDialog({
 	accept: 'image/*',

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
-
 const props = defineProps<{
 	date?: string
 	prevDate?: string

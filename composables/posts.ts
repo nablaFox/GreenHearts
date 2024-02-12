@@ -49,7 +49,7 @@ export function usePosts() {
 		image: File | null
 	}
 
-	async function createPost({title, notes, image}: CreatePostParams) {
+	async function createPost({ title, notes, image }: CreatePostParams) {
 		if (!title && !image) return
 		loading.value = true
 

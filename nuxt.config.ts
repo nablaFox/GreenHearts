@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	devtools: {enabled: false},
+	devtools: { enabled: false },
 	ssr: false,
 
 	vue: {
@@ -11,7 +11,14 @@ export default defineNuxtConfig({
 
 	css: ['@/assets/css/theme.css'],
 
-	modules: ['@nuxtjs/tailwindcss', 'nuxt-vuefire', 'nuxt-icon', "@nuxt/image", "@vueuse/nuxt", "@nuxtjs/google-fonts"],
+	modules: [
+		'@nuxtjs/tailwindcss', 
+		'@nuxt/image', 
+		'@vueuse/nuxt', 
+		'@nuxtjs/google-fonts',
+		'nuxt-vuefire', 
+		'nuxt-icon'
+	],
 
 	googleFonts: {
 		families: {
@@ -34,13 +41,13 @@ export default defineNuxtConfig({
 			}
 		},
 		config: {
-			apiKey: "AIzaSyByZIB5CLkAsFlCsih_uc8zsyACBtV3Po8",
-			authDomain: "peyton-9dfe4.firebaseapp.com",
-			projectId: "peyton-9dfe4",
-			storageBucket: "peyton-9dfe4.appspot.com",
-			messagingSenderId: "948982701209",
-			appId: "1:948982701209:web:40a0f4356ba2d7c2006c08",
-			measurementId: "G-7LDL7ZD29H"
+			apiKey: 'AIzaSyByZIB5CLkAsFlCsih_uc8zsyACBtV3Po8',
+			authDomain: 'peyton-9dfe4.firebaseapp.com',
+			projectId: 'peyton-9dfe4',
+			storageBucket: 'peyton-9dfe4.appspot.com',
+			messagingSenderId: '948982701209',
+			appId: '1:948982701209:web:40a0f4356ba2d7c2006c08',
+			measurementId: 'G-7LDL7ZD29H'
 		}
 	},
 

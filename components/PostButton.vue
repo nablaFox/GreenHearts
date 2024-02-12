@@ -1,7 +1,10 @@
 <script setup lang="ts">	
 import '@material/web/button/filled-button.js'
 
-defineProps(['disabled'])
+defineProps<{
+	disabled: boolean
+}>()
+
 defineEmits(['submit'])
 </script>
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps<{
 	type: 'red' | 'green' | 'blue' | 'nc' | 'total' 
 	title?: string

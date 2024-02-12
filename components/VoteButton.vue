@@ -10,8 +10,8 @@ const emit = defineEmits<{
 
 const icons = {
 	green: 'ic:round-favorite',
- blue: 'ic:sharp-favorite',
- red: 'ic:baseline-heart-broken'
+	blue: 'ic:sharp-favorite',
+	red: 'ic:baseline-heart-broken'
 }
 
 const btn = ref<HTMLElement | null>(null)

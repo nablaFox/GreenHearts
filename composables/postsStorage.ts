@@ -1,4 +1,4 @@
-import {ref as storageRef, StorageError } from 'firebase/storage'
+import { ref as storageRef, StorageError } from 'firebase/storage'
 
 export function usePostsStorage() {
 	const error = useState<StorageError | null | undefined>('imageUploadError')

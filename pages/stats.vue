@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // TODO: change the layout based on the screen size
 definePageMeta({
-	layout: 'mobile',
+	layout: 'mobile'
 })
 
 const {
@@ -29,9 +29,7 @@ const statsData = computed(() => ([
       title="Amore mio"
     />	
 
-    <Teleport to="body">
-      <SvgSquiggleThick class="bg-surface-variant absolute bottom-[20%] left-0" />
-    </Teleport>
+    <!-- <SvgSquiggleThick class="bg-surface-variant absolute top-10 right-0 rotate-90" /> -->
 	
     <div class="grid grid-cols-[repeat(2,1fr)] gap-2.5">
       <StatCard
@@ -54,5 +52,3 @@ svg:deep(path) {
 	stroke: var(--md-sys-color-secondary);
 }
 </style>
-
-

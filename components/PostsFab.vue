@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import '@material/web/fab/fab.js'
-defineProps(['isNavVisible'])
+defineProps<{
+	isNavVisible: boolean
+}>()
 </script>
 
 <template>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {useScroll} from '@vueuse/core'
-
 definePageMeta({
 	middleware: [
 		function(_, from) { 
@@ -10,7 +8,7 @@ definePageMeta({
 })
 
 const form = ref<HTMLFormElement | null>(null)
-const {y} = useScroll(form, {
+const { y } = useScroll(form, {
 	behavior: 'smooth'
 })
 
@@ -18,7 +16,7 @@ const image = ref<File | null>(null)
 const title = ref('')
 const notes = ref('')
 
-const {createPost} = usePosts()
+const { createPost } = usePosts()
 
 function onSubmit() {
 	setTimeout(async () => {

@@ -10,7 +10,10 @@ export interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	glow: true
+	glow: true,
+	size: '24px',
+	name: '',
+	colorModifier: '500',
 })
 
 const _color = computed(() => {
@@ -24,7 +27,7 @@ const _color = computed(() => {
 
 <template>
   <Icon
-    :name="name || ''"
+    :name="name"
     :size="size"
     :style="[glow && `filter: drop-shadow(0 0 6px ${_color})`]"
   />

@@ -1,5 +1,4 @@
 import type { Ref } from 'vue'
-import { useScroll } from '@vueuse/core'
 
 export function useAnimateNavbar(element: Ref<HTMLElement | null>) {
 	const { directions } = useScroll(element)

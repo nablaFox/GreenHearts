@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useSwipe } from '@vueuse/core'
-
 const el = ref<HTMLElement | null>(null)
 const { direction, lengthY } = useSwipe(el)
 

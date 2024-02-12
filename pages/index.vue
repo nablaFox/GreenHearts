@@ -1,24 +1,22 @@
 <script setup lang="ts">
-import { useInfiniteScroll } from '@vueuse/core'
-
 definePageMeta({
 	layout: 'mobile',
 })
 
-const { 
-	loading, 
-	fetch, 
-	fetchMore, 
-	posts 
+const {
+	loading,
+	fetch,
+	fetchMore,
+	posts
 } = usePosts()
 
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
 
 useInfiniteScroll(
-	el, 
-	async () => await fetchMore(), 
-	{ distance: 80}
+	el,
+	async () => await fetchMore(),
+	{ distance: 80 }
 )
 
 const { error } = usePostsStorage()
@@ -52,7 +50,7 @@ await callOnce(async () => await fetch())
           :prev-date="posts[index - 1]?.date"
         />
       </div>
-    </TransitionGroup> 
+    </TransitionGroup>
 
     <LoadBar
       :loading="!!loading"
@@ -70,16 +68,16 @@ await callOnce(async () => await fetch())
 .fade-move,
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+	transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
-  transform: scaleY(0.01) translate(30px, 0);
+	opacity: 0;
+	transform: scaleY(0.01) translate(30px, 0);
 }
 
 .fade-leave-active {
-  position: absolute;
+	position: absolute;
 }
 </style>
