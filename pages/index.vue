@@ -14,7 +14,7 @@ const {
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
 
-useInfiniteScroll(el, fetchMore, { distance: 80 })
+useInfiniteScroll(el, () => fetchMore(), { distance: 80 })
 
 await callOnce(async () => await fetch())
 </script>

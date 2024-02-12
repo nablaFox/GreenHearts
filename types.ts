@@ -34,3 +34,7 @@ export interface Post {
 	image?: string
 	date?: string
 }
+
+export interface FetchPostsOptions {
+	lim: number
+}

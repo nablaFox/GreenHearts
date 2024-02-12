@@ -5,10 +5,9 @@ import '@material/web/menu/menu.js'
 import type { MdMenu } from '@material/web/menu/menu.js'
 
 const menu = ref<MdMenu | null>(null)
-const auth = useFirebaseAuth()
 
 function onClick() {
-	auth?.signOut()
+	usePrivate().logout()
 	useRouter().push('/login')
 }
 </script>

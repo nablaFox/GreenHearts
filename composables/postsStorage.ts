@@ -1,47 +1,41 @@
-import { ref as storageRef } from 'firebase/storage'
+import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
 export function usePostsStorage() {
-	const { setError, error } = makeError<boolean>('postsStorageError')
-	const progress = ref<number | null>()
 	const storage = useFirebaseStorage()
+	const progress = useState<number>('postImageUploadProgress', () => 0)
 
-	async function upload(file: File) {
-		const fileRef = storageRef(storage, `posts/${file.name}`)
+	async function upload(file: File) {	
+		const { setError, error } = makeError<boolean>('postsStorageError')
+		const fileRef = storageRef(storage, file.name)
+		const imageRef = storageRef(storage, `posts/${file.name}`)
 
-		const {
-			upload: uploadFile,
-			url: _url,
-			uploadError,
-			uploadProgress,
-		} = useStorageFile(fileRef)
+		fileRef.name === imageRef.name
+		fileRef.fullPath === imageRef.fullPath
 
-		watch(uploadProgress, now => (progress.value = now))
-		watchOnce(uploadError, () => {
-			setError(true)
-			progress.value = null
-		})
+		const uploadTask = uploadBytesResumable(imageRef, file)
 
-		await uploadFile(file)
+		let _url = null
+		uploadTask.on('state_changed', (snapshot) => {
+			progress.value = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+		}, () => setError(true), 
+		() => getDownloadURL(uploadTask.snapshot.ref)
+			.then(downloadURL => (_url = downloadURL))
+		)
 
-		let url = _url.value
-		while (!url && !error.value) {
-			await new Promise(r => setTimeout(r, 100))
-			url = _url.value
-		}
+		while (!_url && !error.value)
+			await new Promise((r) => setTimeout(r, 100))
 
-		progress.value = null
+		progress.value = 0
 
 		return {
-			url,
-			uploadError: uploadError.value,
+			url: _url,
+			uploadError: error
 		}
 	}
 
 	return {
 		upload,
-		error,
 		progress,
 	}
 }
-
 

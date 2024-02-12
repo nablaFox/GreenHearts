@@ -14,9 +14,6 @@ export function usePrivate() {
 	const stats = computed(() => data.value?.stats)
 	const auth = useFirebaseAuth() as Auth
 
-	async function signup() {
-	}
-
 	async function login() {	
 		const googleProvider = new GoogleAuthProvider()
 		await signInWithPopup(auth, googleProvider)	
@@ -57,10 +54,10 @@ export function usePrivate() {
 	return { 
 		login,
 		logout,
-		signup,
 		isLogged,
 		isAdmin,
 		stats,
+		data,
 		fetch
 	}
 }

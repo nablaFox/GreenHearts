@@ -1,16 +1,16 @@
-import { 
-	collection, 
-	query, 
-	limit, 
-	orderBy, 
-	addDoc, 
-	updateDoc, 
-	increment, 
-	doc, 
-	getCountFromServer, 
+import {
+	collection,
+	query,
+	limit,
+	orderBy,
+	addDoc,
+	updateDoc,
+	increment,
+	doc,
+	getCountFromServer,
 	onSnapshot,
 } from 'firebase/firestore'
-import type { Post, Vote } from '@/types'
+import type { Post, Vote, FetchPostsOptions } from '@/types'
 
 export function usePosts() {
 	const db = useFirestore()
@@ -20,39 +20,39 @@ export function usePosts() {
 	const loading = useState<boolean | undefined>('createPostProgress')
 	const length = computed(() => posts.value?.length)
 	const postsColl = collection(db, 'users/private/posts')
-	const { error, setError } = makeError<boolean>('postsError') 
+	const { error, setError } = makeError<boolean>('postsError')
 
 	async function getTotalCount() {
 		total.value = (await getCountFromServer(postsColl)).data().count
 	}
 
-	async function fetch() {
+	async function fetch(opts?: FetchPostsOptions) {
 		const _query = computed(
 			() => query(postsColl, orderBy('date', 'desc'), limit(lim.value))
 		)
 
-		watch(_query, q => {
-			onSnapshot(q, (snap) => {
-				posts.value = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post))
+		watch(_query, () => {
+			onSnapshot(_query.value, (snapshot) => {
+				posts.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post))
 			}, () => setError(true))
-		})
+		}, { immediate: true })
 
-		await getTotalCount()	
-		lim.value = 25
+		await getTotalCount()
+
+		if (!total.value) return
 
 		let _posts = null
-		while (!_posts && total.value) {
+		while (!_posts && !error.value) {
 			_posts = posts.value
 			await new Promise((r) => setTimeout(r, 100))
 		}
 
-		await getTotalCount()	
-		lim.value = 17
+		lim.value = opts?.lim || 25
 	}
 
-	function fetchMore() {
-		if (lim.value >= total.value) return	
-		lim.value += 25
+	function fetchMore(num?: number) {
+		if (lim.value >= total.value) return
+		lim.value += num || 10
 	}
 
 	type CreatePostParams = {
@@ -83,8 +83,8 @@ export function usePosts() {
 			params.image = (result as any).url
 		}
 
-		await addDoc(postsColl, params).catch(() => error.value = true)
-	
+		await addDoc(postsColl, params).catch(() => setError(true))
+
 		getTotalCount()
 		loading.value = false
 	}
