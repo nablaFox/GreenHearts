@@ -1,4 +1,15 @@
-import { collection, query, limit, orderBy, addDoc, updateDoc, increment, doc, getCountFromServer, onSnapshot } from 'firebase/firestore'
+import { 
+	collection, 
+	query, 
+	limit, 
+	orderBy, 
+	addDoc, 
+	updateDoc, 
+	increment, 
+	doc, 
+	getCountFromServer, 
+	onSnapshot,
+} from 'firebase/firestore'
 import type { Post, Vote } from '@/types'
 
 export function usePosts() {
@@ -9,6 +20,7 @@ export function usePosts() {
 	const loading = useState<boolean | undefined>('createPostProgress')
 	const length = computed(() => posts.value?.length)
 	const postsColl = collection(db, 'users/private/posts')
+	const { error, setError } = makeError<boolean>('postsError') 
 
 	async function getTotalCount() {
 		total.value = (await getCountFromServer(postsColl)).data().count
@@ -22,7 +34,7 @@ export function usePosts() {
 		watch(_query, q => {
 			onSnapshot(q, (snap) => {
 				posts.value = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post))
-			})
+			}, () => setError(true))
 		})
 
 		await getTotalCount()	
@@ -38,7 +50,7 @@ export function usePosts() {
 		lim.value = 17
 	}
 
-	async function fetchMore() {
+	function fetchMore() {
 		if (lim.value >= total.value) return	
 		lim.value += 25
 	}
@@ -61,12 +73,17 @@ export function usePosts() {
 		}
 
 		if (image) {
-			const { url } = await usePostsStorage().upload(image)
-			if (!url) return (loading.value = false)
-			params.image = url
+			const result = await usePostsStorage().upload(image)
+				.catch(() => {
+					loading.value = false
+					setError(true)
+				})
+
+			if (!result) return
+			params.image = (result as any).url
 		}
 
-		await addDoc(postsColl, params)	
+		await addDoc(postsColl, params).catch(() => error.value = true)
 	
 		getTotalCount()
 		loading.value = false
@@ -78,14 +95,15 @@ export function usePosts() {
 
 		await updateDoc(doc(db, 'users/private/posts', id), {
 			[vote.type]: increment(update)
-		})
+		}).catch(() => setError(true))
 
 		await updateDoc(doc(db, 'users/private'), {
 			[`stats.${vote.type}`]: increment(update)
-		})
+		}).catch(() => setError(true))
 	}
 
 	return {
+		error,
 		loading,
 		fetch,
 		getTotalCount,

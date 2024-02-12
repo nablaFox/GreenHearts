@@ -2,6 +2,7 @@
 
 ## Work In Progress
 
+- storage rules
 - make emulator reachable in the network
 - add rules section
 - add awards section

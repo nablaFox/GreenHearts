@@ -35,11 +35,12 @@ watch(
 <style scoped>
 .v-enter-active,
 .v-leave-active {
-	transition: transform 0.3s ease-in;
+	transition: all .4s cubic-bezier(0.55, 0, 0.1, 1);
 }
 
 .v-enter-from,
 .v-leave-to {
-	transform: translate(-50%, 100%);
+	transform: translate(-50%, 120%);
+	opacity: 0;
 }
 </style>

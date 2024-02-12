@@ -1,25 +1,20 @@
 <script setup lang="ts">
 definePageMeta({
-	layout: 'mobile',
+	layout: 'mobile'
 })
 
 const {
 	loading,
 	fetch,
 	fetchMore,
-	posts
+	posts,
+	error,
 } = usePosts()
 
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
 
-useInfiniteScroll(
-	el,
-	async () => await fetchMore(),
-	{ distance: 80 }
-)
-
-const { error } = usePostsStorage()
+useInfiniteScroll(el, fetchMore, { distance: 80 })
 
 await callOnce(async () => await fetch())
 </script>
@@ -58,8 +53,8 @@ await callOnce(async () => await fetch())
     />
     <WarningBox
       :error="!!error"
-      :duration="1500"
-      text="Something Went Wrong 😟"
+      :duration="3000"
+      text="Ooops! Something Went Wrong 😟"
     />
   </main>
 </template>

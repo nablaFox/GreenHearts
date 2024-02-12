@@ -1,8 +1,8 @@
-import { ref as storageRef, StorageError } from 'firebase/storage'
+import { ref as storageRef } from 'firebase/storage'
 
 export function usePostsStorage() {
-	const error = useState<StorageError | null | undefined>('imageUploadError')
-	const progress = useState<number | null>('imageUploadProgress')
+	const { setError, error } = makeError<boolean>('postsStorageError')
+	const progress = ref<number | null>()
 	const storage = useFirebaseStorage()
 
 	async function upload(file: File) {
@@ -16,7 +16,10 @@ export function usePostsStorage() {
 		} = useStorageFile(fileRef)
 
 		watch(uploadProgress, now => (progress.value = now))
-		watchOnce(uploadError, () => (error.value = uploadError.value))
+		watchOnce(uploadError, () => {
+			setError(true)
+			progress.value = null
+		})
 
 		await uploadFile(file)
 

@@ -24,7 +24,7 @@ function onSubmit() {
 			title: title.value,
 			notes: notes.value,
 			image: image.value
-		})
+		}).catch(console.error)
 
 		image.value = null
 		title.value = ''

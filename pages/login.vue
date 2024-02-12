@@ -24,7 +24,7 @@ async function onLogin() {
 
     <WarningBox
       :error="!loginSuccess"
-      text="Login Failed 💥"
+      text="Login Failed 😟"
     />
 
     <GitSignature
