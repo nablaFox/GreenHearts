@@ -1,22 +1,20 @@
 <script setup lang="ts">
 definePageMeta({
-	layout: 'mobile'
+	layout: 'mobile',
+	keepAlive: true
 })
 
 const {
 	loading,
-	fetch,
 	fetchMore,
-	posts,
 	error,
+	posts,
 } = usePosts()
 
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
 
-useInfiniteScroll(el, () => fetchMore(), { distance: 80 })
-
-await callOnce(async () => await fetch())
+useInfiniteScroll(el, async () => await fetchMore(), { distance: 80 })
 </script>
 
 <template>
@@ -26,6 +24,7 @@ await callOnce(async () => await fetch())
   >
     <MainHeader />
     <TransitionGroup
+      v-if="posts"
       name="fade"
       tag="div"
       class="page-size flex flex-col items-center gap-5 overflow-y-scroll scrollbar-none pb-24"

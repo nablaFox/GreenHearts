@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import type { Timestamp } from 'firebase/firestore'
+
 const props = defineProps<{
-	date?: string
-	prevDate?: string
+	date?: Timestamp
+	prevDate?: Timestamp
 }>()	
 
 const isOneWeekDiff = () => {
 	if (!props.prevDate || !props.date) return false
-	const prev = new Date(props.prevDate)
-	const current = new Date(props.date)
+	const prev = new Date(props.prevDate.toDate())
+	const current = new Date(props.date.toDate())
 	return Math.abs(current.getTime() - prev.getTime()) > 604800000
 }
 
-const formattedDate = useDateFormat(props.date, 'D MMMM')
+const formattedDate = useDateFormat(props.date?.toDate(), 'D MMMM')
 </script>
 
 <template>

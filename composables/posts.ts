@@ -1,64 +1,39 @@
 import {
 	collection,
-	query,
-	limit,
-	orderBy,
 	addDoc,
 	updateDoc,
 	increment,
 	doc,
 	getCountFromServer,
-	onSnapshot,
+	query,
+	orderBy,
+	limit,
+	Timestamp,
 } from 'firebase/firestore'
-import type { Post, Vote, FetchPostsOptions } from '@/types'
+import type { Post, Vote, CreatePostParams } from '@/types'
 
 export function usePosts() {
 	const db = useFirestore()
-	const lim = useState<number>('postsLimit')
-	const total = useState<number>('postsTotal')
-	const posts = useState<Post[]>('posts')
-	const loading = useState<boolean | undefined>('createPostProgress')
-	const length = computed(() => posts.value?.length)
+	const lim = useState<number>('postsLimit', () => 10)
 	const postsColl = collection(db, 'users/private/posts')
+	const _query = computed(() => query(postsColl, orderBy('date', 'desc'), limit(lim.value)))
+
+	const total = useState<number>('postsTotal', () => 0)
+	const loading = useState<boolean | undefined>('createPostProgress')
+	const posts = useCollection<Post>(_query, { ssrKey: 'posts' })
+
+	const length = computed(() => posts.value?.length)
 	const { error, setError } = makeError<boolean>('postsError')
 
+	// TODO: create a field where we can store the total count of posts
 	async function getTotalCount() {
 		total.value = (await getCountFromServer(postsColl)).data().count
 	}
 
-	async function fetch(opts?: FetchPostsOptions) {
-		const _query = computed(
-			() => query(postsColl, orderBy('date', 'desc'), limit(lim.value))
-		)
-
-		watch(_query, () => {
-			onSnapshot(_query.value, (snapshot) => {
-				posts.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Post))
-			}, () => setError(true))
-		}, { immediate: true })
-
-		await getTotalCount()
-
-		if (!total.value) return
-
-		let _posts = null
-		while (!_posts && !error.value) {
-			_posts = posts.value
-			await new Promise((r) => setTimeout(r, 100))
-		}
-
-		lim.value = opts?.lim || 10
-	}
-
-	function fetchMore(num?: number) {
+	async function fetchMore(num?: number) {
+		!total.value && await getTotalCount()
 		if (lim.value >= total.value) return
 		lim.value += num || 15
-	}
-
-	type CreatePostParams = {
-		title: string | undefined
-		notes: string | undefined
-		image: File | null
 	}
 
 	async function createPost({ title, notes, image }: CreatePostParams) {
@@ -69,7 +44,7 @@ export function usePosts() {
 			title,
 			notes,
 			image: null as string | null,
-			date: new Date(),
+			date: Timestamp.now(),
 		}
 
 		if (image) {
@@ -84,9 +59,8 @@ export function usePosts() {
 		}
 
 		await addDoc(postsColl, params).catch(() => setError(true))
-
-		getTotalCount()
 		loading.value = false
+		total.value++
 	}
 
 	async function votePost(id: string, vote: Vote, negative: boolean) {
@@ -103,16 +77,15 @@ export function usePosts() {
 	}
 
 	return {
+		total,
 		error,
 		loading,
-		fetch,
-		getTotalCount,
 		posts,
 		lim,
 		length,
-		total,
 		createPost,
 		votePost,
+		query: _query,
 		fetchMore
 	}
 }

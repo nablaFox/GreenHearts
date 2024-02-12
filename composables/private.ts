@@ -1,9 +1,9 @@
 import type { PrivateData } from '@/types'
+import { getAuth } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { 
 	GoogleAuthProvider ,
 	signInWithPopup,
-	type Auth
 } from 'firebase/auth'
 
 export function usePrivate() {
@@ -12,7 +12,7 @@ export function usePrivate() {
 	const data = useState<PrivateData | undefined>('privateData')
 	const isLogged = computed(() => !!data.value)
 	const stats = computed(() => data.value?.stats)
-	const auth = useFirebaseAuth() as Auth
+	const auth = getAuth()
 
 	async function login() {	
 		const googleProvider = new GoogleAuthProvider()

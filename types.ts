@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase/firestore'
+
 export type VoteType = 'green' | 'blue' | 'red'
 
 export type Vote = {
@@ -32,9 +34,15 @@ export interface Post {
 	blue?: number
 	red?: number
 	image?: string
-	date?: string
+	date?: Timestamp
 }
 
 export interface FetchPostsOptions {
 	lim: number
+}
+
+export type CreatePostParams = {
+	title: string | undefined
+	notes: string | undefined
+	image: File | null
 }
