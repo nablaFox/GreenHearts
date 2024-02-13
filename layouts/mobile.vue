@@ -34,6 +34,6 @@ provide('navbar', {
 
 <style scoped>
 .navbar {
-	transition: transform 0.2s;
+	transition: transform 0.2s, background-color .35s cubic-bezier(0.05, 0.7, 0.1, 1.0);
 }
 </style>

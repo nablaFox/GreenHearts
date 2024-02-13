@@ -20,7 +20,7 @@ const colorType = () => {
     </h3>
     <h1
       class="mt-1 font-extrabold text-xl flex-center gap-2"
-      :class="type == 'total' && 'text-2xl text-primary'"
+      :class="type == 'total' && 'text-2xl text-secondary'"
     >
       {{ score }}
       <GlowIcon

@@ -13,10 +13,6 @@ async function onLogin() {
 
 <template>
   <div class="flex flex-col items-center h-[100svh]">
-    <img
-      src="/blob-scatter.svg"
-      class="abs-center -z-1"
-    >
     <LoginMenu
       class="h-full"
       @login="onLogin"

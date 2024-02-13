@@ -7,16 +7,6 @@ const emit = defineEmits(['login'])
     class="flex-center w-[380px] mx-[auto] h-[250px]"
     @submit.prevent
   >
-    <div class="absolute w-full h-full">
-      <img
-        src="/blob-2.gif"
-        class="abs-center opacity-[20%]"
-      >
-      <img
-        src="/blob-1.gif"
-        class="abs-center opacity-[80%]"
-      >
-    </div>
     <md-outlined-button
       class="w-40"
       trailing-icon="true"

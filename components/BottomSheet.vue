@@ -25,7 +25,7 @@ watch(
           ref="el"
           class="min-h-[500px] bg-surface w-[98%] mx-auto rounded-t-3xl px-8 pt-7 pb-5 overflow-hidden"
         >
-          <div class="w-20 h-5 top-0 abs-center-x flex-center">
+          <div class="w-20 h-5 top-1 abs-center-x flex-center">
             <div class="bg-on-surface w-8 h-2 rounded-full" />
           </div>
           <slot />

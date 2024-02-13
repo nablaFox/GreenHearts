@@ -7,7 +7,7 @@ defineProps<{
 
 <template>
   <header class="flex flex-col justify-between w-full">
-    <LogoutMenu />
+    <StatsMenu />
     <div>
       <h3 class="font-extrabold text-xl text-on-background">
         {{ head }}

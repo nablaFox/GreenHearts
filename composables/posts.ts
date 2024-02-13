@@ -27,6 +27,7 @@ export function usePosts() {
 
 	// TODO: create a field where we can store the total count of posts
 	async function getTotalCount() {
+		if (total.value) return
 		total.value = (await getCountFromServer(postsColl)).data().count
 	}
 
@@ -86,6 +87,7 @@ export function usePosts() {
 		createPost,
 		votePost,
 		query: _query,
-		fetchMore
+		fetchMore,
+		getTotalCount,
 	}
 }

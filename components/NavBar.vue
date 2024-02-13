@@ -6,7 +6,7 @@ const destinations = [
 </script>
 
 <template>
-  <nav class="bg-surface text-on-surface flex-center gap-[40px] w-full pb-[16px] pt-[12px]">
+  <nav class="bg-surface-container text-on-surface flex-center gap-[40px] w-full pb-[16px] pt-[12px]">
     <NavSegment
       v-for="dest in destinations"
       :key="dest.icon"

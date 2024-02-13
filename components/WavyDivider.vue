@@ -19,11 +19,11 @@ const formattedDate = useDateFormat(props.date?.toDate(), 'D MMMM')
 <template>
   <div
     v-if="isOneWeekDiff()"
-    class="w-full md:w-[500px] flex-center"
+    class="w-full md:w-[500px] flex-center h-1"
   >
-    <SvgSquiggleThick class="bg-red-100" />
+    <SvgSquiggleThick class="bg-tertiary-container abs-center-y right-[108px]" />
     <span 
-      class="font-extrabold text-sm abs-center-y right-3 text-primary font-black"
+      class="font-extrabold text-sm abs-center-y right-3 text-secondary font-black"
     > 
       {{ formattedDate }} 
     </span>

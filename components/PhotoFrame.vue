@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import '@material/web/button/filled-tonal-button.js'
+import '@material/web/button/filled-button.js'
 import '@material/web/iconbutton/outlined-icon-button.js'
 
 defineProps<{
@@ -35,7 +36,7 @@ onChange(() => {
 
 <template>
   <div
-    class="border-b rounded-b-[30px] overflow-hidden"
+    class="rounded-b-[30px] overflow-hidden"
     @click="() => imageTaken && !scroll && (model = !model)"
   >
     <div

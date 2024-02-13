@@ -51,6 +51,15 @@ function onClick(negative: boolean) {
 </template>
 
 <style scoped>
+md-icon-button {
+	--md-icon-button-selected-icon-color: #23754A;
+	--md-icon-button-selected-pressed-icon-color: #23754A;
+	--md-icon-button-selected-hover-icon-color: #23754A;
+	--md-icon-button-selected-focus-icon-color: #23754A;
+	--md-icon-button-selected-hover-state-layer-color: #23754A;
+}
+
+
 md-icon-button[selected].red {
 	--md-icon-button-selected-icon-color: #ef4444;
 	--md-icon-button-selected-pressed-icon-color: #ef4444;

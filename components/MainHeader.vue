@@ -6,7 +6,7 @@ const openRules = ref(false)
 
 <template>
   <div class="flex justify-between w-full px-4 pt-4 pb-8 align-center max-w-[1200px] mx-auto">
-    <h2 class="text-primary font-bold font-[Pacifico] text-xl cursor-pointer">
+    <h2 class="text-secondary font-bold font-[Pacifico] text-xl cursor-pointer">
       Green Hearts
     </h2>
     <md-outlined-icon-button @click="openRules = true">

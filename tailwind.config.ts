@@ -54,7 +54,7 @@ module.exports = {
 				'tertiary': 'var(--md-sys-color-tertiary)',
 				'tertiary-container': 'var(--md-sys-color-tertiary-container)',
 				'tertiary-fixed': 'var(--md-sys-color-tertiary-fixed)',
-				'tertiary-fixed-dim': 'var(--md-sys-color-tertiary-fixed-dim)'
+				'tertiary-fixed-dim': 'var(--md-sys-color-tertiary-fixed-dim)',
 			}
 		}
 	}

@@ -10,7 +10,7 @@ const props = defineProps<{
 	scroll: number
 }>()
 
-const opacity = computed(() => (props.scroll / props.maxScroll) + (props.minOpacity || .1))
+const opacity = computed(() => (props.scroll / props.maxScroll) + (props.minOpacity || 0))
 const paddingLeft = computed(() => ((props.initialPadding || 28) + (props.minPadding || 18)) - ((props.scroll / props.maxScroll) * (props.initialPadding || 28)) + 'px')
 </script>
 
@@ -27,7 +27,7 @@ const paddingLeft = computed(() => ((props.initialPadding || 28) + (props.minPad
     </md-icon-button>
     <div 
       :style="{opacity }"
-      class="abs-center w-full h-full bg-secondary-container will-change-[opacity]" 
+      class="bg-surface-variant abs-center w-full h-full will-change-[opacity]" 
     />
     <h1 
       class="pb-3 font-black text-4xl text-on-secondary-container will-change-[padding]"

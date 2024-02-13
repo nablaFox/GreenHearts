@@ -15,7 +15,7 @@ const onlyTitle = props.title && !props.notes && !props.image
 
 <template>
   <div
-    class="rounded-3xl flex flex-col border md:w-[500px] bg-secondary-container border border-outline"
+    class="bg-surface rounded-3xl flex flex-col border md:w-[500px] border border-outline"
   >
     <div
       v-if="image"
@@ -28,14 +28,14 @@ const onlyTitle = props.title && !props.notes && !props.image
     >
       <h2
         v-if="title"
-        class="font-extrabold text-lg text-ellipsis overflow-hidden"
+        class="font-extrabold text-lg text-ellipsis overflow-hidden text-on-surface"
         :class="{'w-[calc(100%-120px)]': onlyTitle, 'pb-4': !notes }"
       >
         {{ title }}
       </h2>
       <p
         v-if="notes"
-        class="text font-semibold pb-7"
+        class="text font-semibold pb-7 text-on-surface-variant"
       >
         {{ notes }}
       </p>

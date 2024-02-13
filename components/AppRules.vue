@@ -1,5 +1,5 @@
 <template>
-  <SvgSquiggleThick class="bg-blue-100 absolute right-[-40px] top-24 rotate-90" />
+  <SvgSquiggleThick class="bg-tertiary-container absolute right-[-40px] top-24 rotate-90" />
   <div class="flex flex-col gap-2 mt-3 text-on-surface h-full pb-4">
     <h1 class="text-5xl font-black">
       Rules
@@ -8,25 +8,25 @@
     <div class="mt-4 flex flex-col gap-4 pr-8 pb-2">
       <AppRule title="Green">
         <p>
-          Achievable trhough Fitness and Heroic deeds
+          Achievable trhough fitness and heroic deeds
         </p>
       </AppRule>
 
       <AppRule title="Blue">
         <p>
-          It's what a green could have been, if you had tried harder
+          Healthy food and/or modest quantities
         </p>
       </AppRule>
 
       <AppRule title="Red">
         <p>
-          You are not a bad person, but you could be better
+          I don't hate you, but you could do better
         </p>
       </AppRule>
     </div>
     <SvgSquiggle class="w-3/4" />
 
-    <div class="bg-blue-100 w-24 h-10 bg-blue absolute right-0 bottom-4 rounded-sm font-black text-sm flex justify-end pt-2 pr-2">
+    <div class="bg-tertiary-container text-inverse-on-tertiary-container w-24 h-10 bg-blue absolute right-0 bottom-4 rounded-sm font-black text-sm flex justify-end pt-2 pr-2">
       See more
     </div>
 

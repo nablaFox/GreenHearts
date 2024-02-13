@@ -10,7 +10,7 @@
     <path
       _ngcontent-kod-c25=""
       d="M1.5 4.5c5.067-4.667 10.133-4.667 15.2 0s10.133 4.667 15.2 0 10.133-4.667 15.2 0 10.133 4.667 15.2 0 10.133-4.667 15.2 0 10.133 4.667 15.2 0 10.133-4.667 15.2 0 10.133 4.667 15.2 0 10.133-4.667 15.2 0 10.133 4.667 15.2 0"
-      stroke="var(--md-sys-color-primary)"
+      stroke="var(--md-sys-color-secondary)"
       stroke-width="2.2"
       stroke-linecap="round"
       class="ng-tns-c25-51"

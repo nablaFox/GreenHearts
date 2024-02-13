@@ -3,6 +3,7 @@
 ## Work In Progress
 
 - storage rules
+- better color transition
 - make emulator reachable in the network
 - add rules section
 - add awards section
