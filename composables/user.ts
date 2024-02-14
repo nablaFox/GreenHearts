@@ -32,9 +32,14 @@ export function useUser() {
 	}
 
 	async function fetch(adminClaim?: boolean): Promise<FetchResult> {
-		if (!!data.value) return { data: data.value }
-		const { uid } = await getCurrentUser()
-		const id = adminClaim ? useRuntimeConfig().public.privateUser : uid
+		if (isLogged.value) return { data: data.value }
+		const user = await getCurrentUser()
+	
+		if (!user) 
+			return returnError('Authentication failed 😔')	
+
+		const checkAdmin = adminClaim || localStorage.getItem('isAdmin') === 'true'
+		const id = checkAdmin ? useRuntimeConfig().public.privateUser : user.uid
 		const docRef = doc(db, 'users', id)
 
 		const res = await getDoc(docRef).catch(e => console.error(e))
@@ -47,9 +52,9 @@ export function useUser() {
 
 		userId.value = id
 		data.value = res.data() as User
-		localStorage.setItem('logged', 'true')
 
-		isAdmin.value = data.value.admins?.includes(uid) || false
+		isAdmin.value = data.value.admins?.includes(user.uid) || false
+		localStorage.setItem('isAdmin', isAdmin.value.toString())
 
 		onSnapshot(docRef, (doc) => {
 			data.value = doc.data() as User
@@ -57,7 +62,6 @@ export function useUser() {
 			data.value = undefined
 			console.error('Error fetching private data')
 			console.log(e.code, ':', e.message, 'cause:', e.cause)
-			localStorage.removeItem('logged')	
 		})
 
 		return { data: data.value }
@@ -66,6 +70,7 @@ export function useUser() {
 	function logout() {
 		auth?.signOut()
 		data.value = undefined
+		localStorage.removeItem('isAdmin')
 	}
 
 	return { 

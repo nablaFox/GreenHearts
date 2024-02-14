@@ -3,10 +3,12 @@ name: Deploy to Firebase Hosting on Commit
 env:
   PRIVATE_USER: ${{ vars.PRIVATE_USER }}
 
-'on': 
+on: 
   push:
     branches:
-      - private
+      - main
+  workflow_dispatch:
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
