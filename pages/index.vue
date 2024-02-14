@@ -50,10 +50,11 @@ useInfiniteScroll(el, async () => await fetchMore(), { distance: 180 })
       :loading="!!loading"
       :duration="300"
     />
+
     <WarningBox
-      :error="!!error"
+      v-model="error"
+      :text="error?.message"
       :duration="3000"
-      text="Ooops! Something Went Wrong 😟"
     />
   </main>
 </template>

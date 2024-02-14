@@ -1,11 +1,6 @@
-export interface ErrorOptions {
-	timeout?: number
-}
-
-function setError<T>(name: string, data: T, options?: ErrorOptions) {
+function setError<T>(name: string, data: T) {
 	const error = useState<T | undefined>(name)
 	error.value = data
-	setTimeout(() => (error.value = undefined), options?.timeout || 500)
 }
 
 export function makeError<T>(name: string) {	

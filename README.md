@@ -28,3 +28,4 @@
 - add user nutritional customization
 - cache images
 - total meals per day
+- add weight stats journey

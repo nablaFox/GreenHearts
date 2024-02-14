@@ -4,7 +4,7 @@ const emit = defineEmits(['login'])
 
 <template>
   <form
-    class="flex-center w-[380px] mx-[auto] h-[250px]"
+    class="flex-center w-[380px] h-[250px]"
     @submit.prevent
   >
     <md-outlined-button

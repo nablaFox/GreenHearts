@@ -3,11 +3,12 @@ import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebas
 export function usePostsStorage() {
 	const storage = useFirebaseStorage()
 	const progress = useState<number>('postImageUploadProgress', () => 0)
+	const url = ref<string | null>('')
 
 	async function upload(file: File) {	
-		const { setError, error } = makeError<boolean>('postsStorageError')
 		const fileRef = storageRef(storage, file.name)
 		const imageRef = storageRef(storage, `posts/${file.name}`)
+		let error = false
 
 		fileRef.name === imageRef.name
 		fileRef.fullPath === imageRef.fullPath
@@ -17,23 +18,22 @@ export function usePostsStorage() {
 		let _url = null
 		uploadTask.on('state_changed', (snapshot) => {
 			progress.value = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-		}, () => setError(true), 
+		}, () => (error = true), 
 		() => getDownloadURL(uploadTask.snapshot.ref)
 			.then(downloadURL => (_url = downloadURL))
 		)
 
-		while (!_url && !error.value)
+		while (!_url && !error)
 			await new Promise((r) => setTimeout(r, 100))
 
 		progress.value = 0
+		url.value = _url
 
-		return {
-			url: _url,
-			uploadError: error
-		}
+		return error
 	}
 
 	return {
+		url,
 		upload,
 		progress,
 	}

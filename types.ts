@@ -15,7 +15,8 @@ export type Stats = {
 
 export interface User {
 	stats: Stats,
-	admins: string[],
+	admins?: string[],
+	id: string
 } 
 
 export interface Post {

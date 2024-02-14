@@ -12,11 +12,15 @@ import {
 } from 'firebase/firestore'
 import type { Post, Vote, CreatePostParams } from '@/types'
 
+interface PostError {
+	message?: string
+}
+
 export function usePosts() {
 	const db = useFirestore()
 	const lim = useState<number>('postsLimit', () => 10)
-	const user = useRuntimeConfig().public.privateUser // this is valid only for the private version
-	const postsColl = collection(db, `users/${user}/posts`)
+	const { userId } = useUser()
+	const postsColl = collection(db, `users/${userId.value}/posts`)
 	const _query = computed(() => query(postsColl, orderBy('date', 'desc'), limit(lim.value)))
 
 	const total = useState<number>('postsTotal', () => 0)
@@ -24,7 +28,8 @@ export function usePosts() {
 	const posts = useCollection<Post>(_query, { ssrKey: 'posts' })
 
 	const length = computed(() => posts.value?.length)
-	const { error, setError } = makeError<boolean>('postsError')
+	const { error, setError } = makeError<PostError>('postsError')
+	const { upload: uploadImage, progress: imageUploadProgress, url } = usePostsStorage()
 
 	// TODO: create a field where we can store the total count of posts
 	async function getTotalCount() {
@@ -50,17 +55,19 @@ export function usePosts() {
 		}
 
 		if (image) {
-			const result = await usePostsStorage().upload(image)
-				.catch(() => {
-					loading.value = false
-					setError(true)
-				})
+			const err = await uploadImage(image)
+	
+			if (err) {
+				setError({ message: 'Error uploading image' })
+				loading.value = false
+				return
+			}
 
-			if (!result) return
-			params.image = (result as any).url
+			params.image = url.value
 		}
 
-		await addDoc(postsColl, params).catch(() => setError(true))
+		await addDoc(postsColl, params)
+			.catch(() => setError({ message: 'Error creating post' }))
 		loading.value = false
 		total.value++
 	}
@@ -69,13 +76,13 @@ export function usePosts() {
 		const _score = vote.score || 1
 		const update = negative ? -_score : _score
 
-		await updateDoc(doc(db, `users/${user}/posts`, id), {
+		await updateDoc(doc(db, `users/${userId.value}/posts`, id), {
 			[vote.type]: increment(update)
-		}).catch(() => setError(true))
+		}).catch(() => setError({ message: 'Error voting post' }))
 
-		await updateDoc(doc(db, `users/${user}`), {
+		await updateDoc(doc(db, `users/${userId.value}`), {
 			[`stats.${vote.type}`]: increment(update)
-		}).catch(() => setError(true))
+		}).catch(() => setError({ message: 'Error updating stats' }))
 	}
 
 	return {
@@ -90,5 +97,6 @@ export function usePosts() {
 		query: _query,
 		fetchMore,
 		getTotalCount,
+		imageUploadProgress,
 	}
 }

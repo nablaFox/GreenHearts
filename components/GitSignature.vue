@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
+  <div class="flex items-center gap-1 select-none">
     <a href="https://github.com/nablaFox">
       <Icon
         name="bxl:github"

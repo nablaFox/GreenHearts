@@ -1,30 +1,22 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 const props = defineProps<{
-	error: boolean
-	text: string
+	text?: string
 	duration?: number
 }>()
 
-const visible = ref(false)
+const error = defineModel<T>()
 
-watch(
-	() => props.error,
-	now => {
-		if (!now) return
-		visible.value = true
-		setTimeout(() => {
-			visible.value = false
-		}, props.duration || 4000)
-	}, { immediate: true }
-)
+watch(error, now => {
+	now && setTimeout(() => error.value = undefined, props.duration || 4000)
+})
 </script>
 
 <template>
   <Teleport to="body">
     <Transition>
       <div
-        v-if="visible"
-        class="bg-error-container rounded-2xl px-5 py-2 text-on-error-container font-semibold text-sm flex-center fixed bottom-4 min-w-48 abs-center-x"
+        v-if="error"
+        class="bg-error-container rounded-2xl px-5 py-2 text-on-error-container font-semibold text-sm flex-center fixed bottom-4 abs-center-x w-[max-content]"
       >
         {{ text }}
       </div>

@@ -6,6 +6,12 @@ import {
 	signInWithPopup,
 } from 'firebase/auth'
 
+
+interface FetchResult {
+	error?: string
+	data?: User
+}
+
 export function useUser() {
 	const db = useFirestore()
 	const isAdmin = useState<boolean>('isAdmin', () => false)
@@ -13,6 +19,7 @@ export function useUser() {
 	const isLogged = computed(() => !!data.value)
 	const stats = computed(() => data.value?.stats)
 	const auth = getAuth()
+	const userId = useState<string>('userId')
 
 	async function login(adminClaim?: boolean) {	
 		const googleProvider = new GoogleAuthProvider()
@@ -20,30 +27,40 @@ export function useUser() {
 		return await fetch(adminClaim)
 	}
 
-	async function fetch(adminClaim?: boolean) {
-		if (isLogged.value) return true
+	function returnError(message: string) {
+		return { error: message }
+	}
 
-		const user = await getCurrentUser()
-		const id = adminClaim ? useRuntimeConfig().public.privateUser : user?.uid
+	async function fetch(adminClaim?: boolean): Promise<FetchResult> {
+		if (!!data.value) return { data: data.value }
+		const { uid } = await getCurrentUser()
+		const id = adminClaim ? useRuntimeConfig().public.privateUser : uid
 		const docRef = doc(db, 'users', id)
 
-		const res = await getDoc(docRef).catch(() => {
-			console.error('Auth failed')
-		})
+		const res = await getDoc(docRef).catch(e => console.error(e))
 
-		if (!res || !res.exists()) return false
+		if (!res) 
+			return returnError('Authentication failed 😔') 
 
+		if (!res.exists())
+			return returnError('User not found 😟')
+
+		userId.value = id
 		data.value = res.data() as User
-		isAdmin.value = adminClaim || false
+		localStorage.setItem('logged', 'true')
+
+		isAdmin.value = data.value.admins?.includes(uid) || false
 
 		onSnapshot(docRef, (doc) => {
 			data.value = doc.data() as User
-		}, () => {
+		}, e => {
 			data.value = undefined
 			console.error('Error fetching private data')
+			console.log(e.code, ':', e.message, 'cause:', e.cause)
+			localStorage.removeItem('logged')	
 		})
 
-		return true
+		return { data: data.value }
 	}
 
 	function logout() {
@@ -52,6 +69,7 @@ export function useUser() {
 	}
 
 	return { 
+		userId,
 		login,
 		logout,
 		isLogged,

@@ -2,12 +2,28 @@
 import '@material/web/button/outlined-button.js'
 const { login } = useUser()
 
-const loginSuccess = ref(true)
+const loginError = ref('')
+const adminClaim = ref(false)
 
 async function onLogin() {
-	loginSuccess.value = await login()
-	setTimeout(() => (loginSuccess.value = true), 10)
-	loginSuccess.value && useRouter().push('/')
+	const { error } = await login(adminClaim.value)
+	error && (loginError.value = error)
+	!loginError.value && useRouter().push('/')
+}
+
+let count = 0
+let timer: NodeJS.Timeout
+function setAdminClaim() {
+	clearTimeout(timer)
+	count++
+
+	if (count >= 3) {
+		adminClaim.value = true
+		console.log('Admin claim set')
+		count = 0
+	}
+
+	timer = setTimeout(() => (count =  0), 500)
 }
 </script>
 
@@ -19,13 +35,14 @@ async function onLogin() {
     />
 
     <WarningBox
-      :error="!loginSuccess"
-      text="Login Failed 😟"
+      v-model="loginError"
+      :text="loginError"
     />
 
     <GitSignature
       text="Created With ❥"
       class="absolute bottom-4 text-on-surface-variant"
+      @click="setAdminClaim"
     />
   </div>
 </template>
