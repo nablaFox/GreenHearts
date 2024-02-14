@@ -29,7 +29,7 @@ export function usePosts() {
 
 	const length = computed(() => posts.value?.length)
 	const { error, setError } = makeError<PostError>('postsError')
-	const { upload: uploadImage, progress: imageUploadProgress, url } = usePostsStorage()
+	const { upload: uploadImage, progress: imageUploadProgress, url } = usePostsStorage(userId)
 
 	// TODO: create a field where we can store the total count of posts
 	async function getTotalCount() {

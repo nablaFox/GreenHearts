@@ -1,17 +1,13 @@
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
-export function usePostsStorage() {
+export function usePostsStorage(userId: Ref<string>) {
 	const storage = useFirebaseStorage()
 	const progress = useState<number>('postImageUploadProgress', () => 0)
 	const url = ref<string | null>('')
 
 	async function upload(file: File) {	
-		const fileRef = storageRef(storage, file.name)
-		const imageRef = storageRef(storage, `posts/${file.name}`)
+		const imageRef = storageRef(storage, `posts/${userId.value}/${file.name}`)
 		let error = false
-
-		fileRef.name === imageRef.name
-		fileRef.fullPath === imageRef.fullPath
 
 		const uploadTask = uploadBytesResumable(imageRef, file)
 

@@ -58,10 +58,9 @@ export function useUser() {
 
 		onSnapshot(docRef, (doc) => {
 			data.value = doc.data() as User
-		}, e => {
+		}, () => {
 			data.value = undefined
 			console.error('Error fetching private data')
-			console.log(e.code, ':', e.message, 'cause:', e.cause)
 		})
 
 		return { data: data.value }
