@@ -2,6 +2,7 @@
 
 ## Work In Progress
 
+- store placeholders in firebase
 - storage rules
 - better color transition
 - make emulator reachable in the network
@@ -20,3 +21,10 @@
 - virtual scroller
 - dynamic greedings
 - images with different heights
+- add mini tutorial
+- add chart
+- add gpt responses
+- add premium
+- add user nutritional customization
+- cache images
+- total meals per day

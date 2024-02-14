@@ -7,7 +7,7 @@ import type { MdMenu } from '@material/web/menu/menu.js'
 const menu = ref<MdMenu | null>(null)
 
 function onClick() {
-	usePrivate().logout()
+	useUser().logout()
 	useRouter().push('/login')
 }
 

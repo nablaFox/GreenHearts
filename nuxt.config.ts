@@ -28,6 +28,12 @@ export default defineNuxtConfig({
 		}
 	},
 
+	runtimeConfig: {
+		public: {
+			privateUser: process.env.PRIVATE_USER,
+		}
+	},
+
 	vuefire: {
 		auth: {
 			enabled: true,

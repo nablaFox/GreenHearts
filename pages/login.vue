@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import '@material/web/button/outlined-button.js'
-const { login } = usePrivate()
+const { login } = useUser()
 
 const loginSuccess = ref(true)
 

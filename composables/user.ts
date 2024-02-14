@@ -1,4 +1,4 @@
-import type { PrivateData } from '@/types'
+import type { User } from '@/types'
 import { getAuth } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { 
@@ -6,10 +6,10 @@ import {
 	signInWithPopup,
 } from 'firebase/auth'
 
-export function usePrivate() {
+export function useUser() {
 	const db = useFirestore()
 	const isAdmin = useState<boolean>('isAdmin', () => false)
-	const data = useState<PrivateData | undefined>('privateData')
+	const data = useState<User | undefined>('user')
 	const isLogged = computed(() => !!data.value)
 	const stats = computed(() => data.value?.stats)
 	const auth = getAuth()
@@ -25,11 +25,12 @@ export function usePrivate() {
 		if (isLogged.value) return
 
 		const user = await getCurrentUser()
-		const docRef = doc(db, 'users', 'private')
+		// TODO: use this only if admin, else use user.uid
+		const docRef = doc(db, 'users', useRuntimeConfig().public.privateUser) 
 		let fetchError = false
 
 		onSnapshot(docRef, (doc) => {
-			data.value = doc.data() as PrivateData
+			data.value = doc.data() as User
 		}, () => {
 			fetchError = true
 			data.value = undefined
@@ -43,7 +44,7 @@ export function usePrivate() {
 		}
 
 		if (!_data) return
-		isAdmin.value = _data!.users[user.uid].admin	
+		isAdmin.value = _data.admins.includes(user.uid)
 	}
 
 	function logout() {

@@ -13,17 +13,9 @@ export type Stats = {
 	red: number
 }
 
-export type PrivateUser = {
-	admin: boolean,
-}
-
-export type PrivateUsers = {
-	[id: string]: PrivateUser
-}
-
-export interface PrivateData {
+export interface User {
 	stats: Stats,
-	users: PrivateUsers
+	admins: string[],
 } 
 
 export interface Post {

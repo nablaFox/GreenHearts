@@ -1,5 +1,5 @@
 export function useStats() {
-	const { stats } = usePrivate()
+	const { stats } = useUser()
 	const { total: totalPosts } = usePosts()
 
 	const totalValue = computed(

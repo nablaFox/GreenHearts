@@ -15,7 +15,8 @@ import type { Post, Vote, CreatePostParams } from '@/types'
 export function usePosts() {
 	const db = useFirestore()
 	const lim = useState<number>('postsLimit', () => 10)
-	const postsColl = collection(db, 'users/private/posts')
+	const user = useRuntimeConfig().public.privateUser // this is valid only for the private version
+	const postsColl = collection(db, `users/${user}/posts`)
 	const _query = computed(() => query(postsColl, orderBy('date', 'desc'), limit(lim.value)))
 
 	const total = useState<number>('postsTotal', () => 0)
@@ -68,11 +69,11 @@ export function usePosts() {
 		const _score = vote.score || 1
 		const update = negative ? -_score : _score
 
-		await updateDoc(doc(db, 'users/private/posts', id), {
+		await updateDoc(doc(db, `users/${user}/posts`, id), {
 			[vote.type]: increment(update)
 		}).catch(() => setError(true))
 
-		await updateDoc(doc(db, 'users/private'), {
+		await updateDoc(doc(db, `users/${user}`), {
 			[`stats.${vote.type}`]: increment(update)
 		}).catch(() => setError(true))
 	}

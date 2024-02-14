@@ -2,8 +2,9 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-		function isAdmin(request) {
-        return request.auth.token.admin == true
+		function isAdmin(request, userId) {
+        	return request.auth.token.admin == true
+				|| request.auth.uid in get(/databases/$(database)/documents/users/$(userId)).data.admins
     }
     
     function isSameUser(request, userId) {
@@ -12,20 +13,12 @@ service cloud.firestore {
     
     match /users/{userId} {
     	allow read: if isSameUser(request, userId)
-			allow write, delete, read: if isAdmin(request)
+		allow write, delete, read: if isAdmin(request, userId)
     }
     
     match /users/{userId}/posts/{post} {
-    	allow read, delete, write: if isAdmin(request) 
-      allow read, write: if isSameUser(request, userId) //tmp: allow write only if Admin
-    }
-    
-    match /users/private {
-    	allow read, write: if request.auth.uid in resource.data.users
-    }
-    
-    match /users/private/posts/{post} {
-    	allow read, write: if request.auth.uid in get(/databases/$(database)/documents/users/private).data.users
-    }
+		allow read, delete, write: if isAdmin(request, userId) 
+		allow read, write: if isSameUser(request, userId) //tmp: allow write only if Admin
+    }  
   }
 }

@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, _) => {
-	const { isLogged, fetch } = usePrivate()
+	const { isLogged, fetch } = useUser()
 
 	if (to.path == '/login') return
 	
