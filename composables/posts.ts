@@ -4,7 +4,6 @@ import {
 	updateDoc,
 	increment,
 	doc,
-	getCountFromServer,
 	query,
 	orderBy,
 	limit,
@@ -31,14 +30,7 @@ export function usePosts() {
 	const { error, setError } = makeError<PostError>('postsError')
 	const { upload: uploadImage, progress: imageUploadProgress, url } = usePostsStorage(userId)
 
-	// TODO: create a field where we can store the total count of posts
-	async function getTotalCount() {
-		if (total.value) return
-		total.value = (await getCountFromServer(postsColl)).data().count
-	}
-
-	async function fetchMore(num?: number) {
-		!total.value && await getTotalCount()
+	function fetchMore(num?: number) {
 		if (lim.value >= total.value) return
 		lim.value += num || 15
 	}
@@ -68,6 +60,11 @@ export function usePosts() {
 
 		await addDoc(postsColl, params)
 			.catch(() => setError({ message: 'Error creating post' }))
+
+		await updateDoc(doc(db, `users/${userId.value}`), {
+			['stats.total']: increment(1)
+		}).catch(() => setError({ message: 'Error updating stats' }))
+
 		loading.value = false
 		total.value++
 	}
@@ -96,7 +93,6 @@ export function usePosts() {
 		votePost,
 		query: _query,
 		fetchMore,
-		getTotalCount,
 		imageUploadProgress,
 	}
 }

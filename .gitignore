@@ -11,6 +11,7 @@ node_modules
 
 # Editor files
 .vim
+.nvim.lua
 
 # Logs
 logs

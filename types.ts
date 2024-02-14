@@ -11,6 +11,7 @@ export type Stats = {
 	green: number
 	blue: number
 	red: number
+	total: number
 }
 
 export interface User {

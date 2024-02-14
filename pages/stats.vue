@@ -19,9 +19,6 @@ const statsData = computed(() => ([
 	{ title: 'not counted', type: 'nc', score: notCounted.value },
 	{ title: 'total', type: 'total', score: totalValue.value }
 ]))
-
-// TODO: create a new field to store the total count of posts
-await usePosts().getTotalCount()
 </script>
 
 <template>

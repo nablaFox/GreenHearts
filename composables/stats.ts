@@ -1,6 +1,5 @@
 export function useStats() {
 	const { stats } = useUser()
-	const { total: totalPosts } = usePosts()
 
 	const totalValue = computed(
 		() => stats.value && parseFloat((stats.value.red * -2 + stats.value.green + stats.value.blue * .2).toFixed(1))
@@ -8,7 +7,7 @@ export function useStats() {
 
 	const total = computed(() => stats.value && stats.value.red + stats.value.green + stats.value.blue)
 
-	const notCounted = computed(() => total.value && (totalPosts.value - total.value))
+	const notCounted = computed(() => stats.value!.total - (total.value || 0))
 
 	return { stats, total, notCounted, totalValue }
 }
