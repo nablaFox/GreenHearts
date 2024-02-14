@@ -1,6 +1,6 @@
 import type { User } from '@/types'
 import { getAuth } from 'firebase/auth'
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot, getDoc } from 'firebase/firestore'
 import { 
 	GoogleAuthProvider ,
 	signInWithPopup,
@@ -14,37 +14,36 @@ export function useUser() {
 	const stats = computed(() => data.value?.stats)
 	const auth = getAuth()
 
-	async function login() {	
+	async function login(adminClaim?: boolean) {	
 		const googleProvider = new GoogleAuthProvider()
 		await signInWithPopup(auth, googleProvider)	
-		await fetch()
-		return isLogged.value
+		return await fetch(adminClaim)
 	}
 
-	async function fetch() {
-		if (isLogged.value) return
+	async function fetch(adminClaim?: boolean) {
+		if (isLogged.value) return true
 
 		const user = await getCurrentUser()
-		// TODO: use this only if admin, else use user.uid
-		const docRef = doc(db, 'users', useRuntimeConfig().public.privateUser) 
-		let fetchError = false
+		const id = adminClaim ? useRuntimeConfig().public.privateUser : user?.uid
+		const docRef = doc(db, 'users', id)
+
+		const res = await getDoc(docRef).catch(() => {
+			console.error('Auth failed')
+		})
+
+		if (!res || !res.exists()) return false
+
+		data.value = res.data() as User
+		isAdmin.value = adminClaim || false
 
 		onSnapshot(docRef, (doc) => {
 			data.value = doc.data() as User
 		}, () => {
-			fetchError = true
 			data.value = undefined
 			console.error('Error fetching private data')
 		})
 
-		let _data = null
-		while (!_data && !fetchError) {
-			_data = data.value
-			await new Promise((r) => setTimeout(r, 100))
-		}
-
-		if (!_data) return
-		isAdmin.value = _data.admins.includes(user.uid)
+		return true
 	}
 
 	function logout() {
