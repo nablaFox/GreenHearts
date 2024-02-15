@@ -3,10 +3,13 @@ import '@material/web/fab/fab.js'
 defineProps<{
 	isNavVisible: boolean
 }>()
+
+const { isAdmin } = useUser()
 </script>
 
 <template>
   <md-fab
+    v-if="!isAdmin"
     aria-label="Edit"
     :class="[ isNavVisible ? 'bottom-[100px]' : 'bottom-[15px]', 'fixed right-[15px] transition-[bottom] duration-[.2s]' ]"
     @click="$router.push('/maker')"

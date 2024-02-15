@@ -15,6 +15,8 @@ export type Stats = {
 }
 
 export interface User {
+	admin?: boolean
+	name: string,
 	stats: Stats,
 	admins?: string[],
 	id: string
@@ -28,7 +30,7 @@ export interface Post {
 	blue?: number
 	red?: number
 	image?: string
-	date?: Timestamp
+	date?: Timestamp | Date
 }
 
 export interface FetchPostsOptions {

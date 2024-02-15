@@ -2,6 +2,8 @@
 
 ## Work In Progress
 
+- workflow for firebase rules when they change
+- fix glow delay
 - store placeholders in firebase
 - storage rules
 - better color transition

@@ -31,6 +31,18 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			privateUser: process.env.PRIVATE_USER,
+		},
+
+		firebaseAdminCredentials: {
+			projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
+			privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+			clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+			type: process.env.FIREBASE_ADMIN_TYPE,
+			privateKeyId: process.env.FIREBASE_ADMIN_PRIVATE_KEY_ID,
+			authUri: process.env.FIREBASE_ADMIN_AUTH_URI,
+			tokenUri: process.env.FIREBASE_ADMIN_TOKEN_URI,
+			authProviderX509CertUrl: process.env.FIREBASE_ADMIN_AUTH_PROVIDER_X509_CERT_URL,
+			clientX509CertUrl: process.env.FIREBASE_ADMIN_CLIENT_X509_CERT_URL
 		}
 	},
 

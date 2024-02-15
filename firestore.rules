@@ -18,7 +18,7 @@ service cloud.firestore {
     
     match /users/{userId}/posts/{post} {
 			allow read, delete, write: if isAdmin(userId) 
-			allow read, write: if isSameUser(userId) //tmp: allow write only if Admin
+			allow read: if isSameUser(userId)
     }  
   }
 }

@@ -1,9 +1,5 @@
 import {
 	collection,
-	addDoc,
-	updateDoc,
-	increment,
-	doc,
 	query,
 	orderBy,
 	limit,
@@ -18,11 +14,11 @@ interface PostError {
 export function usePosts() {
 	const db = useFirestore()
 	const lim = useState<number>('postsLimit', () => 10)
-	const { userId } = useUser()
+	const { userId, token } = useUser()
 	const postsColl = collection(db, `users/${userId.value}/posts`)
 	const _query = computed(() => query(postsColl, orderBy('date', 'desc'), limit(lim.value)))
+	const { totalPosts, isAdmin } = useUser()
 
-	const total = useState<number>('postsTotal', () => 0)
 	const loading = useState<boolean | undefined>('createPostProgress')
 	const posts = useCollection<Post>(_query, { ssrKey: 'posts' })
 
@@ -31,7 +27,7 @@ export function usePosts() {
 	const { upload: uploadImage, progress: imageUploadProgress, url } = usePostsStorage(userId)
 
 	function fetchMore(num?: number) {
-		if (lim.value >= total.value) return
+		if (lim.value >= totalPosts.value) return
 		lim.value += num || 15
 	}
 
@@ -58,32 +54,36 @@ export function usePosts() {
 			params.image = url.value
 		}
 
-		await addDoc(postsColl, params)
-			.catch(() => setError({ message: 'Error creating post' }))
-
-		await updateDoc(doc(db, `users/${userId.value}`), {
-			['stats.total']: increment(1)
-		}).catch(() => setError({ message: 'Error updating stats' }))
+		await $fetch('/api/posts/create', {
+			method: 'POST',
+			body: params,
+			headers: { 'Authorization': token.value }
+		}).catch(() => setError({ message: 'Error creating post' }))
 
 		loading.value = false
-		total.value++
 	}
 
 	async function votePost(id: string, vote: Vote, negative: boolean) {
+		if (!isAdmin.value) return 
+
 		const _score = vote.score || 1
 		const update = negative ? -_score : _score
 
-		await updateDoc(doc(db, `users/${userId.value}/posts`, id), {
-			[vote.type]: increment(update)
-		}).catch(() => setError({ message: 'Error voting post' }))
-
-		await updateDoc(doc(db, `users/${userId.value}`), {
-			[`stats.${vote.type}`]: increment(update)
-		}).catch(() => setError({ message: 'Error updating stats' }))
+		// TODO: make private user dynamic
+		await $fetch(`/api/posts/${id}/update`, {
+			method: 'PATCH',
+			body: { 
+				voteType: vote.type,
+				updateValue: update,
+				userId: useRuntimeConfig().public.privateUser
+			},
+			headers: { 'Authorization': token.value }
+		}).catch(e => {
+			setError({ message: e.statusMessage })
+		})
 	}
 
 	return {
-		total,
 		error,
 		loading,
 		posts,

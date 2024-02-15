@@ -18,8 +18,10 @@ export function useUser() {
 	const data = useState<User | undefined>('user')
 	const isLogged = computed(() => !!data.value)
 	const stats = computed(() => data.value?.stats)
+	const totalPosts = computed(() => stats.value?.total || 0)
 	const auth = getAuth()
 	const userId = useState<string>('userId')
+	const token = useState<string>('userToken')
 
 	async function login(adminClaim?: boolean) {	
 		const googleProvider = new GoogleAuthProvider()
@@ -52,6 +54,7 @@ export function useUser() {
 
 		userId.value = id
 		data.value = res.data() as User
+		token.value = await user.getIdToken()
 
 		isAdmin.value = data.value.admins?.includes(user.uid) || false
 		localStorage.setItem('isAdmin', isAdmin.value.toString())
@@ -73,7 +76,9 @@ export function useUser() {
 	}
 
 	return { 
+		token,
 		userId,
+		totalPosts,
 		login,
 		logout,
 		isLogged,
