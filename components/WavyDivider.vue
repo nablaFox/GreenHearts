@@ -6,11 +6,11 @@ const props = defineProps<{
 	prevDate?: Timestamp
 }>()	
 
-const isOneWeekDiff = () => {
+const areDifferentDays = () => {
 	if (!props.prevDate || !props.date) return false
 	const prev = new Date(props.prevDate.toDate())
 	const current = new Date(props.date.toDate())
-	return Math.abs(current.getTime() - prev.getTime()) > 604800000
+	return prev.getDate() !== current.getDate()
 }
 
 const formattedDate = useDateFormat(props.date?.toDate(), 'D MMMM')
@@ -18,7 +18,7 @@ const formattedDate = useDateFormat(props.date?.toDate(), 'D MMMM')
 
 <template>
   <div
-    v-if="isOneWeekDiff()"
+    v-if="areDifferentDays()"
     class="w-full md:w-[500px] flex-center h-1"
   >
     <SvgSquiggleThick class="bg-tertiary-container abs-center-y right-[108px]" />

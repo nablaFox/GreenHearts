@@ -30,7 +30,7 @@ export interface Post {
 	blue?: number
 	red?: number
 	image?: string
-	date?: Timestamp | Date
+	date?: Timestamp
 }
 
 export interface FetchPostsOptions {

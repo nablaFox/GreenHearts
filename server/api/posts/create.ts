@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 			statusMessage: 'Post must have a title or an image'
 		})
 
-	post.date = Timestamp.now().toDate()
+	post.date = (Timestamp.now().toDate()) as any
 	if (body?.title) post.title = body.title
 	if (body?.notes) post.notes = body.notes
 	if (body?.image) post.image = body.image

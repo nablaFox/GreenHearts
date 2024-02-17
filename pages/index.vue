@@ -14,7 +14,7 @@ const {
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
 
-useInfiniteScroll(el, async () => await fetchMore(), { distance: 180 })
+useInfiniteScroll(el, () => fetchMore(), { distance: 180 })
 </script>
 
 <template>
@@ -34,14 +34,14 @@ useInfiniteScroll(el, async () => await fetchMore(), { distance: 180 })
         :key="post.id"
         class="flex flex-col gap-6 w-full items-center"
       >
+        <WavyDivider
+          :date="post?.date"
+          :prev-date="posts[index - 1]?.date"
+        />
         <MainPost
           v-bind="post"
           :id="post.id"
           class="w-full"
-        />
-        <WavyDivider
-          :date="post?.date"
-          :prev-date="posts[index - 1]?.date"
         />
       </div>
     </TransitionGroup>
