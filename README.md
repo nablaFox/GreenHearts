@@ -1,33 +1,60 @@
 # Green Hearts
 
-## Work In Progress
+## Work In progress
 
-- workflow for firebase rules when they change
-- fix glow delay
-- store placeholders in firebase
-- storage rules
-- better color transition
-- make emulator reachable in the network
-- add rules section
-- add awards section
-- add chart progress
-- make maker a component
-- 404 page error
-- add admin comments
-- animated svgs (autodrawn) for example when there are not posts
-- change logo
-- open posts on main page like on maker
-- move full screen image
-- navbar height as variable
-- readonly
-- virtual scroller
+- more stats:
+    - estimated calories per day
+    - hearts chart 
+    - hearts pie
+    - total meals per day
+
+- date
+- dynamic greetings
+- gpt 
+- delete posts
+
+### Fix
+
+- glow delay
+
+## Feature
+
+- journey & journey history (by setting a goal)
+- gpt
+- premium
+- post date + date selection
+- admin comment
+- rules section
+- when clicking on a stat show all the related type posts
+- mini tutorial
+- awards section
+- weight history / goals
+- chart progress / more stats
+- page 404
+- landing page
+- animated svgs
+- login design
+- registration
+- logo
+- delete posts
+- open post
+- move full scren image in maker
 - dynamic greedings
 - images with different heights
-- add mini tutorial
-- add chart
-- add gpt responses
-- add premium
 - add user nutritional customization
-- cache images
 - total meals per day
-- add weight stats journey
+- desktop responsive
+- spring bottom sheet physics
+
+### Dev
+
+- workflow for firebase rules when they change
+- placeholders in firebase storage
+- navbar height as variable
+- readonly
+
+### Performance
+
+- virtual scroller
+- preload images
+
