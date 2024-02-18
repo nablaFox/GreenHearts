@@ -35,7 +35,7 @@ export function useQuotes() {
 	}
 
 	function parseQuote(quote: Quote) {
-		if (!data.value) return { head: '', body: '' }
+		if (!data.value) return
 
 		return {
 			head: quote.head.replace('$user_name', data.value?.name),
@@ -43,7 +43,7 @@ export function useQuotes() {
 		}
 	}
 
-	const quote = computed<Quote>(() => {	
+	const quote = computed<Quote | undefined>(() => {	
 		const event = getEvent()
 
 		if (!shouldGetNewQuote(event)) {
@@ -55,6 +55,7 @@ export function useQuotes() {
 		const _quote = quotesData[event][index] as Quote
 
 		const quote = parseQuote(_quote)
+		if (!quote) return
 
 		localStorage.setItem('lastQuote', JSON.stringify({
 			quote,

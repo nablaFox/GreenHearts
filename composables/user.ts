@@ -82,7 +82,7 @@ export function useUser() {
 		auth?.signOut()
 		data.value = undefined
 		localStorage.removeItem('isAdmin')
-		localStorage.removeItem(userId.value)
+		localStorage.removeItem('lastQuote') // TODO: should be in quotes.ts
 	}
 
 	return { 
