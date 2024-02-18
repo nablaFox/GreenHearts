@@ -49,12 +49,16 @@
       display: none;
     }
   }
-	
-	.page-size {
-		min-height: calc(100svh - 20px);
+  	
+  	.section-size {
 		width: var(--section-width-size);
 		max-width: var(--section-width-max-size);
 		margin: 0 auto;
+	}
+	
+	.page-size {
+		min-height: calc(100svh - 20px);
+		@apply section-size;
 	}
 
 	.full-scroller {

@@ -56,6 +56,7 @@
 - navbar height as variable
 - readonly
 - z indexes
+- server log
 
 ### Performance
 

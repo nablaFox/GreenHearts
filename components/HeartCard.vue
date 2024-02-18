@@ -13,7 +13,7 @@ const colorType = () => {
 
 <template>
   <div
-    class="stat p-1 xs:p-3 border border-outline font-medium text-on-surface-variant rounded-2xl flex-center flex-col"
+    class="p-1 xs:p-2 border border-outline font-medium text-on-surface-variant rounded-2xl flex-center flex-col"
   >
     <h3 class="font-extrabold text-xl capitalize">
       {{ title }}

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 
 	vue: {
 		compilerOptions: {
-			isCustomElement: tag => tag.startsWith('md')
+			isCustomElement: tag => tag.startsWith('md') || tag.startsWith('swiper')
 		}
 	},
 

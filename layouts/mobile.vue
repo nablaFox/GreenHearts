@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const isNavVisible = ref(true)
+const fab = ref(true)
 
 function toggleNav() {
 	isNavVisible.value = !isNavVisible.value
@@ -19,12 +20,19 @@ provide('navbar', {
 	closeNav,
 	openNav
 })
+
+provide('fab', {
+	fab,
+})
 </script>
 
 <template>
   <div>
     <slot />
-    <PostsFab :is-nav-visible="isNavVisible" />
+    <PostsFab
+      v-if="fab"
+      :is-nav-visible="isNavVisible"
+    />
     <NavBar
       class="navbar fixed bottom-0"
       :class="{ 'translate-y-full': !isNavVisible }"

@@ -6,6 +6,11 @@ definePageMeta({
 
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
+
+const { fab } = inject('fab') as any
+
+onMounted(() => (fab.value = false))
+onUnmounted(() => (fab.value = true))
 </script>
 
 <template>
@@ -13,13 +18,13 @@ useAnimateNavbar(el)
     ref="el"
     class="full-scroller"
   >
-    <section class="page-size !min-h-[calc(100svh+70px)] flex flex-col gap-[45px] max-w-[600px]">
-      <StatsMenu class="absolute right-0 mt-4" />
+    <section class="min-h-[calc(100svh+20px)] page-size flex flex-col gap-[45px] max-w-[600px] pb-8">
       <GreeterBanner
-        class="h-[150px]"
+        class="bg-surface h-[150px]"
         head="What's up"
         title="Amore mio"
       />
+      <MainMenu class="absolute right-0 mt-4" />
 
       <HeartStats class="" />
       <TotalStat class="-mt-7" />

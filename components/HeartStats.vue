@@ -16,7 +16,7 @@ const statsData = computed(() => ([
 
 <template>	
   <div class="grid grid-cols-2 gap-2.5">
-    <StatCard
+    <HeartCard
       v-for="stat in statsData"
       :key="stat.title"
       :type="stat.type as StatType"
