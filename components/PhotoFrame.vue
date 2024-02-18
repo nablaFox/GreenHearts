@@ -6,13 +6,14 @@ import '@material/web/iconbutton/outlined-icon-button.js'
 defineProps<{
 	image: string
 	scroll: number
+	cta: string
 }>()
 
 const emit = defineEmits<{
 	(e: 'takePhoto', image: File | null): void
 }>()
 
-const model = defineModel<boolean>()
+const fullScreen = defineModel<boolean>()
 
 const { files, open, reset, onChange } = useFileDialog({
 	accept: 'image/*',
@@ -26,7 +27,7 @@ onChange(() => {
 	if (!file) {
 		emit('takePhoto', null)
 		imageTaken.value = ''
-		model.value = false
+		fullScreen.value = false
 		return
 	}
 	emit('takePhoto', file)
@@ -36,24 +37,25 @@ onChange(() => {
 
 <template>
   <div
-    class="rounded-b-[30px] overflow-hidden"
-    @click="() => imageTaken && !scroll && (model = !model)"
+    class="rounded-b-[30px] overflow-hidden bg-surface-container-high"
+    @click="() => imageTaken && !scroll && (fullScreen = !fullScreen)"
   >
-    <div
+    <NuxtImg 
       :class="{ box: !imageTaken }"
-      class="h-full w-[100%] bg-center bg-cover test"
-      :style="{ backgroundImage: `url(${imageTaken || image})` }"
+      :src="imageTaken || image"
+      preload
+      class="h-full w-full object-cover"
     />
 
     <div
       v-if="!imageTaken"
-      class="abs-center flex-center py-4 w-full backdrop-blur-[15px] text-2xl font-[Montserrat] font-extrabold text-on-primary font-medium"
+      class="abs-center flex-center py-4 w-full backdrop-blur-[15px] text-2xl text-on-primary font-medium"
     >
       <md-filled-tonal-button
         class="text-lg font-bold"
         @click="open"
       >
-        Take the photo 
+        {{ cta }}
         <Icon
           slot="icon"
           size="32"
@@ -64,7 +66,7 @@ onChange(() => {
 
     <div
       v-else
-      class="absolute right-[20px] bottom-[10px] rounded-[100%] bg-background"
+      class="absolute right-5 bottom-2.5 rounded-full bg-background"
     >
       <md-outlined-icon-button
         class="text-lg font-bold z-[10]"

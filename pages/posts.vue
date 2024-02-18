@@ -1,7 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
 	layout: 'mobile',
-	keepAlive: true
 })
 
 const {

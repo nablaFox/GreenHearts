@@ -61,6 +61,7 @@ const placeholder = `/placeholder-${Math.floor(Math.random() * 10) + 1}.png`
       <PhotoFrame
         v-model="fullScreen"
         class="h-[calc(100svh-180px-48px-240px)] z-[100] transition"
+        cta="Take the photo"
         :image="placeholder"
         :scroll="y"
         :class="{ fullScreen }"

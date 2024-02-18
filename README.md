@@ -49,6 +49,7 @@
 
 ### Dev
 
+- tests
 - String to string
 - workflow for firebase rules when they change
 - placeholders in firebase storage
