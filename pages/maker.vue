@@ -51,8 +51,12 @@ const placeholder = `/placeholder-${Math.floor(Math.random() * 10) + 1}.png`
       :scroll="y"
       :max-scroll="75"
       :class="[fullScreen && 'fullScreen-1', 'transition h-[180px]']"
-      title="Add Post"
-    />
+      go-back
+    >
+      <h1 class="pb-3 font-black text-4xl text-on-secondary-container will-change-[padding]">
+        Add Post
+      </h1>
+    </DynamicBanner>
     <main class="flex flex-col gap-3 pb-[113px]">
       <PhotoFrame
         v-model="fullScreen"

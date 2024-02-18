@@ -1,22 +1,34 @@
 <script setup lang="ts">
 import '@material/web/iconbutton/icon-button.js'
 
-const props = defineProps<{
+interface Props {
 	maxScroll: number	
 	minOpacity?: number
 	initialPadding?: number
 	minPadding?: number	
-	title?: string
 	scroll: number
-}>()
+	goBack?: boolean
+	noPaddingAnimation?: boolean
+}
 
-const opacity = computed(() => (props.scroll / props.maxScroll) + (props.minOpacity || 0))
-const paddingLeft = computed(() => ((props.initialPadding || 28) + (props.minPadding || 18)) - ((props.scroll / props.maxScroll) * (props.initialPadding || 28)) + 'px')
+const props = withDefaults(defineProps<Props>(), {
+	minOpacity: 0,
+	initialPadding: 28,
+	minPadding: 18,
+})
+
+const opacity = computed(() => (props.scroll / props.maxScroll) + props.minOpacity)
+
+const paddingLeft = computed(() => {
+	if (props.noPaddingAnimation) return props.initialPadding + 'px'
+	return props.initialPadding + props.minPadding - ((props.scroll / props.maxScroll) * props.initialPadding) + 'px'
+})
 </script>
 
 <template>
-  <header class="flex flex-col justify-between">
+  <header class="flex flex-col">
     <md-icon-button
+      v-if="goBack"
       class="ml-3 mt-3 z-[100]"
       @click="$router.push('/')"
     >
@@ -26,15 +38,16 @@ const paddingLeft = computed(() => ((props.initialPadding || 28) + (props.minPad
       />
     </md-icon-button>
     <div 
-      :style="{opacity }"
+      :style="{ opacity }"
       class="bg-surface-variant abs-center w-full h-full will-change-[opacity]" 
     />
-    <h1 
-      class="pb-3 font-black text-4xl text-on-secondary-container will-change-[padding]"
+
+    <div
       :style="{ paddingLeft }"
+      class="mt-auto"
     >
-      {{ title }}
-    </h1>
+      <slot />
+    </div>
   </header>
 </template>
 
