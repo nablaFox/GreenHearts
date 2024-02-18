@@ -2,24 +2,25 @@
 
 ## Work In progress
 
-- more stats:
-    - estimated calories per day
-    - hearts chart 
-    - hearts pie
-    - total meals per day
-
-- date
 - dynamic greetings
+- change stats to home
+- fix navbar heights
+- firebase placeholders
+- post date
+- delete/edit posts
+- move images
+- hearts chart
+- journey section (by setting a goal)
 - gpt 
-- delete posts
+- organize posts by month
 
 ### Fix
 
-- glow delay
+- server functions delay
 
 ## Feature
 
-- journey & journey history (by setting a goal)
+- auto drawn stripes
 - gpt
 - premium
 - post date + date selection
@@ -45,16 +46,18 @@
 - total meals per day
 - desktop responsive
 - spring bottom sheet physics
+- open metrics
 
 ### Dev
 
+- String to string
 - workflow for firebase rules when they change
 - placeholders in firebase storage
 - navbar height as variable
 - readonly
+- z indexes
 
 ### Performance
 
 - virtual scroller
 - preload images
-

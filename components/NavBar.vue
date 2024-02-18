@@ -1,12 +1,12 @@
 <script setup lang="ts">
 const destinations = [
 	{ icon: 'material-symbols:favorite', name: 'index', label: 'Posts' },
-	{ icon: 'material-symbols:auto-graph-rounded', name: 'stats', label: 'Stats' }
+	{ icon: 'material-symbols:auto-graph-rounded', name: 'stats', label: 'Stats' },
 ]
 </script>
 
 <template>
-  <nav class="bg-surface-container text-on-surface flex-center gap-[40px] w-full pb-[16px] pt-[12px]">
+  <nav class="bg-surface-container text-on-surface flex-center gap-[40px] w-full pb-[16px] pt-[12px] z-[9000]">
     <NavSegment
       v-for="dest in destinations"
       :key="dest.icon"

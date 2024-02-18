@@ -16,7 +16,7 @@ const toggleDark = useToggle(isDark)
 </script>
 
 <template>
-  <span class="mt-2 z-[100] self-end">
+  <span class="z-[100]">
     <md-icon-button
       id="usage-anchor"
       ref="btn"
@@ -36,6 +36,7 @@ const toggleDark = useToggle(isDark)
       menu-corner="end-end"
       positioning="popover"
       x-offset="-15"
+      y-offset="1"
     >
       <md-menu-item class="font-bold text-sm cursor-pointer">
         <div

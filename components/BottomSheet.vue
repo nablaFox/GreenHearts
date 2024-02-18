@@ -23,7 +23,7 @@ watch(
         <div class="curtain absolute w-full h-full top-0 left-0 -z-1 bg-black opacity-[30%]" />
         <main
           ref="el"
-          class="min-h-[500px] bg-surface w-[98%] mx-auto rounded-t-3xl px-8 pt-7 pb-5 overflow-hidden"
+          class="min-h-[500px] bg-surface w-[98%] mx-auto rounded-t-3xl px-8 pt-7 pb-5 overflow-hidden z-[9999]"
         >
           <div class="w-20 h-5 top-1 abs-center-x flex-center">
             <div class="bg-on-surface w-8 h-2 rounded-full" />

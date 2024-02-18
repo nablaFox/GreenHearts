@@ -10,8 +10,8 @@ const { isAdmin } = useUser()
 <template>
   <md-fab
     v-if="!isAdmin"
-    aria-label="Edit"
-    :class="[ isNavVisible ? 'bottom-[100px]' : 'bottom-[15px]', 'fixed right-[15px] transition-[bottom] duration-[.2s]' ]"
+    class="fixed right-[15px] transition-[bottom] duration-[.2s] z-[9999]"
+    :class="[ isNavVisible ? 'bottom-[100px]' : 'bottom-[15px]']"
     @click="$router.push('/maker')"
   >
     <Icon

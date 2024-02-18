@@ -6,8 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <header class="flex flex-col justify-between w-full">
-    <StatsMenu />
+  <header class="flex flex-col-reverse w-full">
     <div>
       <h3 class="font-extrabold text-xl text-on-background">
         {{ head }}

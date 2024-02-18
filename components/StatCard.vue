@@ -13,13 +13,13 @@ const colorType = () => {
 
 <template>
   <div
-    class="stat p-2 xs:p-5 border border-outline font-medium text-on-surface-variant rounded-2xl flex-center flex-col"
+    class="stat p-1 xs:p-3 border border-outline font-medium text-on-surface-variant rounded-2xl flex-center flex-col"
   >
     <h3 class="font-extrabold text-xl capitalize">
       {{ title }}
     </h3>
     <h1
-      class="mt-1 font-extrabold text-xl flex-center gap-2"
+      class="font-extrabold text-xl flex-center gap-2"
       :class="type == 'total' && 'text-2xl text-secondary'"
     >
       {{ score }}

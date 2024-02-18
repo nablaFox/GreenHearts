@@ -1,34 +1,35 @@
 {
-	"name": "nuxt-app",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"build": "nuxt build",
-		"fire": "firebase emulators:start --import=./emulated",
-		"dev": "nuxt dev --dotenv .env.local --host",
-		"generate": "nuxt generate",
-		"preview": "nuxt preview",
-		"postinstall": "nuxt prepare",
-		"lint": "eslint .",
-		"lint:fix": "eslint . --fix"
-	},
-	"dependencies": {
-		"nuxt": "^3.10.1",
-		"vue": "^3.4.15",
-		"vue-router": "^4.2.5"
-	},
-	"devDependencies": {
-		"@material/web": "^1.2.0",
-		"@nuxt/image": "latest",
-		"@nuxtjs/google-fonts": "latest",
-		"@nuxtjs/tailwindcss": "latest",
-		"@typescript-eslint/eslint-plugin": "^6.21.0",
-		"@typescript-eslint/parser": "^6.21.0",
-		"@vueuse/nuxt": "latest",
-		"firebase-admin": "^12.0.0",
-		"eslint": "^8.56.0",
-		"eslint-plugin-vue": "^9.21.1",
-		"nuxt-icon": "latest",
-		"nuxt-vuefire": "latest"
-	}
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "fire": "firebase emulators:start --import=./emulated",
+    "dev": "nuxt dev --dotenv .env.local --host",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "nuxt": "^3.10.1",
+    "swiper": "^11.0.6",
+    "vue": "^3.4.15",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@material/web": "^1.2.0",
+    "@nuxt/image": "latest",
+    "@nuxtjs/google-fonts": "latest",
+    "@nuxtjs/tailwindcss": "latest",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vueuse/nuxt": "latest",
+    "firebase-admin": "^12.0.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.21.1",
+    "nuxt-icon": "latest",
+    "nuxt-vuefire": "latest"
+  }
 }
