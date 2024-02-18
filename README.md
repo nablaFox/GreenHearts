@@ -2,8 +2,6 @@
 
 ## Work In progress
 
-- change stats to home
-- fix navbar heights
 - firebase placeholders
 - post date
 - delete/edit posts
@@ -16,6 +14,7 @@
 ### Fix
 
 - server functions delay
+- dark mode
 
 ## Feature
 
@@ -57,6 +56,7 @@
 - readonly
 - z indexes
 - server log
+- custom components
 
 ### Performance
 

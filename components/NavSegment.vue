@@ -13,7 +13,7 @@ defineEmits(['select'])
   <div class="segment flex-center flex-col gap-[4px] text-on-surface-variant">
     <RouterLink
       :to="{ name }"
-      class="segment-btn overflow-hidden rounded-[16px] px-5 py-1 text"
+      class="segment-btn overflow-hidden rounded-[16px] px-5 py-1 text flex-center"
       @click="$emit('select')"
     >
       <Icon
@@ -24,7 +24,7 @@ defineEmits(['select'])
 
     <div
       v-if="label"
-      class="font-bold text-sm"
+      class="font-bold text-sm capitalize"
     >
       {{ label }}
     </div>

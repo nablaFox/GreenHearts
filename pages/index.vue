@@ -1,20 +1,16 @@
 <script setup lang="ts">
+// TODO: change the layout based on the screen size
 definePageMeta({
-	layout: 'mobile',
-	keepAlive: true
+	layout: 'mobile'
 })
-
-const {
-	loading,
-	fetchMore,
-	error,
-	posts,
-} = usePosts()
 
 const el = ref<HTMLElement | null>(null)
 useAnimateNavbar(el)
 
-useInfiniteScroll(el, () => fetchMore(), { distance: 180 })
+const { fab } = inject('fab') as any
+
+onMounted(() => (fab.value = false))
+onUnmounted(() => (fab.value = true))
 </script>
 
 <template>
@@ -22,57 +18,16 @@ useInfiniteScroll(el, () => fetchMore(), { distance: 180 })
     ref="el"
     class="full-scroller"
   >
-    <MainHeader />
-    <TransitionGroup
-      v-if="posts"
-      name="fade"
-      tag="div"
-      class="page-size flex flex-col items-center gap-5 overflow-y-scroll scrollbar-none pb-24"
-    >
-      <div
-        v-for="(post, index) in posts"
-        :key="post.id"
-        class="flex flex-col gap-6 w-full items-center"
-      >
-        <WavyDivider
-          :date="post?.date"
-          :prev-date="posts[index - 1]?.date"
-        />
-        <MainPost
-          v-bind="post"
-          :id="post.id"
-          class="w-full"
-        />
-      </div>
-    </TransitionGroup>
+    <section class="min-h-[calc(100svh+20px)] page-size flex flex-col gap-[45px] max-w-[600px] pb-8">
+      <GreeterBanner class="bg-surface h-[150px]" />
+      <MainMenu class="absolute right-0 mt-4" />
 
-    <LoadBar
-      :loading="!!loading"
-      :duration="300"
-    />
+      <HeartStats class="" />
+      <TotalStat class="-mt-7" />
 
-    <WarningBox
-      v-model="error"
-      :text="error?.message"
-      :duration="3000"
-    />
+      <Placeholder class="h-[120px]" />
+
+      <MetricsStat />
+    </section>
   </main>
 </template>
-
-<style scoped>
-.fade-move,
-.fade-enter-active,
-.fade-leave-active {
-	transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
-}
-
-.fade-enter-from,
-.fade-leave-to {
-	opacity: 0;
-	transform: scaleY(0.01) translate(30px, 0);
-}
-
-.fade-leave-active {
-	position: absolute;
-}
-</style>

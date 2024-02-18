@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const destinations = [
-	{ icon: 'material-symbols:favorite', name: 'index', label: 'Posts' },
-	{ icon: 'material-symbols:auto-graph-rounded', name: 'stats', label: 'Stats' },
+	{ icon: 'ic:round-home', name: 'index', label: 'home' },
+	{ icon: 'ic:round-favorite', name: 'posts', label: 'posts' },
 ]
 </script>
 

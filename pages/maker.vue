@@ -2,7 +2,7 @@
 definePageMeta({
 	middleware: [
 		function(_, from) { 
-			return (from.path === '/') || (from.path === '/stats')
+			return from.path === '/posts'
 		}
 	]
 })
@@ -31,7 +31,7 @@ function onSubmit() {
 		notes.value = ''
 	}, 100)
 
-	useRouter().push('/')
+	useRouter().push('/posts')
 	form.value?.reset()
 }
 

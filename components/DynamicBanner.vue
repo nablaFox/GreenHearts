@@ -30,7 +30,7 @@ const paddingLeft = computed(() => {
     <md-icon-button
       v-if="goBack"
       class="ml-3 mt-3 z-[100]"
-      @click="$router.push('/')"
+      @click="$router.back()"
     >
       <Icon
         name="ic:baseline-arrow-back"
