@@ -1,4 +1,4 @@
-import type { User } from '@/types'
+import type { LocalUser, User } from '@/types'
 import { getAuth } from 'firebase/auth'
 import { doc, onSnapshot, getDoc } from 'firebase/firestore'
 import { 
@@ -22,6 +22,11 @@ export function useUser() {
 	const auth = getAuth()
 	const userId = useState<string>('userId')
 	const token = useState<string>('userToken')
+	
+	// TODO: do not use the user id as key
+	const localData = computed(
+		() => JSON.parse(localStorage.getItem(userId.value) || '{}') as LocalUser | undefined
+	)
 
 	async function login(adminClaim?: boolean) {	
 		const googleProvider = new GoogleAuthProvider()
@@ -57,7 +62,11 @@ export function useUser() {
 		token.value = await user.getIdToken()
 
 		isAdmin.value = data.value.admins?.includes(user.uid) || false
+
 		localStorage.setItem('isAdmin', isAdmin.value.toString())
+		localStorage.setItem(userId.value, JSON.stringify({
+			lastLogin: new Date(Date.now()).toString()
+		} as LocalUser))
 
 		onSnapshot(docRef, (doc) => {
 			data.value = doc.data() as User
@@ -73,9 +82,11 @@ export function useUser() {
 		auth?.signOut()
 		data.value = undefined
 		localStorage.removeItem('isAdmin')
+		localStorage.removeItem(userId.value)
 	}
 
 	return { 
+		localData,
 		token,
 		userId,
 		totalPosts,

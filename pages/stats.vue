@@ -19,11 +19,7 @@ onUnmounted(() => (fab.value = true))
     class="full-scroller"
   >
     <section class="min-h-[calc(100svh+20px)] page-size flex flex-col gap-[45px] max-w-[600px] pb-8">
-      <GreeterBanner
-        class="bg-surface h-[150px]"
-        head="What's up"
-        title="Amore mio"
-      />
+      <GreeterBanner class="bg-surface h-[150px]" />
       <MainMenu class="absolute right-0 mt-4" />
 
       <HeartStats class="" />

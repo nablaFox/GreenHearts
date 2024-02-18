@@ -1,0 +1,30 @@
+{
+	"access_after_long": [
+		{
+			"head": "Welcome back",
+			"body": "$user_name"
+		}
+	],
+	"high_score": [
+		{
+			"head": "You're doing great",
+			"body": "$user_name"
+		}
+	],
+	"low_score": [
+		{
+			"head": "Progress, not",
+			"body": "perfection"
+		},
+		{
+			"head": "Keep it up",
+			"body": "$user_name"
+		}
+	],
+	"generic": [
+		{
+			"head": "Hello",
+			"body": "$user_name"
+		}
+	]
+}

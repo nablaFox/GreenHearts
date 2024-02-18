@@ -2,7 +2,6 @@
 
 ## Work In progress
 
-- dynamic greetings
 - change stats to home
 - fix navbar heights
 - firebase placeholders
@@ -21,6 +20,7 @@
 ## Feature
 
 - auto drawn stripes
+- animate greeting change
 - gpt
 - premium
 - post date + date selection

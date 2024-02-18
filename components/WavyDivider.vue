@@ -6,19 +6,19 @@ const props = defineProps<{
 	prevDate?: Timestamp
 }>()	
 
-const areDifferentDays = () => {
-	if (!props.prevDate || !props.date) return false
-	const prev = new Date(props.prevDate.toDate())
-	const current = new Date(props.date.toDate())
-	return prev.getDate() !== current.getDate()
-}
+const differentDays = props.prevDate 
+	&& props.date 
+	&& areDifferentDays(
+		new Date(props.prevDate.toDate()),
+		new Date(props.date.toDate())
+	)
 
 const formattedDate = useDateFormat(props.date?.toDate(), 'D MMMM')
 </script>
 
 <template>
   <div
-    v-if="areDifferentDays()"
+    v-if="differentDays"
     class="w-full md:w-[500px] flex-center h-1"
   >
     <SvgSquiggleThick class="bg-tertiary-container abs-center-y right-[108px]" />

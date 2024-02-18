@@ -22,6 +22,10 @@ export interface User {
 	id: string
 } 
 
+export interface LocalUser {
+	lastLogin: string
+}
+
 export interface Post {
 	id: string
 	title?: string
@@ -41,4 +45,9 @@ export type CreatePostParams = {
 	title: string | undefined
 	notes: string | undefined
 	image: File | null
+}
+
+export interface Quote {
+	head: string,
+	body: string,
 }
