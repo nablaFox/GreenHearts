@@ -2,17 +2,18 @@
 
 ## Work In progress
 
-- firebase placeholders
+- hearts chart
+
 - post date
 - delete/edit posts
 - move images
-- hearts chart
 - journey section (by setting a goal)
 - gpt 
 - organize posts by month
 
 ### Fix
 
+- page scroll
 - server functions delay
 - dark mode
 
