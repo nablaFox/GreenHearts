@@ -16,6 +16,7 @@
 - page scroll
 - server functions delay
 - dark mode
+- graph offsets
 
 ## Feature
 
@@ -47,6 +48,8 @@
 - desktop responsive
 - spring bottom sheet physics
 - open metrics
+- add graph option (this week / this month)
+- multiple images per post
 
 ### Dev
 

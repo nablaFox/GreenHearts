@@ -18,16 +18,16 @@ onUnmounted(() => (fab.value = true))
     ref="el"
     class="full-scroller"
   >
-    <section class="min-h-[calc(100svh+50px)] page-size flex flex-col gap-[45px] max-w-[600px] pb-8">
+    <section class="min-h-[calc(100svh+70px)] page-size flex flex-col gap-[45px] max-w-[600px] pb-8">
       <GreeterBanner class="h-[150px]" />
       <MainMenu class="absolute right-0 mt-4" />
 
-      <HeartStats class="" />
+      <HeartStats />
       <TotalStat class="-mt-7" />
 
-      <Placeholder class="h-[120px]" />
-
       <MetricsStat />
+
+      <Placeholder class="h-[180px]" />
     </section>
   </main>
 </template>
