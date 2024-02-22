@@ -10,6 +10,8 @@ export interface CanvasOptions {
 export function useCanvas2d(canvas: Ref<HTMLCanvasElement | null>, opts?: CanvasOptions) {
 	const ctx = computed(() => canvas.value?.getContext('2d')) 
 
+	// TODO: avoid using ctx.value everywhere
+	
 	function clearCanvas() {
 		const { width, height } = ctx.value!.canvas
 		ctx.value!.clearRect(0, 0, width, height)
@@ -41,22 +43,6 @@ export function useCanvas2d(canvas: Ref<HTMLCanvasElement | null>, opts?: Canvas
 		ctx.value!.stroke()
 	}
 
-	function adjustAlpha(color: string, newAlpha: number) {
-		const rgbaRegex = /^rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)$/
-		const match = color.match(rgbaRegex)
-
-		if (!match)
-			return color
-
-		const r = parseInt(match[1],  10)
-		const g = parseInt(match[2],  10)
-		const b = parseInt(match[3],  10)
-
-		newAlpha = Math.max(0, Math.min(1, newAlpha))
-
-		return `rgba(${r}, ${g}, ${b}, ${newAlpha})`
-	}
-
 	function drawArrow(
 		x: number,   
 		y: number,
@@ -85,62 +71,101 @@ export function useCanvas2d(canvas: Ref<HTMLCanvasElement | null>, opts?: Canvas
     ctx.value!.lineTo(x2, y2)
     ctx.value!.stroke()
 
-    ctx.value!.setTransform(1,  0,  0,  1,  0,  0)
+    // TODO: better way to reset the transformation
+    ctx.value!.setTransform(devicePixelRatio,  0,  0,  devicePixelRatio,  0,  0)
+	}
+
+	function adjustAlpha(color: string, newAlpha: number) {
+		const rgbRegex = /^rgb\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\)$|^rgb\((\d+)\s+(\d+)\s+(\d+)\)$/
+		const matchRgb = color.match(rgbRegex)
+
+		if (matchRgb) {
+			const r = parseInt(matchRgb[1] || matchRgb[4],  10)
+			const g = parseInt(matchRgb[2] || matchRgb[5],  10)
+			const b = parseInt(matchRgb[3] || matchRgb[6],  10)
+			newAlpha = Math.max(0, Math.min(1, newAlpha))
+			return `rgba(${r}, ${g}, ${b}, ${newAlpha})`
+		}
+
+		const rgbaRegex = /^rgba\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\)$|^rgba\((\d+)\s+(\d+)\s+(\d+)\s+([\d.]+)\)$/
+		const matchRgba = color.match(rgbaRegex)
+
+		if (!matchRgba) {
+			return color
+		}
+
+		const r = parseInt(matchRgba[1] || matchRgba[5],  10)
+		const g = parseInt(matchRgba[2] || matchRgba[6],  10)
+		const b = parseInt(matchRgba[3] || matchRgba[7],  10)
+		newAlpha = Math.max(0, Math.min(1, newAlpha))
+
+		return `rgba(${r}, ${g}, ${b}, ${newAlpha})`
+	}
+
+	function getCoords(e: MouseEvent | TouchEvent) { 
+		const rect = canvas.value!.getBoundingClientRect()
+
+		const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX
+		const clientY = 'clientY' in e ? e.clientY : e.touches[0].clientY
+
+		const x = clientX - rect.left
+		const y = clientY - rect.top
+		return { x, y }
+	}
+
+	function fixDpi() {
+		const cvs = canvas.value!
+		const ctx = cvs.getContext('2d')!
+		const rect = cvs.getBoundingClientRect()
+
+		cvs.width = rect.width * devicePixelRatio
+		cvs.height = rect.height * devicePixelRatio
+
+		ctx.scale(devicePixelRatio, devicePixelRatio)
+
+		cvs.style.width = `${rect.width}px`
+		cvs.style.height = `${rect.height}px`
+	}
+
+	function setEvents() {
+		opts?.onClick && canvas.value!.addEventListener('click', e => {
+			const { x, y } = getCoords(e)
+			opts.onClick!(x, y)
+		})
+
+		opts?.onClickUp && canvas.value!.addEventListener('mouseup', e => {
+			const { x, y } = getCoords(e)
+			opts.onClickUp!(x, y)
+		})
+
+		opts?.onClickDown && canvas.value!.addEventListener('mousedown', e => {
+			const { x, y } = getCoords(e)
+			opts.onClickDown!(x, y)
+		})
+
+		opts?.onCursorMove && canvas.value!.addEventListener('mousemove', e => {
+			const { x, y } = getCoords(e)
+			opts.onCursorMove!(x, y)
+		})
+
+		opts?.onClickDown && canvas.value!.addEventListener('touchstart', e => {
+			const { x, y } = getCoords(e)
+			opts.onClickDown!(x, y)
+		})
+
+		opts?.onClickUp && canvas.value!.addEventListener('touchend', () => {
+			opts.onClickUp!(0, 0)
+		})
+
+		opts?.onCursorMove && canvas.value!.addEventListener('touchmove', e => {
+			const { x, y } = getCoords(e)
+			opts.onCursorMove!(x, y)
+		})
 	}
 
 	onMounted(() => {
-		const rect = canvas.value!.getBoundingClientRect()
-
-		const getCoords = (e: MouseEvent | TouchEvent) => { 
-			const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX
-			const clientY = 'clientY' in e ? e.clientY : e.touches[0].clientY
-
-			const x = clientX - rect.left
-			const y = clientY - rect.top
-			return { x, y }
-		}
-
-		canvas.value!.addEventListener('click', e => {
-			if (!opts?.onClick) return
-
-			const { x, y } = getCoords(e)
-			opts.onClick(x, y)
-		})
-
-		canvas.value!.addEventListener('mouseup', e => {
-			if (!opts?.onClickUp) return
-			const { x, y } = getCoords(e)
-			opts.onClickUp(x, y)
-		})
-
-		canvas.value!.addEventListener('mousedown', e => {
-			if (!opts?.onClickDown) return
-			const { x, y } = getCoords(e)
-			opts.onClickDown(x, y)
-		})
-
-		canvas.value!.addEventListener('mousemove', e => {
-			if (!opts?.onCursorMove) return
-			const { x, y } = getCoords(e)
-			opts.onCursorMove(x, y)
-		})
-
-		canvas.value!.addEventListener('touchstart', e => {
-			if (!opts?.onClickDown) return
-			const { x, y } = getCoords(e)
-			opts.onClickDown(x, y)
-		})
-
-		canvas.value!.addEventListener('touchend', () => {
-			if (!opts?.onClickUp) return
-			opts.onClickUp(0, 0)
-		})
-
-		canvas.value!.addEventListener('touchmove', e => {
-			if (!opts?.onCursorMove) return
-			const { x, y } = getCoords(e)
-			opts.onCursorMove(x, y)
-		})
+		fixDpi()
+		setEvents()
 	})
 
 	return {
@@ -151,6 +176,6 @@ export function useCanvas2d(canvas: Ref<HTMLCanvasElement | null>, opts?: Canvas
 		drawLine,
 		ctx,
 		adjustAlpha,
-		clearCanvas
+		clearCanvas,
 	}
 }

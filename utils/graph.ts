@@ -33,6 +33,9 @@ export interface GraphStyle {
 	mainHLineWidth?: number
 	mainHLineDash?: number[]
 	mainHLineColor?: string
+	mainVLineWidth?: number
+	mainVLineDash?: number[]
+	mainVLineColor?: string
 	selectedLineWidth?: number
 	selectedLineDash?: number[]
 	selectedLineColor?: string
@@ -44,6 +47,8 @@ export interface GraphStyle {
 	yAxisWidth?: number
 	yAxisColor?: string
 	yAxisDash?: number[]
+	gradientFill?: boolean
+	fillCurve?: boolean
 }
 
 export interface GraphOptions {
@@ -62,7 +67,6 @@ export interface GraphOptions {
 	totalYLabels?: number
 	style?: GraphStyle
 	xLabels?: string[]
-	fillCurve?: boolean
 	xLabelsOffset?: number
 	yLabelsOffset?: number
 	showXAxis?: boolean
@@ -94,6 +98,10 @@ const defaultGraphStyle: GraphStyle = {
 	mainHLineWidth: 1,
 	mainHLineDash: [5],
 	mainHLineColor: '#000',
+
+	mainVLineWidth: 1,
+	mainVLineDash: [5],
+	mainVLineColor: '#000',
 
 	selectedLineWidth: 1,
 	selectedLineDash: [5],
@@ -142,6 +150,12 @@ const defaultOptions: GraphOptions = {
 	yLabelsOffset: 10,
 
 	style: defaultGraphStyle,
+}
+
+type SelectedData = {
+	x: number
+	y: number
+	label: string
 }
 
 export function useGraph(
@@ -199,8 +213,10 @@ export function useGraph(
 	let selectedDataLine = false
 	let yRange: number
 	let xRange: number
+	let width: number
+	let height: number
 
-	const selectedData = ref<Point | null>(null)
+	const selectedData = ref<SelectedData | null>(null)
 	const selectedPoint = computed(() => {
 		if (!selectedData.value) return null
 		const { x, y } = selectedData.value
@@ -209,23 +225,23 @@ export function useGraph(
 	
 	function normalizeY(y: number) {
 		const range = currentMaxY - currentMinY || 1
-		const height = canvas.value!.height - (opts.offsetBottom! + opts.offsetTop!)
-		return (height - (y - currentMinY) / range * height) + opts.offsetTop!
+		const h = height - (opts.offsetBottom! + opts.offsetTop!)
+		return (h - (y - currentMinY) / range * h) + opts.offsetTop!
 	}
 
 	function denormalizeY(y: number) {
-		const height = canvas.value!.height - (opts.offsetBottom! + opts.offsetTop!)
-		return (y - opts.offsetTop!) / height * yRange + currentMinY
+		const h = height - (opts.offsetBottom! + opts.offsetTop!)
+		return (y - opts.offsetTop!) / h * yRange + currentMinY
 	}
 
 	function normalizeX(x: number) {
-		const width = canvas.value!.width - (opts.offsetLeft! + opts.offsetRight!)
+		const width = canvas.value!.offsetWidth - (opts.offsetLeft! + opts.offsetRight!)
 		return ((x - currentMinX) / (currentMaxX - currentMinX) * width) + opts.offsetLeft!
 	}
 
 	function denormalizeX(x: number) {
-		const width = canvas.value!.width - (opts.offsetLeft! + opts.offsetRight!)
-		return ((x - opts.offsetLeft!) / width) * xRange + currentMinX
+		const w = width - (opts.offsetLeft! + opts.offsetRight!)
+		return ((x - opts.offsetLeft!) / w) * xRange + currentMinX
 	}
 
 	function setBounds() {
@@ -260,6 +276,8 @@ export function useGraph(
 		oldTimestamp = performance.now()
 		graphIndexOld = graphIndex
 		oldGraphLength = graphLength.value
+		width = canvas.value!.offsetWidth
+		height = canvas.value!.offsetHeight
 
 		interpolate()	
 		setBounds()
@@ -356,22 +374,35 @@ export function useGraph(
 	function draw() {
 		clearCanvas()
 
-		opts.mainHorizontalLines && drawMainHorizontalLines()
-		opts.mainVerticalLines && drawMainVerticalLines()
-
-		opts.showXLabels && drawXLabels()
-		opts.showYLabels && drawYLabels()
-
 		drawGraph({
 			index: graphIndex, 
 			points: currentPoints,
 		})
 
+		opts.mainHorizontalLines && drawMainHorizontalLines()
+		opts.mainVerticalLines && drawMainVerticalLines()
+
 		opts.showXAxis && drawXAxis()
 		opts.showYAxis && drawYAxis()
 
+		opts.showXLabels && drawXLabels()
+		opts.showYLabels && drawYLabels()
+
 		selectedDataLine && drawSelectedVerticalLine()
 		opts.showDataPoints && drawDataPoints() 
+	}
+
+	function drawGraphPoints({
+		index,
+		points,
+	} : GraphDrawingOpts) {
+		ctx.moveTo(normalizeX(points[0].x), normalizeY(points[0].y))
+		for (let i = 0; i < index; i++) {
+			ctx.lineTo(
+				normalizeX(points[i].x),
+				normalizeY(points[i].y)
+			)
+		}
 	}
 
 	function drawGraph({
@@ -382,34 +413,26 @@ export function useGraph(
 		ctx.lineWidth = style.curveWidth
 		ctx.strokeStyle = style.curveColor
 
-		ctx.moveTo(normalizeX(points[0].x), normalizeY(points[0].y))
-		for (let i = 0; i < index; i++) {
-			ctx.lineTo(
-				normalizeX(points[i].x),
-				normalizeY(points[i].y)
-			)
-		}
-
+		drawGraphPoints({ index, points })
 		ctx.stroke()
 
-		if (!opts.fillCurve) return
+		if (!style.fillCurve) return
 
 		ctx.beginPath()
-		const gradient = ctx.createLinearGradient(0,  0,  0, canvas.value!.height)
-		gradient.addColorStop(0, style.curveFill)
-		gradient.addColorStop(1, adjustAlpha(style.curveFill, 0))
-		ctx.fillStyle = gradient
 
-		ctx.moveTo(normalizeX(points[0].x), normalizeY(points[0].y))
-		for (let i = 0; i < index; i++) {
-			ctx.lineTo(
-				normalizeX(points[i].x),
-				normalizeY(points[i].y)
-			)
+		if (style.gradientFill) {
+			const gradient = ctx.createLinearGradient(0,  0,  0, height)
+			gradient.addColorStop(0, style.curveFill)
+			gradient.addColorStop(1, adjustAlpha(style.curveFill, 0))
+			ctx.fillStyle = gradient
+		} else {
+			ctx.fillStyle = style.curveFill
 		}
 
-		ctx.lineTo(normalizeX(points[Math.round(index) - 1]?.x), canvas.value!.height)
-		ctx.lineTo(normalizeX(points[0].x), canvas.value!.height)
+		drawGraphPoints({ index, points })
+
+		ctx.lineTo(normalizeX(points[Math.round(index) - 1]?.x), height - opts.offsetBottom!)
+		ctx.lineTo(normalizeX(points[0].x), height - opts.offsetBottom!)
 		ctx.closePath()
 		ctx.fill()
 	}
@@ -432,7 +455,7 @@ export function useGraph(
 
 		const offsetBottom = opts.xLabelsOffset!
 
-		const posY = ctx.canvas.height - offsetBottom 
+		const posY = height - offsetBottom 
 		const start = normalizeX(data[0].x)
 		const step = (normalizeX(data.at(-1)!.x) - start) / (data.length - 1)
 
@@ -462,7 +485,7 @@ export function useGraph(
 
 		if (yRange === 1) return
 
-		const step = (ctx.canvas.height - opts.offsetTop!) / totalLabels!
+		const step = (height - opts.offsetTop!) / totalLabels!
 		const contentStep = yRange / (totalLabels! - 1)
 
 		for (let i = 0; i < totalLabels!; i++) {	
@@ -514,7 +537,7 @@ export function useGraph(
 		const length = opts.offsetTop!
 		drawVerticalLine(start, { length })
 
-		opts.xAxisArrow && drawArrow(start, opts.offsetTop!, { rotation: 90, width: 1.5, angle: 35, length: 7 })
+		opts.yAxisArrow && drawArrow(start, opts.offsetTop!, { rotation: 90, width: 1.5, angle: 35, length: 7 })
 
 		ctx.setLineDash([])
 	}
@@ -524,8 +547,8 @@ export function useGraph(
 		ctx.strokeStyle = style.xAxisColor
 		ctx.setLineDash(style.xAxisDash)
 
-		const start = canvas.value!.height - opts.offsetBottom!
-		const end = canvas.value!.width - opts.offsetRight!
+		const start = height - opts.offsetBottom!
+		const end = width - opts.offsetRight!
 
 		drawLine(opts.offsetLeft!, start, end, start)
 		opts.xAxisArrow && drawArrow(end, start, { width: 1.5, angle: 35, length: 7, rotation: 180 })
@@ -534,9 +557,12 @@ export function useGraph(
 	}
 
 	function drawMainVerticalLines() {
+		ctx.setLineDash(style.mainVLineDash)
+		ctx.lineWidth = style.mainVLineWidth
+		ctx.strokeStyle = style.mainVLineColor
+
 		const start = normalizeX(data[0].x)
 		const step = (normalizeX(data.at(-1)!.x) - start) / (data.length - 1)
-		ctx.setLineDash(style.mainHLineDash)
 
 		for (let i = 1; i < data.length; i++) {
 			const x = start + step * i
@@ -550,7 +576,7 @@ export function useGraph(
 		if (yRange === 1) return
 
 		const start = opts.offsetTop!
-		const length = ctx.canvas.height - opts.offsetTop!
+		const length = height - opts.offsetTop!
 
 		const stepY = length / (opts.totalYLabels!)
 
@@ -560,7 +586,7 @@ export function useGraph(
 
 		for (let i = 0; i < opts.totalYLabels!; i++) {
 			const y = start + stepY * i
-			drawHorizontalLine(y, { length: ctx.canvas.width - opts.offsetRight! })
+			drawHorizontalLine(y, { length: width - opts.offsetRight! })
 		}
 
 		ctx.setLineDash([])
@@ -568,7 +594,12 @@ export function useGraph(
 
 	function getSelectedData(x: number) {
 		const index = Math.round(denormalizeX(x))
-		selectedData.value = data[index] || null
+		if (data[index]) {
+			const { x, y } = data[index]
+			const label = opts.xLabels ? opts.xLabels[index] : x.toString()
+			selectedData.value = { x, y, label }
+		}
+
 		!selectedData.value && (selectedDataLine = false)	
 	}
 
@@ -591,6 +622,8 @@ export function useGraph(
 		}
 	}
 
+	// TODO: handle resize
+	// TODO: reload when config changes
 	onMounted(() => {
 		ctx = canvasCtx.value!
 		init()
