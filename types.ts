@@ -1,3 +1,4 @@
+// TODO: organize in folder
 import type { Timestamp } from 'firebase/firestore'
 
 export type VoteType = 'green' | 'blue' | 'red'
@@ -14,10 +15,17 @@ export type Stats = {
 	total: number
 }
 
+export interface WeekStat {
+	kcal?: number
+	total?: number
+	meals?: number
+}
+
 export interface User {
 	admin?: boolean
-	name: string,
-	stats: Stats,
+	name: string, // TODO: handle undefined
+	stats: Stats, // TODO: handle undefined
+	weekly?: WeekStat[],
 	admins?: string[],
 	id: string
 } 

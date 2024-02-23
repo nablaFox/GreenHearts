@@ -2,34 +2,32 @@
 
 ## Work In progress
 
-- hearts chart
+- more stats data
 
 - post date
+- organize posts by month
 - delete/edit posts
-- move images
 - journey section (by setting a goal)
 - gpt 
-- organize posts by month
 
 ### Fix
 
-- page scroll
-- server functions delay
+- graph costant parts
+- graph minimum
+- server functions delay (change async behavior)
 - dark mode
-- graph offsets
 
 ## Feature
 
+- monthly data
 - auto drawn stripes
 - animate greeting change
 - gpt
+- settings page
 - premium
 - post date + date selection
-- admin comment
 - rules section
-- when clicking on a stat show all the related type posts
 - mini tutorial
-- awards section
 - weight history / goals
 - chart progress / more stats
 - page 404
@@ -41,18 +39,28 @@
 - delete posts
 - open post
 - move full scren image in maker
-- dynamic greedings
 - images with different heights
 - add user nutritional customization
-- total meals per day
 - desktop responsive
 - spring bottom sheet physics
-- open metrics
+
+## Ideas
+
+- darken hearts chart when no data is available
+- move images
+- home banner shrink animation
+- when clicking on a stat show all the related type posts
 - add graph option (this week / this month)
+- awards section
+- change kcal card color if >100%
+- admin comment
+- open metrics
 - multiple images per post
+
 
 ### Dev
 
+- use theme utility instead of '#theme'
 - tests
 - String to string
 - workflow for firebase rules when they change
@@ -62,6 +70,7 @@
 - z indexes
 - server log
 - custom components
+- types
 
 ### Performance
 

@@ -6,7 +6,6 @@ import {
 	signInWithPopup,
 } from 'firebase/auth'
 
-
 interface FetchResult {
 	error?: string
 	data?: User
@@ -17,8 +16,7 @@ export function useUser() {
 	const isAdmin = useState<boolean>('isAdmin', () => false)
 	const data = useState<User | undefined>('user')
 	const isLogged = computed(() => !!data.value)
-	const stats = computed(() => data.value?.stats)
-	const totalPosts = computed(() => stats.value?.total || 0)
+	const totalPosts = computed(() => data.value?.stats.total || 0)
 	const auth = getAuth()
 	const userId = useState<string>('userId')
 	const token = useState<string>('userToken')
@@ -60,8 +58,14 @@ export function useUser() {
 		userId.value = id
 		data.value = res.data() as User
 		token.value = await user.getIdToken()
-
 		isAdmin.value = data.value.admins?.includes(user.uid) || false
+
+		// QUESTION: is this safe?
+		if (process.env.NODE_ENV === 'development') {
+			console.log('User logged in:', data.value)
+			console.log('User token:', token.value)
+			console.log('User id:', userId.value)
+		}
 
 		localStorage.setItem('isAdmin', isAdmin.value.toString())
 		localStorage.setItem(userId.value, JSON.stringify({
@@ -94,7 +98,6 @@ export function useUser() {
 		logout,
 		isLogged,
 		isAdmin,
-		stats,
 		data,
 		fetch
 	}

@@ -174,11 +174,7 @@ export function useGraph(
 		drawCircleStrokeFill,
 		adjustAlpha,
 		drawArrow,
-	}	= useCanvas2d(canvas, { 
-		onCursorMove,
-		onClickUp,
-		onClickDown
-	})
+	}	= useCanvas2d(canvas, { onCursorMove, onClickUp, onClickDown })
 
 	const { 
 		length: graphLength, 
@@ -639,9 +635,38 @@ export function useGraph(
 			(dataChanged = true) : (newDataAdded = true)
 	})
 
+	watch(opts, updateFrame)
+
 	return {
 		ctx: canvasCtx,
 		selectedData,
 		selectedPoint
 	}
+}
+
+export function getGraphData(
+	data: MaybeRefOrGetter<any[] | null | undefined>,
+	key: string,
+	defaultValue?: any[]
+) {
+	const defValue = [
+		{ x: 0, y: 0 },
+		{ x: 1, y: 0 }
+	]
+
+	const _data = computed(() => {
+		let d = toValue(data)
+
+		if (!d || d.length < 2)
+			d = defaultValue
+
+		if (!d) return defValue
+
+		return d.map((item, index) => ({
+			x: index,
+			y: item[key],
+		}))
+	})
+
+	return toReactive(_data)
 }

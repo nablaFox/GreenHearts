@@ -34,6 +34,8 @@ export default defineEventHandler(async (event) => {
 		['stats.total']: adminApp.firestore.FieldValue.increment(1),
 	}).catch(() => false)
 
+	// TODO: update weekly stats
+
 	if (res1 === false) 
 		throw createError({
 			statusCode: 500,
