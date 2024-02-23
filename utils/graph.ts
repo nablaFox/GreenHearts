@@ -221,8 +221,9 @@ export function useGraph(
 	
 	function normalizeY(y: number) {
 		const range = currentMaxY - currentMinY || 1
-		const h = height - (opts.offsetBottom! + opts.offsetTop!)
-		return (h - (y - currentMinY) / range * h) + opts.offsetTop!
+		const h = (height - (opts.offsetBottom! + opts.offsetTop!)) / 2
+		const centerY = height / 2
+		return centerY + (currentMaxY - y) / range * h - h / 2 // TODO: add options for centering
 	}
 
 	function denormalizeY(y: number) {
@@ -395,8 +396,8 @@ export function useGraph(
 		ctx.moveTo(normalizeX(points[0].x), normalizeY(points[0].y))
 		for (let i = 0; i < index; i++) {
 			ctx.lineTo(
-				normalizeX(points[i].x),
-				normalizeY(points[i].y)
+				normalizeX(points[i]?.x),
+				normalizeY(points[i]?.y)
 			)
 		}
 	}
@@ -504,7 +505,7 @@ export function useGraph(
 	function drawVerticalLine(
 		x: number,
 		{ length }: { length: number }) {
-		drawLine(x, normalizeY(currentMinY), x, length)
+		drawLine(x, height - opts.offsetBottom!, x, length)
 	}
 
 	function drawSelectedVerticalLine() {
@@ -625,15 +626,16 @@ export function useGraph(
 		init()
 	})
 
-	watch(data, () => {
-		shifted = true
+	isReactive(data) && 
+		watch(data, () => {
+			shifted = true
 
-		setOld()
-		init()
+			setOld()
+			init()
 
-		oldGraphLength === graphLength.value ? 
-			(dataChanged = true) : (newDataAdded = true)
-	})
+			oldGraphLength === graphLength.value ? 
+				(dataChanged = true) : (newDataAdded = true)
+		})
 
 	watch(opts, updateFrame)
 

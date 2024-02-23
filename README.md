@@ -12,8 +12,6 @@
 
 ### Fix
 
-- graph costant parts
-- graph minimum
 - server functions delay (change async behavior)
 - dark mode
 

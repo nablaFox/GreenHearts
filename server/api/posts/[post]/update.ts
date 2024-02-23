@@ -105,7 +105,6 @@ async function updateWeekStats(userId: string, vote: VoteType, days?: WeekStat[]
 	const update = getVoteValue(vote)
 	const lastTotal = days.at(-1)?.total || 0
 
-	// fill the missing days
 	if (index > days.length) {
 		for (let i = days.length; i < index - 1; i++)
 			days.push({ total: lastTotal })
