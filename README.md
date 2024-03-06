@@ -1,5 +1,12 @@
 # Green Hearts
 
+
+## Demos
+
+<img src="https://raw.githubusercontent.com/nablaFox/GreenHearts/main/screenshots/demo-1.jpeg" width="350"/>
+<img src="https://raw.githubusercontent.com/nablaFox/GreenHearts/main/screenshots/demo-2.jpeg" width="350"/>
+<img src="https://raw.githubusercontent.com/nablaFox/GreenHearts/main/screenshots/demo-3.jpeg" width="350"/>
+
 ## Work In progress
 
 - more stats data
