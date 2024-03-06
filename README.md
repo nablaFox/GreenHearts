@@ -1,5 +1,9 @@
 # Green Hearts
 
+![demo 1](https://raw.githubusercontent.com/nablaFox/GreenHearts/main/screenshots/demo-1.jpeg)
+![demo 2](https://raw.githubusercontent.com/nablaFox/GreenHearts/main/screenshots/demo-2.jpeg)
+![demo 3](https://raw.githubusercontent.com/nablaFox/GreenHearts/main/screenshots/demo-3.jpeg)
+
 ## Work In progress
 
 - more stats data
