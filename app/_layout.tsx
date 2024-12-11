@@ -6,6 +6,8 @@ import { PaperProvider } from 'react-native-paper'
 import '../global.css'
 import { usePosts } from '@/hooks/usePosts'
 
+import { GlobalSnackbar } from '@/components/GlobalSnackbar'
+
 export default function RootLayout() {
   const { fetchPosts } = usePosts()
 
@@ -29,6 +31,8 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="light" />
+
+      <GlobalSnackbar />
     </PaperProvider>
   )
 }
