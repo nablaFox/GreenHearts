@@ -1,5 +1,5 @@
 import React from 'react'
-import { BottomNavigation, FAB } from 'react-native-paper'
+import { BottomNavigation, FAB, TouchableRipple } from 'react-native-paper'
 
 import Index from './index'
 import Posts from './posts'
@@ -35,6 +35,9 @@ export default function TabLayout() {
         navigationState={{ index, routes }}
         onIndexChange={setIndex}
         renderScene={renderScene}
+        renderTouchable={({ key, ...props }) => (
+          <TouchableRipple key={key} {...props} />
+        )}
       />
       {isFABVisible && (
         <FAB
