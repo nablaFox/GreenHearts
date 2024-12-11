@@ -1,3 +1,13 @@
-import { Text, FlatList } from 'react-native'
+import { View } from 'react-native'
+import { PostsHeader } from '@/components/PostsHeader'
 
-export default function Posts() {}
+import { PostsList } from '@/components/PostsList'
+
+export default function Posts() {
+  return (
+    <View>
+      <PostsHeader />
+      <PostsList />
+    </View>
+  )
+}

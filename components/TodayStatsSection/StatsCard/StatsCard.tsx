@@ -1,6 +1,7 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
+import { Text } from 'react-native-paper'
 
-import { Icon, type IconName } from '@/components/ui'
+import { Icon } from 'react-native-paper'
 
 export function StatsCard({
   title,
@@ -9,13 +10,13 @@ export function StatsCard({
 }: {
   title: string
   value: number
-  icon: IconName
+  icon: any
 }) {
   return (
     <View>
       <Text>{title}</Text>
       <Text>{value}</Text>
-      <Icon name={icon} />
+      <Icon source={icon} size={24} />
     </View>
   )
 }

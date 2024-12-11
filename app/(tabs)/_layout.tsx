@@ -1,37 +1,39 @@
-import { Tabs } from 'expo-router'
 import React from 'react'
-import IconSymbol from '@expo/vector-icons/Ionicons'
 
-import { HomeHeader } from '@/components/HomeHeader'
-import { PostsHeader } from '@/components/PostsHeader'
+import { BottomNavigation, FAB } from 'react-native-paper'
+
+import Index from './index'
+import Posts from './posts'
 
 export default function TabLayout() {
+  const [index, setIndex] = React.useState(0)
+
+  const [routes] = React.useState([
+    { key: 'home', title: 'Home', focusedIcon: 'heart' },
+    { key: 'posts', title: 'Posts', focusedIcon: 'book' }
+  ])
+
+  const renderScene = BottomNavigation.SceneMap({
+    home: Index,
+    posts: Posts
+  })
+
   return (
-    <Tabs>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          header: () => <HomeHeader />,
-          tabBarIcon: ({ color }) => (
-            <IconSymbol name="home-sharp" size={24} color={color} />
-          )
+    <>
+      <BottomNavigation
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+      />
+
+      <FAB
+        icon="plus"
+        style={{
+          position: 'absolute',
+          right: 30,
+          bottom: 100
         }}
       />
-      <Tabs.Screen
-        name="posts"
-        options={{
-          title: 'Posts',
-          header: () => <PostsHeader />,
-          tabBarIcon: ({ color }) => (
-            <IconSymbol
-              size={24}
-              name="information-circle-sharp"
-              color={color}
-            />
-          )
-        }}
-      />
-    </Tabs>
+    </>
   )
 }

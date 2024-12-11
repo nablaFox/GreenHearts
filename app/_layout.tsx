@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect } from 'react'
+import { PaperProvider } from 'react-native-paper'
 
 import { SettingsHeader } from '@/components/SettingsHeader'
 
@@ -13,7 +14,7 @@ export default function RootLayout() {
   useEffect(() => fetchPosts(), [fetchPosts])
 
   return (
-    <>
+    <PaperProvider>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
@@ -23,6 +24,6 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="light" />
-    </>
+    </PaperProvider>
   )
 }

@@ -1,4 +1,4 @@
-import { Text } from 'react-native'
+import { Text } from 'react-native-paper'
 import { CollapsibleHeader } from '@/components/CollapsibleHeader'
 
 export function HomeHeader() {
