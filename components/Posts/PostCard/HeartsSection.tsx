@@ -19,7 +19,7 @@ export function HeartsSection({
       {isAdmin ? (
         <AdminHeartButtons currScore={score} postId={postId} />
       ) : (
-        <HeartButton score={score} constant />
+        score !== 0 && <HeartButton score={score} disabled />
       )}
     </View>
   )

@@ -1,5 +1,5 @@
 interface PostsByDay {
-  title: string
+  date: Date
   data: Post[]
 }
 

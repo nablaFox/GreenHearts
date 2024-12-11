@@ -13,7 +13,9 @@ export function PostsList() {
       sections={postsByDay}
       keyExtractor={item => item.key}
       renderItem={({ item }) => <PostCard post={item} />}
-      SectionSeparatorComponent={() => <PostListDivider />}
+      renderSectionFooter={({ section }) => (
+        <PostListDivider date={section.date} />
+      )}
       onEndReached={() => fetchMorePosts()}
     />
   )

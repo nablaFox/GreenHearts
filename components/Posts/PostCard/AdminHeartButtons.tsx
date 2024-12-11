@@ -14,14 +14,23 @@ export function AdminHeartButtons({
 }) {
   const { votePost } = usePost()
 
+  const handleVotePost = (score: HeartScore) => {
+    // error handling
+
+    if (score === currScore) {
+      return votePost(0, postId)
+    }
+
+    votePost(score, postId)
+  }
+
   return (
     <View>
       {assignableScores.map(score => (
         <HeartButton
           key={score}
-          score={score}
-          active={currScore === score}
-          onPress={() => votePost(score, postId)}
+          score={score === currScore ? score : 0}
+          onPress={() => handleVotePost(score)}
         />
       ))}
     </View>
