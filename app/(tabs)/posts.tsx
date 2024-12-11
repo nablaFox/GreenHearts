@@ -1,13 +1,13 @@
-import { View } from 'react-native'
-import { PostsHeader } from '@/components/PostsHeader'
+import { ThemedView } from '@/components/ThemedView'
 
+import { PostsHeader } from '@/components/Headers/PostsHeader'
 import { PostsList } from '@/components/PostsList'
 
 export default function Posts() {
   return (
-    <View>
+    <ThemedView>
       <PostsHeader />
       <PostsList />
-    </View>
+    </ThemedView>
   )
 }

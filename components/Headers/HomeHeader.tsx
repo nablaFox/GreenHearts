@@ -1,5 +1,5 @@
 import { Text } from 'react-native-paper'
-import { CollapsibleHeader } from '@/components/CollapsibleHeader'
+import { CollapsibleHeader } from './CollapsibleHeader'
 
 export function HomeHeader() {
   return (

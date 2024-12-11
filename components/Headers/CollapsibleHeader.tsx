@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { ThemedView } from '@/components/ThemedView'
 
 type Props = {}
 
@@ -7,5 +7,5 @@ type Props = {}
 export function CollapsibleHeader({
   children
 }: React.PropsWithChildren<Props>) {
-  return <View className="h-[100] justify-center bg-red-100">{children}</View>
+  return <ThemedView className="h-[100] justify-center">{children}</ThemedView>
 }

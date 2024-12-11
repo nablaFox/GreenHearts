@@ -1,17 +1,17 @@
-import { View } from 'react-native'
+import { ThemedView } from '@/components/ThemedView'
 
 import ThisMonthStatsSection from '@/components/ThisMonthStatsSection'
 import TodayStatsSection from '@/components/TodayStatsSection'
 import ChartSection from '@/components/ChartSection'
-import { HomeHeader } from '@/components/HomeHeader'
+import { HomeHeader } from '@/components/Headers/HomeHeader'
 
 export default function Index() {
   return (
-    <View>
+    <ThemedView>
       <HomeHeader />
       <ThisMonthStatsSection />
       <TodayStatsSection />
       <ChartSection />
-    </View>
+    </ThemedView>
   )
 }
