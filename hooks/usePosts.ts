@@ -1,30 +1,30 @@
-// TODO: use firestore real error type
-type Error = string
-
-interface CreatePostParams {}
+interface PostsByDay {
+  title: string
+  data: Post[]
+}
 
 export function usePosts() {
   const posts: Post[] = []
-  const error: Error = ''
-
-  // changes are optimistically immediate; can be used for aknowledgement but not to make the user wait
+  const postsByDay: PostsByDay[] = [] // should be a computed
+  const error: FirebaseError = ''
+  const postsLimit = 10
   const loading = false
 
   const fetchPosts = () => {
     // set firebase callback
+    // fetch by date descending with postsLimit
     // update error
   }
 
-  const addPost = (params: CreatePostParams) => {
-    // optimistic update
-    // update loading, error
-  }
+  const fetchMorePosts = (num?: number) => {}
 
   return {
     posts,
+    postsByDay,
     error,
     loading,
+    postsLimit,
     fetchPosts,
-    addPost
+    fetchMorePosts
   }
 }

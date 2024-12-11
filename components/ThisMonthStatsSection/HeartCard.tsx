@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 
-import { GlowingHeart } from '@/components/GlowingHeart'
+import { GlowingHeartIcon } from '@/components/GlowingHeartIcon'
 
 export function HeartCard({
   title,
@@ -10,13 +10,13 @@ export function HeartCard({
 }: {
   title: string
   score: number
-  color: string
+  color: HeartColor
 }) {
   return (
     <View>
       <Text>{title}</Text>
       <Text>{score}</Text>
-      <GlowingHeart color={color} />
+      <GlowingHeartIcon color={color} />
     </View>
   )
 }

@@ -12,7 +12,13 @@ export function HeartsWrapper() {
     { title: 'Reds', score: reds, color: 'red' },
     { title: 'Blue', score: blue, color: 'blue' },
     { title: 'Nc', score: nc, color: 'blue' }
-  ]
+  ] as {
+    title: string
+    score: HeartScore
+    color: HeartColor
+  }[]
+
+  // Maybe since the data is small we can manually render the items in a 2x2 grid
 
   return (
     <View>

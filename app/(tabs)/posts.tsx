@@ -1,7 +1,7 @@
 import { ThemedView } from '@/components/ThemedView'
 
 import { PostsHeader } from '@/components/Headers/PostsHeader'
-import { PostsList } from '@/components/PostsList'
+import { PostsList } from '@/components/Posts/PostsList'
 
 export default function Posts() {
   return (
