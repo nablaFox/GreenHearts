@@ -2,7 +2,7 @@ import { View } from 'react-native'
 
 import { HeartButton } from './HeartButton'
 
-import { usePost } from '@/hooks/usePost'
+import { usePosts } from '@/hooks/usePosts'
 import { assignableScores } from '@/constants/common'
 
 export function AdminHeartButtons({
@@ -12,11 +12,9 @@ export function AdminHeartButtons({
   currScore: HeartScore
   postId: string
 }) {
-  const { votePost } = usePost()
+  const { votePost } = usePosts()
 
   const handleVotePost = (score: HeartScore) => {
-    // error handling
-
     if (score === currScore) {
       return votePost(0, postId)
     }

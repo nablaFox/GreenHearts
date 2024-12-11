@@ -6,7 +6,8 @@ import { PaperProvider } from 'react-native-paper'
 import '../global.css'
 import { usePosts } from '@/hooks/usePosts'
 
-import { GlobalSnackbar } from '@/components/GlobalSnackbar'
+import { ThemedSnackbar } from '@/components/Themed'
+import { Loaderbar } from '@/components/Loaderbar'
 
 export default function RootLayout() {
   const { fetchPosts } = usePosts()
@@ -32,7 +33,8 @@ export default function RootLayout() {
       </Stack>
       <StatusBar style="light" />
 
-      <GlobalSnackbar />
+      <ThemedSnackbar />
+      <Loaderbar />
     </PaperProvider>
   )
 }

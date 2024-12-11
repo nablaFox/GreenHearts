@@ -1,4 +1,4 @@
-import { ThemedView } from '@/components/ThemedView'
+import { ThemedView } from '@/components/Themed'
 import { Text } from 'react-native-paper'
 
 import { SettingsHeader } from '@/components/Headers/SettingsHeader'

@@ -32,4 +32,5 @@ root
   global_snackbar
 
 
-note: change "wrapper" with the adequate react native component
+- change "wrapper" with the adequate react native component in component names
+- change default material fonts

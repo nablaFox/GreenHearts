@@ -1,4 +1,4 @@
-import { ThemedView } from '@/components/ThemedView'
+import { ThemedView } from '@/components/Themed'
 
 import ThisMonthStatsSection from '@/components/ThisMonthStatsSection'
 import TodayStatsSection from '@/components/TodayStatsSection'

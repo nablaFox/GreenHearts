@@ -8,6 +8,10 @@ declare global {
 
   type FirebaseError = string // TEMP
 
+  type ServerError = string // TEMP
+
+  type APIStatus = 'loading' | 'success' | FirebaseError | ServerError
+
   interface Post {
     key: string
     title?: string
@@ -16,5 +20,14 @@ declare global {
     image?: string
     date?: FirebaseFirestoreTypes.Timestamp
     userDate?: FirebaseFirestoreTypes.Timestamp
+    status?: 'added' | 'updated' | 'removed'
+    verified?: boolean
+  }
+
+  interface CreatePostParams {
+    title?: string
+    notes?: string
+    image?: File
+    date?: Date // Maybe
   }
 }

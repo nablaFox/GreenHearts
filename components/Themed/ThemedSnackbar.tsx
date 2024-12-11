@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { Text } from 'react-native-paper'
 
 import { useSnackbar } from '@/hooks/useSnackbar'
 
-export function GlobalSnackbar() {
+export function ThemedSnackbar() {
   const { message, isVisible } = useSnackbar()
 
   if (!isVisible) return null

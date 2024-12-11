@@ -6,25 +6,52 @@ interface PostsByDay {
 export function usePosts() {
   const posts: Post[] = []
   const postsByDay: PostsByDay[] = [] // should be a computed
-  const error: FirebaseError = ''
+  const fetchPostsStatus: APIStatus = 'success'
+  const updatePostStatus: APIStatus = 'success'
+
   const postsLimit = 10
-  const loading = false
 
   const fetchPosts = () => {
-    // set firebase callback
-    // fetch by date descending with postsLimit
-    // update error
+    // set firebase callback by fetching posts in descending date order with postsLimit:
+    // - if unverified product exists with same key and same status as change.type mark the product as verified
+    // - set updatePostStatus to success within each doc.change()
+    // - set fetchPostsStatus to success after all docs are processed
+    //
+    // on firebase error:
+    // - set fetchPostsStatus to the firebase error
+    //
+    // set a watcher on updatePostStatus; if there is an error remove all unverified posts related to the error
   }
 
-  const fetchMorePosts = (num?: number) => {}
+  const fetchMorePosts = (num?: number) => {
+    // increase postsLimit by num
+    // set fetchPostsStatus to loading
+  }
+
+  const deletePost = (id: string) => {}
+
+  const votePost = (score: HeartScore, id: string) => {
+    // set updatePostStatus to loading
+    // optimistic update
+    // send request to server
+    // if request failed set updatePostStatus to error
+  }
+
+  const editPost = (id: string, params: CreatePostParams) => {}
+
+  const addPost = (params: CreatePostParams) => {}
 
   return {
     posts,
     postsByDay,
-    error,
-    loading,
+    fetchPostsStatus,
+    updatePostStatus,
     postsLimit,
+    setPostsStatus: () => {},
     fetchPosts,
-    fetchMorePosts
+    fetchMorePosts,
+    deletePost,
+    votePost,
+    addPost
   }
 }
