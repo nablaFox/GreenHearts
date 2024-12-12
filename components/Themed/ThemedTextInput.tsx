@@ -1,3 +1,6 @@
+import { View, TextInput } from 'react-native'
+import { Icon } from 'react-native-paper'
+
 export function ThemedTextInput({
   placeholder,
   value,
@@ -9,5 +12,14 @@ export function ThemedTextInput({
   onChangeText: (text: string) => void
   icon?: string
 }) {
-  return null
+  return (
+    <View>
+      <TextInput
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+      />
+      <Icon source={icon} size={24} />
+    </View>
+  )
 }

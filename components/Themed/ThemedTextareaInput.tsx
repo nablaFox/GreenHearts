@@ -1,3 +1,7 @@
+import { Icon } from 'react-native-paper'
+import { TextInput, View } from 'react-native'
+import { useState } from 'react'
+
 export function ThemedTextareaInput({
   placeholder,
   value,
@@ -11,5 +15,22 @@ export function ThemedTextareaInput({
   icon?: string
   rows: number
 }) {
-  return null
+  const [height, setHeight] = useState(rows * 20)
+
+  return (
+    <View>
+      <TextInput
+        style={{ height }}
+        multiline
+        placeholder={placeholder}
+        value={value}
+        onContentSizeChange={event => {
+          setHeight(event.nativeEvent.contentSize.height)
+        }}
+        onChangeText={onChangeText}
+      />
+
+      <Icon source={icon} size={24} />
+    </View>
+  )
 }
