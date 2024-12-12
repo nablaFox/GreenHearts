@@ -1,0 +1,17 @@
+{
+  "platforms": [
+    "apple",
+    "android",
+    "web"
+  ],
+  "apple": {
+    "modules": [
+      "DatetimePickerModule"
+    ]
+  },
+  "android": {
+    "modules": [
+      "expo.modules.datetimepicker.DatetimePickerModule"
+    ]
+  }
+}
