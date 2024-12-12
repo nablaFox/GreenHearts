@@ -13,7 +13,7 @@ export function usePosts() {
 
   const fetchPosts = () => {
     // set firebase callback by fetching posts in descending date order with postsLimit:
-    // - if unverified product exists with same key and same status as change.type mark the product as verified
+    // - if unverified product exists with same key and same status as change.type mark the product as verified and replace it
     // - set updatePostStatus to success within each doc.change()
     // - set fetchPostsStatus to success after all docs are processed
     //

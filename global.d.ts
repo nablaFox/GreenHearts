@@ -27,7 +27,7 @@ declare global {
   interface CreatePostParams {
     title?: string
     notes?: string
-    image?: File
+    imageUri?: string
     date?: Date // Maybe
   }
 }

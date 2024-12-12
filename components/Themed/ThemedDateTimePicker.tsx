@@ -8,7 +8,7 @@ import { openDateTimePicker, onDateChange } from '@/modules/datetime-picker'
 
 import { formatPickedDate, getIs24Hours } from '@/utils/date'
 
-export function ThemedDatePicker({
+export function ThemedDateTimePicker({
   date,
   setDate
 }: {

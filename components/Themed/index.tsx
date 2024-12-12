@@ -1,4 +1,4 @@
-export { ThemedDatePicker } from './ThemedDatePicker'
+export { ThemedDateTimePicker } from './ThemedDateTimePicker'
 export { ThemedView } from './ThemedView'
 export { ThemedTextInput } from './ThemedTextInput'
 export { ThemedTextareaInput } from './ThemedTextareaInput'
