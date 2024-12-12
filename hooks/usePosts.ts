@@ -12,10 +12,11 @@ export function usePosts() {
   const postsLimit = 10
 
   const fetchPosts = () => {
+    // set fetchPostsStatus to loading
     // set firebase callback by fetching posts in descending date order with postsLimit:
     // - if unverified product exists with same key and same status as change.type mark the product as verified and replace it
-    // - set updatePostStatus to success within each doc.change()
-    // - set fetchPostsStatus to success after all docs are processed
+    // - set updatePostStatus to success
+    // - set fetchPostsStatus to success
     //
     // on firebase error:
     // - set fetchPostsStatus to the firebase error
@@ -25,7 +26,7 @@ export function usePosts() {
 
   const fetchMorePosts = (num?: number) => {
     // increase postsLimit by num
-    // set fetchPostsStatus to loading
+    // set updatePostStatus to loading
   }
 
   const deletePost = (id: string) => {}
