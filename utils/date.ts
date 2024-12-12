@@ -10,6 +10,6 @@ export function formatPickedDate(date: Date) {
   return format(date, 'MMMM d')
 }
 
-export function getIs24Hour() {
+export function getIs24Hours() {
   return true
 }

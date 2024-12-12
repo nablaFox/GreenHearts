@@ -9,10 +9,21 @@ import { usePosts } from '@/hooks/usePosts'
 import { ThemedSnackbar } from '@/components/Themed'
 import { Loaderbar } from '@/components/Loaderbar'
 
+import { useTheme } from '@/hooks/useTheme'
+import { useColorScheme } from '@/hooks/useColorScheme'
+
+import { setDatetimePickerTheme } from '@/modules/datetime-picker'
+
 export default function RootLayout() {
   const { fetchPosts } = usePosts()
+  const { theme } = useTheme()
+  const { isDark } = useColorScheme()
 
   useEffect(() => fetchPosts(), [fetchPosts])
+
+  useEffect(() => {
+    setDatetimePickerTheme(isDark)
+  }, [isDark])
 
   const screenTransition = {
     headerShown: false,
@@ -21,7 +32,7 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 

@@ -1,54 +1,54 @@
 package expo.modules.datetimepicker
 
-import DatePickerDialog
+import android.app.Activity
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
 class DatetimePickerModule : Module() {
+  private var isDarkTheme: Boolean = false
 
   override fun definition() = ModuleDefinition {
     Name("DatetimePicker")
 
-    Constants(
-      "PI" to Math.PI
-    )
-
     Events("onSelectDate")
 
-    Function("hello") {
-      "Hello world! 👋"
+    Function("setUserTheme") { darkTheme: Boolean ->
+      isDarkTheme = darkTheme
     }
 
     Function("showTimePicker") { currentDate: Long ->
+      val (activity, rootView) = requireActivityAndRoot()
 
+      val timePickerView = TimePickerView(activity, appContext).apply {
+        darkTheme = isDarkTheme
+        startDate = currentDate
+        onDismiss = { rootView.removeView(this) }
+        onTimeSelected = { sendEvent("onSelectDate", mapOf("ms" to it))}
+      }
 
+      rootView.post { rootView.addView(timePickerView) }
     }
 
     Function("showDatePicker") { currentDate: Long ->
-      val currentActivity = appContext.activityProvider?.currentActivity
+      val (activity, rootView) = requireActivityAndRoot()
 
-      currentActivity?.let { activity ->
-        activity.runOnUiThread {
-          val rootView = activity.findViewById<ViewGroup>(android.R.id.content)
-          val composeView = ComposeView(activity).apply {
-            setContent {
-              DatePickerDialog(
-                onDateSelected = { selectedDate ->
-                  sendEvent("onSelectDate", mapOf("ms" to selectedDate))
-                  rootView.removeView(this)
-                },
-                onDismiss = {
-                  rootView.removeView(this)
-                },
-                currentDate = currentDate
-              )
-            }
-          }
-          rootView.addView(composeView)
-        }
+      val datePickerView = DatePickerView(activity, appContext).apply {
+        darkTheme = isDarkTheme
+        startDate = currentDate
+        onDismiss = { rootView.removeView(this) }
+        onDateSelected = { sendEvent("onSelectDate", mapOf("ms" to it)) }
       }
+
+      rootView.post { rootView.addView(datePickerView) }
     }
+  }
+
+  private fun requireActivityAndRoot(): Pair<Activity, ViewGroup> {
+    val activity = appContext.activityProvider?.currentActivity
+      ?: error("No current activity available.")
+    val rootView = activity.findViewById<ViewGroup>(android.R.id.content)
+      ?: error("Could not find root view.")
+    return activity to rootView
   }
 }

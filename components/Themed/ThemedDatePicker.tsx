@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 import { openDateTimePicker, onDateChange } from '@/modules/datetime-picker'
 
-import { formatPickedDate, getIs24Hour } from '@/utils/date'
+import { formatPickedDate, getIs24Hours } from '@/utils/date'
 
 export function ThemedDatePicker({
   date,
@@ -15,7 +15,7 @@ export function ThemedDatePicker({
   date: Date
   setDate: (date: Date) => void
 }) {
-  const is24Hour = getIs24Hour()
+  const is24Hours = getIs24Hours()
 
   useEffect(() => {
     const subscription = onDateChange(setDate)
@@ -25,7 +25,8 @@ export function ThemedDatePicker({
   const showMode = (currentMode: 'time' | 'date') => {
     openDateTimePicker({
       mode: currentMode,
-      date: date
+      startDate: date,
+      is24Hours
     })
   }
 
@@ -48,7 +49,7 @@ export function ThemedDatePicker({
         <Text>{format(date, 'h')}</Text>
         <Text>:</Text>
         <Text>{format(date, 'm')}</Text>
-        {!is24Hour && <Text>{format(date, 'a')}</Text>}
+        {!is24Hours && <Text>{format(date, 'a')}</Text>}
       </TouchableOpacity>
     </View>
   )

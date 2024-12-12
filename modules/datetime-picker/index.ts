@@ -6,16 +6,23 @@ export function onDateChange(listener: (date: Date) => void) {
   })
 }
 
+export function setDatetimePickerTheme(darkTheme: boolean) {
+  DatetimePickerModule.setUserTheme(darkTheme)
+}
+
 export function openDateTimePicker({
   mode,
-  date
+  startDate,
+  is24Hours
 }: {
   mode: 'time' | 'date'
-  date: Date
+  startDate: Date
+  is24Hours: boolean
 }) {
-  const ms = date.getTime()
+  const ms = startDate.getTime()
 
   if (mode === 'time') {
+    // TODO: handle is24Hours
     DatetimePickerModule.showTimePicker(ms)
   } else {
     DatetimePickerModule.showDatePicker(ms)
