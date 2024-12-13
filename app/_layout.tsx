@@ -4,9 +4,9 @@ import { PaperProvider } from 'react-native-paper'
 import { StatusBar } from 'expo-status-bar'
 
 import Login from './login'
-import { ThemedSnackbar } from '@/components/Themed'
-import { Loaderbar } from '@/components/Loaderbar'
-import { LoadingSplash } from '@/components/LoadingSplash'
+import { SnackBar } from '@/components/SnackBar'
+import { LoadingBar } from '@/components/LoadingBar'
+import { FetchUserHandler } from '@/components/ActionHandlers'
 
 import { useTheme } from '@/hooks/useTheme'
 import { useUser } from '@/hooks/useUser'
@@ -14,23 +14,18 @@ import { useUser } from '@/hooks/useUser'
 import '../global.css'
 
 export default function Root() {
-  const { fetchUser, isLogged, fetchUserStatus } = useUser()
+  const { fetchUser, isLogged } = useUser()
   const { theme } = useTheme()
 
   useEffect(fetchUser)
 
   return (
     <PaperProvider theme={theme}>
-      {fetchUserStatus === 'loading' ? (
-        <LoadingSplash />
-      ) : isLogged ? (
-        <Slot />
-      ) : (
-        <Login />
-      )}
+      {isLogged ? <Slot /> : <Login />}
 
-      <ThemedSnackbar />
-      <Loaderbar />
+      <FetchUserHandler />
+      <SnackBar />
+      <LoadingBar />
       <StatusBar style="light" />
     </PaperProvider>
   )

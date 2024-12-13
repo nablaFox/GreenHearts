@@ -31,18 +31,20 @@ declare global {
 
 // API states
 declare global {
-  type APIStatus = 'loading' | 'success'
+  type ActionStatus = 'loading' | 'success'
   type FirebaseAuthErrors = keyof typeof Errors.FirebaseAuthErrors
   type FirebaseFirestoreErrors = keyof typeof Errors.FirebaseFirestoreErrors
   type GenericServerError = keyof typeof Errors.GenericServerErrors
 
-  type FetchPostsStatus = APIStatus | keyof typeof Errors.FetchPostsErrors
+  type FetchPostsError = keyof typeof Errors.FetchPostsErrors
+  type VotePostError = keyof typeof Errors.VotePostErrors
+  type AddPostError = keyof typeof Errors.AddPostErrors
+  type FetchUserError = keyof typeof Errors.FetchUserErrors
+  type LoginError = keyof typeof Errors.LoginErrors
 
-  type VotePostStatus = APIStatus | keyof typeof Errors.VotePostErrors
-
-  type AddPostStatus = APIStatus | keyof typeof Errors.AddPostErrors
-
-  type FetchUserStatus = APIStatus | keyof typeof Errors.FetchUserErrors
-
-  type LoginStatus = APIStatus | keyof typeof Errors.LoginErrors
+  type FetchPostsStatus = ActionStatus | FetchPostsError
+  type VotePostStatus = ActionStatus | VotePostError
+  type AddPostStatus = ActionStatus | AddPostError
+  type FetchUserStatus = ActionStatus | FetchUserError
+  type LoginStatus = ActionStatus | LoginError
 }

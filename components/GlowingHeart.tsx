@@ -1,6 +1,6 @@
 import { Text } from 'react-native-paper'
 
-export function GlowingHeartIcon({
+export function GlowingHeart({
   color,
   size,
   glowFactor

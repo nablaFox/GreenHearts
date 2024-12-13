@@ -24,15 +24,11 @@ export default function AppLayout() {
 
   return (
     <Stack>
-      <Stack.Screen name="login" />
-
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
       <Stack.Screen name="settings" options={screenTransition} />
 
       <Stack.Screen name="maker" options={screenTransition} />
-
-      <Stack.Screen name="+not-found" />
     </Stack>
   )
 }

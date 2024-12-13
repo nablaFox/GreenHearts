@@ -1,6 +1,6 @@
 import { TouchableOpacity } from 'react-native'
 
-import { GlowingHeartIcon } from '@/components/GlowingHeartIcon'
+import { GlowingHeart } from '@/components/GlowingHeart'
 
 import { ScoreColorMap } from '@/constants/scores'
 
@@ -23,7 +23,7 @@ export function HeartButton({
 
   return (
     <TouchableOpacity onPress={handlePress} disabled>
-      <GlowingHeartIcon color={color} glowFactor={glowFactor} />
+      <GlowingHeart color={color} glowFactor={glowFactor} />
     </TouchableOpacity>
   )
 }

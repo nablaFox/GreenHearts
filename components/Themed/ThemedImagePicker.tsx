@@ -52,4 +52,3 @@ export function ThemedImagePicker({
     </View>
   )
 }
-

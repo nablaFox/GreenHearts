@@ -11,6 +11,7 @@ export function usePosts() {
 
   const fetchPostsStatus = useState<FetchPostsStatus>('success')[0]
   const fetchMorePostsStatus = useState<FetchPostsStatus>('success')[0]
+  const addPostStatus = useState<AddPostStatus>('success')[0]
 
   const fetchPosts = () => {
     // set fetchPostsStatus to loading
@@ -25,7 +26,7 @@ export function usePosts() {
     // increase postsLimit by num
   }
 
-  const addPost = async (params: CreatePostParams): Promise<VotePostStatus> => {
+  const addPost = async (params: CreatePostParams) => {
     // set addStatus to loading
     // optimistic update
     // send request to server
@@ -37,7 +38,7 @@ export function usePosts() {
   const votePost = async (
     score: HeartScore,
     id: string
-  ): Promise<AddPostStatus> => {
+  ): Promise<VotePostStatus> => {
     // no need to check if it is admin the server will do that
     // store backup of the post
     // set voteStatus to loading
@@ -55,6 +56,7 @@ export function usePosts() {
     postsByDay,
     fetchPostsStatus,
     fetchMorePostsStatus,
+    addPostStatus,
     fetchPosts,
     fetchMorePosts,
     votePost,
@@ -62,4 +64,3 @@ export function usePosts() {
     getPost
   }
 }
-

@@ -1,9 +1,9 @@
 import { Text } from 'react-native-paper'
 
-import { useSnackbar } from '@/hooks/useSnackbar'
+import { useSnackBar } from '@/hooks/useSnackBar'
 
-export function ThemedSnackbar() {
-  const { message, isVisible } = useSnackbar()
+export function SnackBar() {
+  const { message, isVisible } = useSnackBar()
 
   if (!isVisible) return null
 
