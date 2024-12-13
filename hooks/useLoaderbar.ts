@@ -12,3 +12,4 @@ export const useLoaderbar = create<LoaderbarState>(set => ({
   hideLoaderbar: () => set({ isVisible: false })
 }))
 
+export const showLoaderbar = useLoaderbar.getState().showLoaderbar

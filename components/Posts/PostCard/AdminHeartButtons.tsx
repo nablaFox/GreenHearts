@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { HeartButton } from './HeartButton'
 
 import { usePosts } from '@/hooks/usePosts'
-import { assignableScores } from '@/constants/common'
+import { assignableScores } from '@/constants/scores'
 
 export function AdminHeartButtons({
   currScore,

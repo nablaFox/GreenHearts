@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 interface PostsByDay {
   date: Date
   data: Post[]
@@ -5,54 +7,59 @@ interface PostsByDay {
 
 export function usePosts() {
   const posts: Post[] = []
-  const postsByDay: PostsByDay[] = [] // should be a computed
-  const fetchPostsStatus: APIStatus = 'success'
-  const updatePostStatus: APIStatus = 'success'
+  const postsByDay: PostsByDay[] = []
 
-  const postsLimit = 10
+  const fetchPostsStatus = useState<FetchPostsStatus>('loading')[0]
+  const fetchMorePostsStatus = useState<FetchPostsStatus>('loading')[0]
 
   const fetchPosts = () => {
     // set fetchPostsStatus to loading
     // set firebase callback by fetching posts in descending date order with postsLimit:
-    // - if unverified product exists with same key and same status as change.type mark the product as verified and replace it
-    // - set updatePostStatus to success
-    // - set fetchPostsStatus to success
-    //
-    // on firebase error:
-    // - set fetchPostsStatus to the firebase error
-    //
-    // set a watcher on updatePostStatus; if there is an error remove all unverified posts related to the error
+    // - if unverified product exists with same key replace it
+    // - set fetchPostsStatus to success if it is false at the end of the loop
+    // - if fetchPostsStatus is "success" set fetchMoreStatus to success
   }
 
   const fetchMorePosts = (num?: number) => {
+    // set fetchMoreStatus to loading
     // increase postsLimit by num
-    // set updatePostStatus to loading
   }
 
-  const deletePost = (id: string) => {}
-
-  const votePost = (score: HeartScore, id: string) => {
-    // set updatePostStatus to loading
+  const addPost = async (params: CreatePostParams): Promise<VotePostStatus> => {
+    // set addStatus to loading
     // optimistic update
     // send request to server
-    // if request failed set updatePostStatus to error
+    // if request failed set addStatus to error and remove the added post
+
+    return 'success'
   }
 
-  const editPost = (id: string, params: CreatePostParams) => {}
+  const votePost = async (
+    score: HeartScore,
+    id: string
+  ): Promise<AddPostStatus> => {
+    // no need to check if it is admin the server will do that
+    // store backup of the post
+    // set voteStatus to loading
+    // optimistic update
+    // send request to server
+    // if request failed set voteStatus to error and restore the post
 
-  const addPost = (params: CreatePostParams) => {}
+    return 'success'
+  }
+
+  const getPost = (id: string) => {}
 
   return {
     posts,
     postsByDay,
     fetchPostsStatus,
-    updatePostStatus,
-    postsLimit,
-    setPostsStatus: () => {},
+    fetchMorePostsStatus,
     fetchPosts,
     fetchMorePosts,
-    deletePost,
     votePost,
-    addPost
+    addPost,
+    getPost
   }
 }
+

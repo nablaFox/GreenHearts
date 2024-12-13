@@ -20,3 +20,5 @@ export const useSnackbar = create<SnackbarState>(set => ({
   showSnackbar: (message: SnackbarMessage) => set({ message, isVisible: true }),
   hideSnackbar: () => set({ isVisible: false })
 }))
+
+export const showSnackbar = useSnackbar.getState().showSnackbar

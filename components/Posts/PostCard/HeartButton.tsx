@@ -2,7 +2,7 @@ import { TouchableOpacity } from 'react-native'
 
 import { GlowingHeartIcon } from '@/components/GlowingHeartIcon'
 
-import { ScoreColorMap } from '@/constants/common'
+import { ScoreColorMap } from '@/constants/scores'
 
 export function HeartButton({
   score,
