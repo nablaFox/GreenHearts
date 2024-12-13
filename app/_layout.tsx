@@ -17,7 +17,7 @@ export default function Root() {
   const { fetchUser, isLogged, fetchUserStatus } = useUser()
   const { theme } = useTheme()
 
-  useEffect(() => fetchUser(), [fetchUser])
+  useEffect(fetchUser)
 
   return (
     <PaperProvider theme={theme}>

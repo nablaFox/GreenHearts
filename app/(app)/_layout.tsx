@@ -1,8 +1,6 @@
 import { Stack } from 'expo-router'
 import React, { useEffect } from 'react'
 
-import { PostsErrorHandler } from '@/components/Posts/PostsErrorHandler'
-
 import { usePosts } from '@/hooks/usePosts'
 import { useColorScheme } from '@/hooks/useColorScheme'
 
@@ -12,7 +10,7 @@ export default function AppLayout() {
   const { fetchPosts } = usePosts()
   const { isDark } = useColorScheme()
 
-  useEffect(() => fetchPosts(), [fetchPosts])
+  useEffect(fetchPosts)
 
   useEffect(() => {
     setDatetimePickerTheme(isDark)
@@ -35,8 +33,6 @@ export default function AppLayout() {
       <Stack.Screen name="maker" options={screenTransition} />
 
       <Stack.Screen name="+not-found" />
-
-      <PostsErrorHandler />
     </Stack>
   )
 }

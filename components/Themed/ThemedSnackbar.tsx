@@ -7,5 +7,5 @@ export function ThemedSnackbar() {
 
   if (!isVisible) return null
 
-  return <Text>Hello from snackbar {message.description}</Text>
+  return <Text>Snackbar message {message.description}</Text>
 }

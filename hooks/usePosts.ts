@@ -9,8 +9,8 @@ export function usePosts() {
   const posts: Post[] = []
   const postsByDay: PostsByDay[] = []
 
-  const fetchPostsStatus = useState<FetchPostsStatus>('loading')[0]
-  const fetchMorePostsStatus = useState<FetchPostsStatus>('loading')[0]
+  const fetchPostsStatus = useState<FetchPostsStatus>('success')[0]
+  const fetchMorePostsStatus = useState<FetchPostsStatus>('success')[0]
 
   const fetchPosts = () => {
     // set fetchPostsStatus to loading

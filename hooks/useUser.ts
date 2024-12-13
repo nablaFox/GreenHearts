@@ -4,7 +4,7 @@ export function useUser() {
   const isAdmin = false
   const isLogged = true
 
-  const fetchUserStatus = useState<FetchUserStatus>('loading')[0]
+  const fetchUserStatus = useState<FetchUserStatus>('success')[0]
 
   const fetchUser = () => {}
 

@@ -2,16 +2,17 @@ import { useUser } from '@/hooks/useUser'
 
 import { FetchUserErrors } from '@/constants/errors'
 import { showSnackbar } from '@/hooks/useSnackbar'
+import { useEffect } from 'react'
 
 export function UserErrorHandler() {
   const { fetchUserStatus } = useUser()
 
-  if (fetchUserStatus === 'loading' || fetchUserStatus === 'success')
-    return null
-
-  showSnackbar({
-    description: FetchUserErrors[fetchUserStatus]
-  })
+  useEffect(() => {
+    if (fetchUserStatus !== 'loading' && fetchUserStatus !== 'success')
+      showSnackbar({
+        description: FetchUserErrors[fetchUserStatus]
+      })
+  }, [fetchUserStatus])
 
   return null
 }

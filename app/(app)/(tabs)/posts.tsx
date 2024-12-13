@@ -4,6 +4,8 @@ import { PostsHeader } from '@/components/Headers/PostsHeader'
 import { PostsList } from '@/components/Posts/PostsList'
 import { PostsLoadingSplash } from '@/components/Posts/PostsLoadingSplash'
 
+import { PostsStatusHandler } from '@/components/Posts/PostsStatusHandler'
+
 import { usePosts } from '@/hooks/usePosts'
 
 export default function Posts() {
@@ -14,6 +16,7 @@ export default function Posts() {
       <PostsHeader />
       {fetchPostsStatus === 'loading' && <PostsLoadingSplash />}
       <PostsList />
+      <PostsStatusHandler />
     </ThemedView>
   )
 }
