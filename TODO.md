@@ -34,3 +34,15 @@ root
 
 - change "wrapper" with the adequate react native component in component names
 - change default material fonts
+
+
+
+Owls:
+
+- has an additional "bunnies" screen
+- they can change the 
+- can change user_id choosing in the list of their bunnies
+- on user_id change: posts change, fetched user doc changes
+
+
+- we have one global user_id and one global user_token

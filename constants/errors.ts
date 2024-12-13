@@ -17,7 +17,9 @@ export const FirebaseFirestoreErrors = {
   'permission-denied':
     'The client does not have permission to perform the requested operation.',
   unauthenticated:
-    'The request does not have valid authentication credentials for the operation.'
+    'The request does not have valid authentication credentials for the operation.',
+  'not-found': 'Some requested document was not found.'
+
   // ...
 }
 
@@ -55,9 +57,17 @@ export const VotePostErrors = {
 }
 
 export const FetchUserErrors = {
-  ...FirebaseFirestoreErrors
+  ...FirebaseFirestoreErrors,
+  'first-time-user':
+    'redirect to login where we show both a signup and a login button', // TEMP
+  'no-bunny': 'Welcome back! Please choose a bunny to continue.',
+  'no-bunnies': 'No bunnies found'
 }
 
 export const LoginErrors = {
+  ...FirebaseAuthErrors
+}
+
+export const LogoutErrors = {
   ...FirebaseAuthErrors
 }

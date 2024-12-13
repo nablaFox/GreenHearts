@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { PaperProvider } from 'react-native-paper'
 import { StatusBar } from 'expo-status-bar'
 
-import Login from './login'
+import SignIn from './sign-in'
 import { SnackBar } from '@/components/SnackBar'
 import { LoadingBar } from '@/components/LoadingBar'
 import { FetchUserHandler } from '@/components/ActionHandlers'
@@ -17,11 +17,13 @@ export default function Root() {
   const { fetchUser, isLogged } = useUser()
   const { theme } = useTheme()
 
+  // automatically try to get user; if it fails:
+  // user will be inside <SignIn /> and have the possibility to call this again from login button
   useEffect(fetchUser)
 
   return (
     <PaperProvider theme={theme}>
-      {isLogged ? <Slot /> : <Login />}
+      {isLogged ? <Slot /> : <SignIn />}
 
       <FetchUserHandler />
       <SnackBar />

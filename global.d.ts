@@ -41,10 +41,12 @@ declare global {
   type AddPostError = keyof typeof Errors.AddPostErrors
   type FetchUserError = keyof typeof Errors.FetchUserErrors
   type LoginError = keyof typeof Errors.LoginErrors
+  type LogoutError = keyof typeof Errors.LogoutErrors
 
   type FetchPostsStatus = ActionStatus | FetchPostsError
   type VotePostStatus = ActionStatus | VotePostError
   type AddPostStatus = ActionStatus | AddPostError
   type FetchUserStatus = ActionStatus | FetchUserError
   type LoginStatus = ActionStatus | LoginError
+  type LogoutStatus = ActionStatus | LogoutError
 }

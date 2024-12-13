@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 
-import { AdminHeartButtons } from './AdminHeartButtons'
+import { OwlHeartButtons } from './OwlHeartButtons'
 import { HeartButton } from './HeartButton'
 
 import { useUser } from '@/hooks/useUser'
@@ -12,12 +12,12 @@ export function HeartsSection({
   score: HeartScore
   postId: string
 }) {
-  const { isAdmin } = useUser()
+  const { isOwl } = useUser()
 
   return (
     <View>
-      {isAdmin ? (
-        <AdminHeartButtons currScore={score} postId={postId} />
+      {isOwl ? (
+        <OwlHeartButtons currScore={score} postId={postId} />
       ) : (
         score !== 0 && <HeartButton score={score} disabled />
       )}

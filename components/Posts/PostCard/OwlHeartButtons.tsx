@@ -5,7 +5,7 @@ import { HeartButton } from './HeartButton'
 import { usePosts } from '@/hooks/usePosts'
 import { assignableScores } from '@/constants/scores'
 
-export function AdminHeartButtons({
+export function OwlHeartButtons({
   currScore,
   postId
 }: {
