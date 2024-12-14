@@ -2,7 +2,7 @@
 
 Make things work
 
-- typed API interface for backend endpoints ❌
+- typed API interface for backend endpoints ✅
 - useUser.ts ❌
 - login.tsx ❌
 - register.tsx ❌

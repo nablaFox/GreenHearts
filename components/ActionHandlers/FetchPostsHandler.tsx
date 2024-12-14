@@ -2,7 +2,7 @@ import { usePosts } from '@/hooks/usePosts'
 import { showSnackBar } from '@/hooks/useSnackBar'
 import { useActionHandler } from '@/hooks/useActionHandler'
 
-import { FetchPostsErrors } from '@/constants/errors'
+import { FetchPosts_Msgs } from '@/constants/errors'
 
 import { LoadingPostsSplash } from '@/components/LoadingSplashScreens'
 
@@ -10,7 +10,7 @@ export function FetchPostsHandler() {
   const { fetchPostsStatus } = usePosts()
 
   const onError = (error: FetchPostsError) => {
-    showSnackBar({ description: FetchPostsErrors[error] })
+    showSnackBar({ description: FetchPosts_Msgs[error] })
   }
 
   useActionHandler({

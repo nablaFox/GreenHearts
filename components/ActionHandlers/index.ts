@@ -1,5 +1,6 @@
 export { FetchUserHandler } from './FetchUserHandler'
 export { FetchMorePostsHandler } from './FetchMorePostsHandler'
 export { FetchPostsHandler } from './FetchPostsHandler'
+export { AddPostHandler } from './AddPostHandler'
 export { NoBunniesHandler } from './NoBunniesHandler'
 export { NoBunnySetHandler } from './NoBunnySetHandler'
