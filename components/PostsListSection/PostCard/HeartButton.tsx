@@ -1,20 +1,28 @@
 import { TouchableOpacity } from 'react-native'
 
 import { GlowingHeart } from '@/components/GlowingHeart'
-
-import { ScoreColorMap } from '@/constants/scores'
+import { useTheme } from '@/hooks/useTheme'
 
 export function HeartButton({
-  score,
+  heart,
   disabled,
   onPress
 }: {
-  score: HeartScore
+  heart: Heart
   disabled?: boolean
   onPress?: () => void
 }) {
-  const color = ScoreColorMap[score]
-  const glowFactor = score !== 0 ? 1 : 0
+  const { theme } = useTheme()
+
+  const scoreColorMap: Record<Heart, string> = {
+    0: theme.grayHeart,
+    0.25: theme.blueHeart,
+    1: theme.greenHeart,
+    '-1': theme.redHeart
+  }
+
+  const color = scoreColorMap[heart]
+  const glowFactor = heart !== Heart.Gray ? 1 : 0
 
   const handlePress = () => {
     if (disabled) return

@@ -1,11 +1,11 @@
 import { SectionList } from 'react-native'
 
 import PostCard from './PostCard'
-import { PostListDivider } from './PostListDivider'
+import { PostsListDivider } from './PostsListDivider'
 
 import { usePosts } from '@/hooks/usePosts'
 
-export function PostsList() {
+export default function PostsListSection() {
   const { postsByDay, fetchMorePosts } = usePosts()
 
   return (
@@ -14,7 +14,7 @@ export function PostsList() {
       keyExtractor={item => item.key}
       renderItem={({ item }) => <PostCard post={item} />}
       renderSectionFooter={({ section }) => (
-        <PostListDivider date={section.date} />
+        <PostsListDivider date={section.date} />
       )}
       onEndReached={() => fetchMorePosts()}
     />

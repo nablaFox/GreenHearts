@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 
 import { WavyDivider } from '@/components/WavyDivider'
 
-export function PostListDivider({ date }: { date: Date }) {
+export function PostsListDivider({ date }: { date: Date }) {
   return (
     <View>
       <Text>{format(date, 'D MMMM')}</Text>

@@ -3,7 +3,8 @@ import { useState } from 'react'
 export function useUser() {
   const isOwl = false
   const authUser = {
-    id: 'user_id_1'
+    id: 'user_id_1',
+    token: 'user_token'
   }
 
   const bunnyId = ''

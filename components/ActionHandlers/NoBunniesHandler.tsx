@@ -2,8 +2,10 @@ import { useUser } from '@/hooks/useUser'
 
 import { Text } from 'react-native-paper'
 
-export function NoBunnies() {
-  const { authUser } = useUser()
+export function NoBunniesHandler() {
+  const { authUser, fetchUserStatus } = useUser()
+
+  if (fetchUserStatus !== 'no-bunnies') return null
 
   return (
     <Text>
@@ -11,3 +13,4 @@ export function NoBunnies() {
     </Text>
   )
 }
+

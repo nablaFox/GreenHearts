@@ -1,11 +1,10 @@
+import { useActionHandler } from '@/hooks/useActionHandler'
 import { usePosts } from '@/hooks/usePosts'
 import { showSnackBar } from '@/hooks/useSnackBar'
 
 import { AddPostErrors } from '@/constants/errors'
 
-import { ActionHandler } from './ActionHandler'
-
-export default function AddPostHandler() {
+export function AddPostHandler() {
   const { addPostStatus } = usePosts()
 
   const onError = (error: AddPostError) => {
@@ -13,5 +12,10 @@ export default function AddPostHandler() {
     return null
   }
 
-  return <ActionHandler actionStatus={addPostStatus} onError={onError} />
+  useActionHandler({
+    actionStatus: addPostStatus,
+    onError
+  })
+
+  return null
 }

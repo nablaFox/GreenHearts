@@ -1,48 +1,69 @@
-root
-  (tab)
-    home
-      home_header
+## 0.1.0-alpha
 
-      this_month_stats_section
-        hearts_wrapper
-        score_card 
-      
-      today_stats_section
-        stats_divider
-        stats_title 
-        stats_wrapper 
+Make things work
 
-      chart_section
+- typed API interface for backend endpoints ❌
+- useUser.ts ❌
+- login.tsx ❌
+- register.tsx ❌
+- nitrojs setup ❌
 
-    posts
-      posts_header
-      
-      posts_list
-       
-    fab_button
+- useStats.ts ❌
 
-  settings
-    settings_header
+- usePosts.ts ❌
+- PostCard/ ❌
 
-  maker
-    maker_header
-  
-  auth
+- nitrojs implementations ❌
+- real errors definition & handling ❌
 
-  global_snackbar
+- translations ❌
 
+# 0.2.0-alpha ❌
+
+Make things nice
+
+- PostsList.tsx
+- ThisMonthStatsSection/
+- TodayStatsSection/
+- CollapsibleHeader.tsx
+- HomeHeader.tsx
+- MakerHeader.tsx
+- PostsHeader.tsx
+- ThemedTextInput.tsx
+- ThemedTextareaInput.tsx
+- ImagePicker.tsx
+- PostsHeader.tsx
+- PostListDivider.tsx
+- WavyDivider.tsx
+- Settings.tsx
+- chart placeholder
+
+## 0.3.0-alpha ❌
+
+Make things nicer
+
+- Snackbar.tsx
+- LoadingBar.tsx
+- FetchMorePostsHandler.tsx
+- FetchPostsHandler.tsx
+- glowing heart animation
+- BottomBar hide animation on scroll
+- ThemedImagePicker animation
+
+# 0.2.1-alpha ❌
+
+- testing
+
+## 0.3.0-alpha ❌
+
+- ChartSection/
+- app rules
+
+## Notes
 
 - change "wrapper" with the adequate react native component in component names
 - change default material fonts
 
+## Phylosophy of this repo
 
-
-Owls:
-
-- has an additional "bunnies" screen
-- they can change the 
-- can change user_id choosing in the list of their bunnies
-- on user_id change: posts change, fetched user doc changes
-
-
-- we have one global user_id and one global user_token
+- make something general only if it is required from > 2 different contexts

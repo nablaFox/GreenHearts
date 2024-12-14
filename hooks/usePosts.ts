@@ -36,7 +36,7 @@ export function usePosts() {
   }
 
   const votePost = async (
-    score: HeartScore,
+    heart: Heart,
     id: string
   ): Promise<VotePostStatus> => {
     // no need to check if it is admin the server will do that

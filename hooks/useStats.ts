@@ -6,7 +6,7 @@ interface Stats {
   greens: number
   reds: number
   blue: number
-  nc: number
+  grays: number
 }
 
 export function useStats() {
@@ -18,7 +18,7 @@ export function useStats() {
     greens: 0,
     reds: 0,
     blue: 0,
-    nc: 0
+    grays: 0
   }
 
   // in the home we use month stats

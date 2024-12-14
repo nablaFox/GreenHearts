@@ -11,6 +11,10 @@ export function useTheme() {
 
   const lightTheme = {
     ...DefaultLightTheme,
+    greenHeart: 'green',
+    redHeart: 'red',
+    blueHeart: 'blue',
+    grayHeart: 'gray',
     colors: {
       ...DefaultLightTheme.colors,
       ...colors.light
@@ -19,6 +23,10 @@ export function useTheme() {
 
   const darkTheme = {
     ...DefaultDarkTheme,
+    greenHeart: 'green',
+    redHeart: 'red',
+    blueHeart: 'blue',
+    grayHeart: 'gray',
     colors: {
       ...DefaultDarkTheme.colors,
       ...colors.dark

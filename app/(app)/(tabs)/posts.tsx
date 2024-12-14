@@ -1,7 +1,8 @@
 import { ThemedView } from '@/components/Themed'
 
 import { PostsHeader } from '@/components/Headers/PostsHeader'
-import { PostsList } from '@/components/Posts/PostsList'
+
+import PostsListSection from '@/components/PostsListSection'
 
 import {
   FetchMorePostsHandler,
@@ -13,7 +14,7 @@ export default function Posts() {
   return (
     <ThemedView>
       <PostsHeader />
-      <PostsList />
+      <PostsListSection />
 
       <FetchPostsHandler />
       <FetchMorePostsHandler />

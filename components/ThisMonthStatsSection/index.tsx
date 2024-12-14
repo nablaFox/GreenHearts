@@ -1,13 +1,13 @@
 import { View } from 'react-native'
 
 import { HeartsWrapper } from './HeartsWrapper'
-import { ScoreCard } from './ScoreCard'
+import { MonthScoreCard } from './MonthScoreCard'
 
 export default function HeartsScoresSection() {
   return (
     <View>
       <HeartsWrapper />
-      <ScoreCard />
+      <MonthScoreCard />
     </View>
   )
 }

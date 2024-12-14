@@ -2,20 +2,22 @@ import { View, FlatList } from 'react-native'
 
 import { HeartCard } from './HeartCard'
 import { useStats } from '@/hooks/useStats'
+import { useTheme } from '@/hooks/useTheme'
 
 export function HeartsWrapper() {
   const { todayStats } = useStats()
-  const { greens, reds, blue, nc } = todayStats
+  const { greens, reds, blue, grays } = todayStats
+  const { theme } = useTheme()
 
   const data = [
-    { title: 'Greens', score: greens, color: 'green' },
-    { title: 'Reds', score: reds, color: 'red' },
-    { title: 'Blue', score: blue, color: 'blue' },
-    { title: 'Nc', score: nc, color: 'blue' }
+    { title: 'Green', score: greens, color: theme.greenHeart },
+    { title: 'Red', score: reds, color: theme.redHeart },
+    { title: 'Blue', score: blue, color: theme.blueHeart },
+    { title: 'Gray', score: grays, color: theme.grayHeart }
   ] as {
     title: string
-    score: HeartScore
-    color: HeartColor
+    score: number
+    color: string
   }[]
 
   return (

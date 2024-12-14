@@ -1,16 +1,20 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import { scores, colors } from '@/constants/scores'
 import * as Errors from '@/constants/errors'
 
 declare global {
-  type HeartScore = (typeof scores)[number]
+  enum Heart {
+    Green = 1,
+    Blue = 0.25,
+    Red = -1,
+    Gray = 0
+  }
 
-  type HeartColor = (typeof colors)[number]
+  const AssignableHearts = [Heart.Green, Heart.Blue, Heart.Red]
 
   interface PostInDatabase {
     title?: string
     notes?: string
-    score?: HeartScore
+    heart?: Heart
     image?: string
     date?: FirebaseFirestoreTypes.Timestamp
     userDate?: FirebaseFirestoreTypes.Timestamp

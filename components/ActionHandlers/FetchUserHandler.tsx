@@ -3,34 +3,28 @@ import { showSnackBar } from '@/hooks/useSnackBar'
 
 import { FetchUserErrors } from '@/constants/errors'
 
-import { ActionHandler } from './ActionHandler'
 import { LoadingUserSplash } from '@/components/LoadingSplashScreens'
+import { useActionHandler } from '@/hooks/useActionHandler'
 
-import { ChooseBunnyAtLogin } from '@/components/Owls/ChooseBunnyAtLogin'
-import { NoBunnies } from '@/components/Owls/NoBunnies'
-
-export default function FetchUserHandler() {
+export function FetchUserHandler() {
   const { fetchUserStatus } = useUser()
 
   const onError = (error: FetchUserError) => {
     switch (error) {
       case 'first-time-user':
-        return null
-      case 'no-bunny':
-        return <ChooseBunnyAtLogin />
-      case 'no-bunnies':
-        return <NoBunnies />
+        break
       default:
         showSnackBar({ description: FetchUserErrors[error] })
-        return null
+        break
     }
   }
 
-  return (
-    <ActionHandler
-      actionStatus={fetchUserStatus}
-      onError={onError}
-      onLoading={() => <LoadingUserSplash />}
-    />
-  )
+  useActionHandler({
+    actionStatus: fetchUserStatus,
+    onError
+  })
+
+  if (fetchUserStatus === 'loading') return <LoadingUserSplash />
+
+  return null
 }

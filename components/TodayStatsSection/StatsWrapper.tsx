@@ -2,9 +2,7 @@ import { View } from 'react-native'
 
 import { useStats } from '@/hooks/useStats'
 
-import { EmojiCard } from './StatsCard/EmojiCard'
-import { MealsCard } from './StatsCard/MealsCard'
-import { KcalCard } from './StatsCard/KcalCard'
+import { EmojiCard, MealsCard, KcalCard } from './StatCards'
 
 export function StatsWrapper() {
   const { todayStats } = useStats()

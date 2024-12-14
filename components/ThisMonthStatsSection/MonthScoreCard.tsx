@@ -2,8 +2,8 @@ import { Text } from 'react-native-paper'
 
 import { useStats } from '@/hooks/useStats'
 
-export function ScoreCard() {
+export function MonthScoreCard() {
   const { thisMonthStats } = useStats()
 
-  return <Text>Total score is {thisMonthStats.score} </Text>
+  return <Text>The score of this month is {thisMonthStats.score} </Text>
 }

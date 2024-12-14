@@ -10,7 +10,7 @@ export function HeartCard({
 }: {
   title: string
   score: number
-  color: HeartColor
+  color: string
 }) {
   return (
     <View>

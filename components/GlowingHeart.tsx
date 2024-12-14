@@ -5,7 +5,7 @@ export function GlowingHeart({
   size,
   glowFactor
 }: {
-  color: HeartColor
+  color: string
   size?: number
   glowFactor?: number
 }) {

@@ -1,5 +1,5 @@
 import { Text } from 'react-native-paper'
 
-export default function LoadingSplash() {
+export function LoadingUserSplash() {
   return <Text>Loading User...</Text>
 }
