@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "948982701209-rgdbr8h59ic08t30thctassdv33rk5fv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "green.hearts.app",
+            "certificate_hash": "006f935bdd7174c653625ecbb7b9089069104c07"
+          }
+        },
+        {
           "client_id": "948982701209-ujs02dd623olq7punfpkaohj7nq1mt0f.apps.googleusercontent.com",
           "client_type": 3
         }

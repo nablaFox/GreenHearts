@@ -41,3 +41,5 @@ app-example
 ios
 *.apk
 .idea
+
+google-services.json

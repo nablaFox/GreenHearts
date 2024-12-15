@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth'
 import { create } from 'zustand'
 
 import { usePosts } from './usePosts'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
 interface UserStoreState {
   bunnyId: string | null
@@ -28,13 +29,15 @@ export const useUser = create<UserStoreState>((set, get) => ({
     const previousCallback = get().firebaseSubscriber
 
     // fetch posts
+
     if (previousCallback) {
       previousCallback()
     }
 
-    const subscriber = firestore.posts({ userId }).onSnapshot(
+    const subscriber = firestore.user({ key: userId }).onSnapshot(
       doc => {
         // ...
+        set({ user: doc.data() })
 
         set({ fetchUserStatus: 'success' })
       },
@@ -67,8 +70,6 @@ export const useUser = create<UserStoreState>((set, get) => ({
       return set({ fetchUserStatus: 'not-found' })
     }
 
-    set({ user: userData })
-
     if (!userData.isOwl) {
       return get().setBunnyId(authUser.uid)
     }
@@ -87,9 +88,32 @@ export const useUser = create<UserStoreState>((set, get) => ({
   },
 
   login: async (): Promise<LoginStatus> => {
-    // try authentication
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
+
+    const signInResult = await GoogleSignin.signIn()
+
+    let idToken = signInResult.data?.idToken
+
+    if (!idToken) {
+      idToken = signInResult.data?.idToken
+    }
+
+    if (!idToken) {
+      return 'no-id-token'
+    }
+
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+
+    const res = await auth()
+      .signInWithCredential(googleCredential)
+      .catch(() => null)
+
+    if (res === null) {
+      return 'auth-error'
+    }
 
     get().fetchUser()
+
     return 'success'
   },
 

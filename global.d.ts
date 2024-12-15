@@ -68,7 +68,11 @@ declare global {
     | 'no-bunny'
     | 'no-bunnies'
 
-  type LoginStatus = ActionStatus | FirebaseErrors.FirebaseAuthError
+  type LoginStatus =
+    | ActionStatus
+    | FirebaseErrors.FirebaseAuthError
+    | 'no-id-token'
+    | 'auth-error'
 
   type LogoutStatus = ActionStatus | FirebaseErrors.FirebaseAuthError
 }

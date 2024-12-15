@@ -1,9 +1,9 @@
 import { useUser } from '@/hooks/useUser'
 import { showSnackBar } from '@/hooks/useSnackBar'
 
-import { LoadingUserSplash } from '@/components/LoadingSplashScreens'
 import { useActionHandler } from '@/hooks/useActionHandler'
 
+import { LoadingUserHandler } from './LoadingUserHandler'
 import { NoBunniesHandler } from './NoBunniesHandler'
 import { NoBunnySetHandler } from './NoBunnySetHandler'
 import { NoUserFoundHandler } from './NoUserFoundHandler'
@@ -11,7 +11,7 @@ import { NoUserFoundHandler } from './NoUserFoundHandler'
 export default function FetchUserHandler() {
   const { fetchUserStatus } = useUser()
 
-  if (fetchUserStatus === 'loading') return <LoadingUserSplash />
+  if (fetchUserStatus === 'loading') return <LoadingUserHandler />
 
   if (fetchUserStatus === 'no-bunny') return <NoBunnySetHandler />
 

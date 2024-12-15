@@ -14,7 +14,7 @@ export function FetchMorePostsHandler() {
   }
 
   if (fetchMorePostsStatus !== 'success') {
-}
+    // some generic error handling
 
     return null
   }

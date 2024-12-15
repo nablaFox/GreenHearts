@@ -11,6 +11,8 @@ import { useTheme } from '@/hooks/useTheme'
 import { useIsLogged, useUser } from '@/hooks/useUser'
 import { firestore } from '@/api'
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+
 import '../global.css'
 
 export default function Root() {
@@ -24,7 +26,8 @@ export default function Root() {
   useEffect(() => {
     fetchUser()
     firestore.initialize()
-  })
+    GoogleSignin.configure({ webClientId: process.env.EXPO_WEB_CLIENT_ID })
+  }, [fetchUser])
 
   return (
     <PaperProvider theme={theme}>

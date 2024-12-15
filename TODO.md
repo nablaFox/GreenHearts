@@ -49,6 +49,7 @@ Make things nicer
 - glowing heart animation
 - BottomBar hide animation on scroll
 - ThemedImagePicker animation
+- Modern google login
 
 # 0.2.1-alpha ❌
 
