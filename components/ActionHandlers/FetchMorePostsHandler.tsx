@@ -2,24 +2,22 @@ import { usePosts } from '@/hooks/usePosts'
 import { showSnackBar } from '@/hooks/useSnackBar'
 import { showLoadingBar } from '@/hooks/useLoadingBar'
 
-import { FetchPosts_Msgs } from '@/constants/errors'
 import { useActionHandler } from '@/hooks/useActionHandler'
 
 export function FetchMorePostsHandler() {
   const { fetchMorePostsStatus } = usePosts()
 
-  const onError = (error: FetchPostsError) => {
-    showSnackBar({ description: FetchPosts_Msgs[error] })
+  const onError = () => {
+    showSnackBar({ description: 'failed to fetch posts' })
   }
 
   const onLoading = () => {
     showLoadingBar()
   }
 
-  useActionHandler({
-    actionStatus: fetchMorePostsStatus,
-    onError,
-    onLoading
+  useActionHandler(fetchMorePostsStatus, {
+    SomethingWentWrong: onError,
+    loading: onLoading
   })
 
   return null

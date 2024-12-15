@@ -63,7 +63,3 @@ Make things nicer
 
 - change "wrapper" with the adequate react native component in component names
 - change default material fonts
-
-## Phylosophy of this repo
-
-- make something general only if it is required from > 2 different contexts

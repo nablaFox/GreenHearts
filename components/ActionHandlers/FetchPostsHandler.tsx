@@ -2,23 +2,18 @@ import { usePosts } from '@/hooks/usePosts'
 import { showSnackBar } from '@/hooks/useSnackBar'
 import { useActionHandler } from '@/hooks/useActionHandler'
 
-import { FetchPosts_Msgs } from '@/constants/errors'
-
 import { LoadingPostsSplash } from '@/components/LoadingSplashScreens'
 
 export function FetchPostsHandler() {
   const { fetchPostsStatus } = usePosts()
 
-  const onError = (error: FetchPostsError) => {
-    showSnackBar({ description: FetchPosts_Msgs[error] })
+  const onError = () => {
+    // showSnackBar({ description: i18n.t('errors.fetchPosts') })
   }
 
-  useActionHandler({
-    actionStatus: fetchPostsStatus,
-    onError
+  useActionHandler(fetchPostsStatus, {
+    SomethingWentWrong: onError
   })
-
-  if (fetchPostsStatus === 'success') return null
 
   if (fetchPostsStatus === 'loading') {
     return <LoadingPostsSplash />

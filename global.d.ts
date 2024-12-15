@@ -1,6 +1,5 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import * as Errors from '@/api/gh/errors'
-import * as FirebaseErrors from '@/api/firebase/errors'
+import { FirebaseErrors } from '@/api'
 
 declare global {
   enum Heart {
@@ -32,31 +31,28 @@ declare global {
     imageUri?: string
     date?: Date // Maybe
   }
+
+  interface User {}
 }
 
 // an error is everything that is not a success or a loading
 declare global {
   type ActionStatus = 'loading' | 'success'
 
-  type FetchPostsError = FirebaseErrors.FirestoreError
-  type FetchPostsStatus = ActionStatus | FetchPostsError
+  type FetchPostsStatus = ActionStatus | FirebaseErrors.FirestoreError
 
-  type AddPostError = Errors.AddPostError
-  type AddPostStatus = ActionStatus | AddPostError
+  type AddPostStatus = ActionStatus | FirebaseErrors.FirestoreError
 
-  type VotePostError = Errors.VotePostError
-  type VotePostStatus = ActionStatus | VotePostError
+  type VotePostStatus = ActionStatus | FirebaseErrors.FirestoreError
 
-  type FetchUserError =
+  type FetchUserStatus =
+    | ActionStatus
     | FirebaseErrors.FirebaseAuthError
     | 'first-time-user'
     | 'no-bunny'
     | 'no-bunnies'
-  type FetchUserStatus = ActionStatus | FetchUserError
 
-  type LoginError = FirebaseErrors.FirebaseAuthError
-  type LoginStatus = ActionStatus | LoginError
+  type LoginStatus = ActionStatus | FirebaseErrors.FirebaseAuthError
 
-  type LogoutError = FirebaseErrors.FirebaseAuthError
-  type LogoutStatus = ActionStatus | LogoutError
+  type LogoutStatus = ActionStatus | FirebaseErrors.FirebaseAuthError
 }

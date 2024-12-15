@@ -7,15 +7,7 @@ import { useActionHandler } from '@/hooks/useActionHandler'
 export function FetchUserHandler() {
   const { fetchUserStatus } = useUser()
 
-  const onError = () => {
-    showSnackBar({ description: 'Failed to fetch user' })
-  }
-
-  useActionHandler(fetchUserStatus, {
-    SomethingWentWrong: onError
-  })
-
-  if (fetchUserStatus === 'loading') return <LoadingUserSplash />
+  // if (fetchUserStatus !== 'no-user-found') return
 
   return null
 }

@@ -1,23 +1,12 @@
-import { useEffect } from 'react'
+type StatusCallbackMap<T extends string> = Partial<Record<T, () => void>>
 
-export function useActionHandler<T extends string>({
-  actionStatus,
-  onError,
-  onSuccess,
-  onLoading
-}: {
-  actionStatus: T
-  onError?: (error: Exclude<T, 'success' | 'loading'>) => void
-  onSuccess?: () => void
-  onLoading?: () => void
-}) {
-  useEffect(() => {
-    if (actionStatus === 'loading') {
-      onLoading?.()
-    } else if (actionStatus === 'success') {
-      onSuccess?.()
-    } else {
-      onError?.(actionStatus as Exclude<T, 'success' | 'loading'>)
-    }
-  }, [actionStatus, onError, onSuccess, onLoading])
+export function useActionHandler<T extends string>(
+  status: T,
+  callbacks: StatusCallbackMap<T>
+): void {
+  const callback = callbacks[status]
+  if (callback) {
+    callback()
+  }
 }
+

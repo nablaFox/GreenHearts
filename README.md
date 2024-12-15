@@ -13,3 +13,5 @@
 - components/ActionHandlers/: components used to graphically handle user interaction outcomes
 - components/Headers/: screen headers
 - components/LoadingSplashScreens/: components used to display full screen view while an action is loading
+
+- make something general only if it is required from > 2 different contexts
