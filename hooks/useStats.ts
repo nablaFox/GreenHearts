@@ -1,14 +1,3 @@
-interface Stats {
-  meals: number
-  kcal: number
-  workouts: number
-  score: number
-  greens: number
-  reds: number
-  blue: number
-  grays: number
-}
-
 export function useStats() {
   const fakeStats = {
     meals: 0,

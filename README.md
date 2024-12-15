@@ -15,3 +15,9 @@
 - components/LoadingSplashScreens/: components used to display full screen view while an action is loading
 
 - make something general only if it is required from > 2 different contexts
+
+
+- every action handler is not specific to an error but to all the possible states of an action: they are action state handlers; 
+status !== 'success' can be used to handle generic errors
+status === 'some-specific-error' can be used to handle specific errors
+status === 'loading' can be used to handle loading states

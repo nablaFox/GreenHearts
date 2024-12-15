@@ -3,7 +3,7 @@
 Make things work
 
 - typed API interface for backend endpoints ✅
-- useUser.ts ❌
+- useUser.ts ✅
 - login.tsx ❌
 - register.tsx ❌
 - nitrojs setup ❌

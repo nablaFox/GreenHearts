@@ -7,18 +7,15 @@ import { useActionHandler } from '@/hooks/useActionHandler'
 export function FetchMorePostsHandler() {
   const { fetchMorePostsStatus } = usePosts()
 
-  const onError = () => {
-    showSnackBar({ description: 'failed to fetch posts' })
+  if (fetchMorePostsStatus === 'loading') {
+    // loading state handling
+
+    return null
   }
 
-  const onLoading = () => {
-    showLoadingBar()
+  if (fetchMorePostsStatus !== 'success') {
+}
+
+    return null
   }
-
-  useActionHandler(fetchMorePostsStatus, {
-    SomethingWentWrong: onError,
-    loading: onLoading
-  })
-
-  return null
 }

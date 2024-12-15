@@ -6,13 +6,12 @@ import { useEffect } from 'react'
 export function AddPostHandler() {
   const { addPostStatus } = usePosts()
 
-  const onError = () => {
-    // showSnackBar({ description: i18n.t('errors.AddPostError') })
+  if (addPostStatus === 'loading') {
+    return null
   }
 
-  useActionHandler(addPostStatus, {
-    SomethingWentWrong: onError
-  })
-
-  return null
+  if (addPostStatus !== 'success') {
+    // some generic error handling
+    return null
+  }
 }

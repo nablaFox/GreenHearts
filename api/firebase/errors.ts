@@ -1,11 +1,5 @@
-export enum FirebaseAuthError {
-  SomethingWentWrong = 'SomethingWentWrong'
-}
+export type FirebaseAuthError = 'something-went-wrong'
 
-export enum FirestoreError {
-  SomethingWentWrong = 'SomethingWentWrong'
-}
+export type FirestoreError = 'something-went-wrong' | 'not-found'
 
-export enum FirebaseStorageError {
-  SomethingWentWrong = 'SomethingWentWrong'
-}
+export type FirebaseStorageError = 'something-went-wrong'

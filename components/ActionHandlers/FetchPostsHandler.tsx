@@ -7,15 +7,12 @@ import { LoadingPostsSplash } from '@/components/LoadingSplashScreens'
 export function FetchPostsHandler() {
   const { fetchPostsStatus } = usePosts()
 
-  const onError = () => {
-    // showSnackBar({ description: i18n.t('errors.fetchPosts') })
-  }
-
-  useActionHandler(fetchPostsStatus, {
-    SomethingWentWrong: onError
-  })
-
   if (fetchPostsStatus === 'loading') {
     return <LoadingPostsSplash />
+  }
+
+  if (fetchPostsStatus !== 'success') {
+    // some generic error handling
+    return null
   }
 }

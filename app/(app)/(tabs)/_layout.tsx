@@ -5,13 +5,13 @@ import Index from './index'
 import Posts from './posts'
 import Bunnies from './bunnies'
 
-import { useUser } from '@/hooks/useUser'
+import { useIsOwl } from '@/hooks/useUser'
 import { useRouter } from 'expo-router'
 
 export default function TabLayout() {
   const [index, setIndex] = React.useState(0)
 
-  const { isOwl } = useUser()
+  const isOwl = useIsOwl()
 
   const routes = [
     { key: 'home', title: 'Home', focusedIcon: 'heart' },

@@ -1,84 +1,122 @@
-import { useState } from 'react'
+import { FirebaseErrors, firestore } from '@/api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import auth from '@react-native-firebase/auth'
 
-export function useUser() {
-  const isOwl = false
-  const authUser = {
-    id: 'user_id_1',
-    token: 'user_token'
-  }
+import { create } from 'zustand'
 
-  const bunnyId = ''
-  const bunnies = ['user_id_2', 'user_id_3'] // from database
-  const areThereBunnies = bunnies.length > 0
+import { usePosts } from './usePosts'
 
-  // const isLogged = authUser !== null && bunnyId !== ''
-  const isLogged = true
-
-  const fetchUserStatus = useState<FetchUserStatus>('success')[0]
-
-  const setFirebaseCallback = (userId: string) => {
-    // unsubscribe previous callback
-
-    // set firebase callback
-    //  - inside set fetchUserStatus to appropriate status
-
-    return
-  }
-
-  const fetchUser = () => {
-    // set fetchUserStatus to loading
-
-    // try to get authUser (from persistent data)
-
-    // if we fail to get authUser set fetchUserStatus to the correct error
-    //    - no previous authUser in memory: first-time-user
-    //    - problem with server while trying to authenticate: something
-    //    - not found: registration-required
-
-    // if bunny setBunnyId(authUser.id)
-    // set fetchUserStatus to success
-
-    // if isOwl, storedBunnyId != null, areThereBunnies == true => setBunnyId(storedBunnyId); set fetchUserStatus to success
-    // else if !areThereBunnies => set the error no-bunnies
-    // else set the error no-bunny
-
-    // setFirebaseCallback(bunnyId)
-
-    return
-  }
-
-  const login = async (): Promise<LoginStatus> => {
-    // authentication
-
-    // call fetchUser
-
-    return 'success'
-  }
-
-  const logout = async (): Promise<LogoutStatus> => {
-    // set bunnyId to null
-    // unsubscribe firebase callback
-
-    return 'success'
-  }
-
-  const setBunnyId = (bunnyId: string) => {
-    // set bunnyId
-    // unsubscribe previous firebase callback
-    // set firebase callback
-  }
-
-  return {
-    fetchUser,
-    login,
-    logout,
-    setBunnyId,
-    fetchUserStatus,
-    isOwl,
-    isLogged,
-    bunnyId,
-    areThereBunnies,
-    bunnies,
-    authUser
-  }
+interface UserStoreState {
+  bunnyId: string | null
+  fetchUserStatus: FetchUserStatus
+  user: User | null
+  firebaseSubscriber: (() => void) | null
+  setBunnyId: (bunnyId: string) => void
+  setFirebaseCallback: (userId: string) => void
+  fetchUser: () => Promise<void>
+  login: () => Promise<LoginStatus>
+  logout: () => Promise<LogoutStatus>
 }
+
+export const useUser = create<UserStoreState>((set, get) => ({
+  bunnyId: null,
+  user: null,
+  fetchUserStatus: 'success',
+  firebaseSubscriber: null,
+
+  setFirebaseCallback: (userId: string) => {
+    const previousCallback = get().firebaseSubscriber
+
+    // fetch posts
+    if (previousCallback) {
+      previousCallback()
+    }
+
+    const subscriber = firestore.posts({ userId }).onSnapshot(
+      doc => {
+        // ...
+
+        set({ fetchUserStatus: 'success' })
+      },
+      error => {
+        set({ fetchUserStatus: error.message as FirebaseErrors.FirestoreError })
+      }
+    )
+
+    set({ firebaseSubscriber: subscriber })
+  },
+
+  fetchUser: async () => {
+    set({ fetchUserStatus: 'loading' })
+
+    const authUser = auth().currentUser
+
+    if (!authUser) {
+      return set({ fetchUserStatus: 'first-time-user' })
+    }
+
+    const userDoc = await firestore.user({ key: authUser.uid }).get()
+
+    if (!userDoc.exists) {
+      return set({ fetchUserStatus: 'not-found' })
+    }
+
+    const userData = userDoc.data()
+
+    if (!userData) {
+      return set({ fetchUserStatus: 'not-found' })
+    }
+
+    set({ user: userData })
+
+    if (!userData.isOwl) {
+      return get().setBunnyId(authUser.uid)
+    }
+
+    const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
+
+    if (!bunnyId || !userData.bunnies?.includes(bunnyId)) {
+      return set({ fetchUserStatus: 'no-bunny' })
+    }
+
+    if (!userData.bunnies.length) {
+      return set({ fetchUserStatus: 'no-bunnies' })
+    }
+
+    get().setBunnyId(bunnyId)
+  },
+
+  login: async (): Promise<LoginStatus> => {
+    // try authentication
+
+    get().fetchUser()
+    return 'success'
+  },
+
+  logout: async (): Promise<LogoutStatus> => {
+    // try logout
+
+    set({ bunnyId: null })
+    set({ user: null })
+    get().firebaseSubscriber?.()
+    return 'success'
+  },
+
+  setBunnyId: (bunnyId: string) => {
+    set({ bunnyId })
+    get().setFirebaseCallback(bunnyId)
+  }
+}))
+
+export const useIsOwl = () => useUser(state => state.user?.isOwl ?? false)
+
+export const useAuthUserId = () =>
+  useUser(() => auth().currentUser?.uid ?? null)
+
+export const useBunnies = () => useUser(state => state.user?.bunnies ?? [])
+
+export const useAreThereBunnies = () =>
+  useUser(state => (state.user?.bunnies?.length ?? 0) > 0)
+
+export const useIsLogged = () =>
+  useUser(state => !!state.bunnyId && !!state.user)

@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { HeartSelection } from './HeartSelection'
 import { HeartButton } from './HeartButton'
 
-import { useUser } from '@/hooks/useUser'
+import { useIsOwl } from '@/hooks/useUser'
 import { usePosts } from '@/hooks/usePosts'
 
 export function PostFooter({
@@ -13,7 +13,7 @@ export function PostFooter({
   postHeart: Heart
   postId: string
 }) {
-  const { isOwl } = useUser()
+  const isOwl = useIsOwl()
   const { votePost } = usePosts()
 
   const handleVotePost = (heart: Heart) => {

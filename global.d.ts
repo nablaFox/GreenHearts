@@ -32,7 +32,22 @@ declare global {
     date?: Date // Maybe
   }
 
-  interface User {}
+  interface Stats {
+    meals: number
+    kcal: number
+    workouts: number
+    score: number
+    greens: number
+    reds: number
+    blue: number
+    grays: number
+  }
+
+  interface User {
+    key: string
+    isOwl?: boolean
+    bunnies?: string[]
+  }
 }
 
 // an error is everything that is not a success or a loading
@@ -48,6 +63,7 @@ declare global {
   type FetchUserStatus =
     | ActionStatus
     | FirebaseErrors.FirebaseAuthError
+    | FirebaseErrors.FirestoreError
     | 'first-time-user'
     | 'no-bunny'
     | 'no-bunnies'
