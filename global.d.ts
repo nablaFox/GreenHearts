@@ -1,5 +1,4 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import { FirebaseErrors } from '@/libs/api'
 
 declare global {
   enum Heart {
@@ -22,14 +21,6 @@ declare global {
 
   interface Post extends PostInDatabase {
     key: string
-    verified?: boolean
-  }
-
-  interface CreatePostParams {
-    title?: string
-    notes?: string
-    imageUri?: string
-    date?: Date // Maybe
   }
 
   interface Stats {
@@ -52,23 +43,8 @@ declare global {
   interface User extends UserInDatabase {
     key: string
   }
-}
 
-// an error is everything that is not a success or a loading
-declare global {
-  type ActionStatus = 'loading' | 'success'
+  type ActionStatus<T> = 'loading' | 'success' | T
 
-  type FetchPostsStatus = ActionStatus | FirebaseErrors.FirestoreError
-
-  type AddPostStatus = ActionStatus | FirebaseErrors.FirestoreError
-
-  type VotePostStatus = ActionStatus | FirebaseErrors.FirestoreError
-
-  type FetchUserStatus =
-    | ActionStatus
-    | FirebaseErrors.FirebaseAuthError
-    | FirebaseErrors.FirestoreError
-    | 'first-time-user'
-    | 'no-bunny'
-    | 'no-bunnies'
+  type ActionResult<T> = void | T
 }

@@ -4,6 +4,10 @@ import auth from '@react-native-firebase/auth'
 
 import { create } from 'zustand'
 
+type FetchUserStatus = ActionStatus<
+  'first-time-user' | 'no-bunny' | 'no-bunnies' | 'not-found' | 'firebase-error'
+>
+
 interface UserStoreState {
   bunnyId: string | null
   fetchUserStatus: FetchUserStatus
@@ -53,7 +57,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
         set({ fetchUserStatus: 'success' })
       },
       error => {
-        set({ fetchUserStatus: error.message as FirebaseErrors.FirestoreError })
+        set({ fetchUserStatus: 'firebase-error' })
       }
     )
 

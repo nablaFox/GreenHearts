@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
-type LoginStatus = 'success' | 'no-id-token' | 'auth-error'
+type LoginResult = void | 'no-id-token' | 'auth-error'
 
 export function useAuth() {
   const initAuth = () => {
@@ -10,7 +10,7 @@ export function useAuth() {
     })
   }
 
-  const loginWithGoogle = async (): Promise<LoginStatus> => {
+  const loginWithGoogle = async (): Promise<LoginResult> => {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
 
     const signInResult = await GoogleSignin.signIn()
@@ -30,13 +30,10 @@ export function useAuth() {
     if (res === null) {
       return 'auth-error'
     }
-
-    return 'success'
   }
 
-  const logout = async (): Promise<LoginStatus> => {
+  const logout = async (): Promise<LoginResult> => {
     await auth().signOut()
-    return 'success'
   }
 
   return {

@@ -66,5 +66,7 @@ Make things nicer
 
 - change "wrapper" with the adequate react native component in component names
 - change default material fonts
-- fix logout crash and zustand not reactivity (maybe use react context API)
+- fix logout crash
+- fix posts crash with SectionList
 - firestore client autogeneration
+- correct login structure and isLogged fix
