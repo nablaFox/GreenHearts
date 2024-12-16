@@ -2,15 +2,19 @@ import { Stack } from 'expo-router'
 import React, { useEffect } from 'react'
 
 import { usePosts } from '@/hooks/usePosts'
-import { useColorScheme } from '@/hooks/useColorScheme'
+import { useColorScheme } from '@/libs/useColorScheme'
 
 import { setDatetimePickerTheme } from '@/modules/datetime-picker'
+import { useUser } from '@/hooks/useUser'
 
 export default function AppLayout() {
   const { fetchPosts } = usePosts()
   const { isDark } = useColorScheme()
+  const { bunnyId } = useUser()
 
-  useEffect(fetchPosts)
+  useEffect(() => {
+    if (bunnyId !== null) fetchPosts(bunnyId)
+  }, [fetchPosts, bunnyId])
 
   useEffect(() => {
     setDatetimePickerTheme(isDark)

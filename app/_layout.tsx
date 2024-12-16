@@ -21,13 +21,15 @@ export default function Root() {
   const { fetchUser } = useUser()
   const { initAuth } = useAuth()
 
+  firestore.initialize()
+
+  useEffect(initAuth, [initAuth])
+
   // automatically try to get user; if it fails:
   // user will be inside <SignIn /> and have the possibility to call this again from login button
   useEffect(() => {
-    firestore.initialize()
-    initAuth()
     fetchUser()
-  }, [fetchUser, initAuth])
+  }, [fetchUser])
 
   return (
     <PaperProvider theme={theme}>

@@ -4,8 +4,6 @@ import auth from '@react-native-firebase/auth'
 
 import { create } from 'zustand'
 
-import { usePosts } from './usePosts'
-
 interface UserStoreState {
   bunnyId: string | null
   fetchUserStatus: FetchUserStatus
@@ -27,8 +25,6 @@ export const useUser = create<UserStoreState>((set, get) => ({
   setFirebaseCallback: (userId: string) => {
     const previousCallback = get().firebaseSubscriber
 
-    // fetch posts
-
     if (previousCallback) {
       previousCallback()
     }
@@ -37,7 +33,20 @@ export const useUser = create<UserStoreState>((set, get) => ({
       doc => {
         const user = doc.data()
 
+        if (!user) return
+
         set({ user: { ...user, key: doc.id } })
+
+        if (!user.isOwl) set({ fetchUserStatus: 'success' })
+
+        if (!user.bunnies?.length) {
+          return set({ fetchUserStatus: 'no-bunnies' })
+        }
+
+        if (!get().bunnyId) {
+          return set({ fetchUserStatus: 'no-bunny' })
+        }
+
         set({ fetchUserStatus: 'success' })
       },
       error => {
@@ -69,32 +78,33 @@ export const useUser = create<UserStoreState>((set, get) => ({
       return set({ fetchUserStatus: 'not-found' })
     }
 
+    get().setFirebaseCallback(authUser.uid)
+
     if (!userData.isOwl) {
       return get().setBunnyId(authUser.uid)
     }
 
     const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
 
-    if (!bunnyId || !userData.bunnies?.includes(bunnyId)) {
-      return set({ fetchUserStatus: 'no-bunny' })
+    if (!userData.bunnies?.length) {
+      return set({ fetchUserStatus: 'no-bunnies' })
     }
 
-    if (!userData.bunnies.length) {
-      return set({ fetchUserStatus: 'no-bunnies' })
+    if (!bunnyId || !userData.bunnies.includes(bunnyId)) {
+      return set({ fetchUserStatus: 'no-bunny' })
     }
 
     get().setBunnyId(bunnyId)
   },
 
-  setBunnyId: (bunnyId: string) => {
-    set({ bunnyId })
-    get().setFirebaseCallback(bunnyId)
-  },
+  setBunnyId: (bunnyId: string) => set({ bunnyId }),
 
   addUser: async params => {
     const userId = auth().currentUser?.uid
 
     if (!userId) return
+
+    set({ fetchUserStatus: 'loading' })
 
     await firestore.user({ userId }).set({
       username: params.username,

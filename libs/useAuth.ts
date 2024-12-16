@@ -5,7 +5,9 @@ type LoginStatus = 'success' | 'no-id-token' | 'auth-error'
 
 export function useAuth() {
   const initAuth = () => {
-    GoogleSignin.configure({ webClientId: process.env.EXPO_WEB_CLIENT_ID })
+    GoogleSignin.configure({
+      webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID
+    })
   }
 
   const loginWithGoogle = async (): Promise<LoginStatus> => {
@@ -13,11 +15,7 @@ export function useAuth() {
 
     const signInResult = await GoogleSignin.signIn()
 
-    let idToken = signInResult.data?.idToken
-
-    if (!idToken) {
-      idToken = signInResult.data?.idToken
-    }
+    const idToken = signInResult.data?.idToken
 
     if (!idToken) {
       return 'no-id-token'

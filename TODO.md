@@ -4,7 +4,7 @@ Make things work
 
 - typed API interface for backend endpoints ✅
 - useUser.ts ✅
-- login, registration ❌
+- login, registration ✅
 
 - useStats.ts ❌
 

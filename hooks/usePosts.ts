@@ -13,7 +13,7 @@ export function usePosts() {
   const fetchMorePostsStatus = useState<FetchPostsStatus>('success')[0]
   const addPostStatus = useState<AddPostStatus>('success')[0]
 
-  const fetchPosts = () => {
+  const fetchPosts = (bunnyId: string) => {
     // set fetchPostsStatus to loading
     // set firebase callback by fetching posts in descending date order with postsLimit:
     // - if unverified product exists with same key replace it
