@@ -1,6 +1,5 @@
 import { create } from 'zustand'
-import { firestore } from '@/libs/api'
-import { getWeek } from 'date-fns'
+import { firestore } from '@/api'
 
 interface StatsStoreState {
   thisMonthStats: Stats
@@ -30,14 +29,8 @@ export const useStats = create<StatsStoreState>((set, get) => ({
   fetchStats: (bunnyId: string) => {
     get().prevCallback?.forEach(cb => cb())
 
-    const today = new Date()
-    const day = today.getDate()
-    const week = getWeek(today)
-    const month = today.getMonth() + 1
-    const year = today.getFullYear()
-
     const unsubscribeToday = firestore
-      .dailyStats({ userId: bunnyId, year, month, day })
+      .todayStats({ userId: bunnyId })
       .onSnapshot(doc => {
         const data = doc?.data()
 
@@ -47,7 +40,7 @@ export const useStats = create<StatsStoreState>((set, get) => ({
       })
 
     const unsubscribeWeek = firestore
-      .weeklyStats({ userId: bunnyId, year, week })
+      .thisWeekStats({ userId: bunnyId })
       .onSnapshot(doc => {
         const data = doc?.data()
 
@@ -57,7 +50,7 @@ export const useStats = create<StatsStoreState>((set, get) => ({
       })
 
     const unsubscribeMonth = firestore
-      .monthlyStats({ userId: bunnyId, year, month })
+      .thisMonthStats({ userId: bunnyId })
       .onSnapshot(doc => {
         const data = doc?.data()
 

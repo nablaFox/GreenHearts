@@ -1,4 +1,4 @@
-import { FirebaseErrors, firestore } from '@/libs/api'
+import { firestore } from '@/api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from '@react-native-firebase/auth'
 

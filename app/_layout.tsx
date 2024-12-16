@@ -10,7 +10,7 @@ import { LoadingBar } from '@/components/LoadingBar'
 import { useTheme } from '@/hooks/useTheme'
 import { useUser } from '@/hooks/useUser'
 import { useAuth } from '@/libs/useAuth'
-import { firestore } from '@/libs/api'
+import { firestore } from '@/api'
 
 import '../global.css'
 
@@ -18,15 +18,13 @@ export default function Root() {
   const { theme } = useTheme()
   const isLogged = useUser(state => state.isLogged())
 
+  firestore.initialize()
+
   const { fetchUser } = useUser()
   const { initAuth } = useAuth()
 
-  firestore.initialize()
-
   useEffect(initAuth, [initAuth])
 
-  // automatically try to get user; if it fails:
-  // user will be inside <SignIn /> and have the possibility to call this again from login button
   useEffect(() => {
     fetchUser()
   }, [fetchUser])
