@@ -8,7 +8,7 @@ import { SnackBar } from '@/components/SnackBar'
 import { LoadingBar } from '@/components/LoadingBar'
 
 import { useTheme } from '@/hooks/useTheme'
-import { useIsLogged, useUser } from '@/hooks/useUser'
+import { useUser } from '@/hooks/useUser'
 import { useAuth } from '@/libs/useAuth'
 import { firestore } from '@/libs/api'
 
@@ -16,7 +16,7 @@ import '../global.css'
 
 export default function Root() {
   const { theme } = useTheme()
-  const isLogged = useIsLogged()
+  const isLogged = useUser(state => state.isLogged())
 
   const { fetchUser } = useUser()
   const { initAuth } = useAuth()

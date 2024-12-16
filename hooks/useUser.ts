@@ -14,6 +14,9 @@ interface UserStoreState {
   fetchUser: () => Promise<void>
   addUser: (data: { username: string; isOwl: boolean }) => void
   reset: () => void
+  isOwl: () => boolean
+  areThereBunnies: () => boolean
+  isLogged: () => boolean
 }
 
 export const useUser = create<UserStoreState>((set, get) => ({
@@ -124,15 +127,11 @@ export const useUser = create<UserStoreState>((set, get) => ({
       fetchUserStatus: 'success',
       firebaseSubscriber: null
     })
-  }
+  },
+
+  isOwl: () => get().user?.isOwl ?? false,
+
+  areThereBunnies: () => (get().user?.bunnies?.length ?? 0) > 0,
+
+  isLogged: () => !!get().bunnyId && !!get().user
 }))
-
-export const useIsOwl = () => useUser(state => state.user?.isOwl ?? false)
-
-export const useBunnies = () => useUser(state => state.user?.bunnies ?? [])
-
-export const useAreThereBunnies = () =>
-  useUser(state => (state.user?.bunnies?.length ?? 0) > 0)
-
-export const useIsLogged = () =>
-  useUser(state => !!state.bunnyId && !!state.user)
