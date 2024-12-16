@@ -1,6 +1,6 @@
 import { usePosts } from '@/hooks/usePosts'
 import { showSnackBar } from '@/hooks/useSnackBar'
-import { useActionHandler } from '@/hooks/useActionHandler'
+import { useActionHandler } from '@/libs/useActionHandler'
 
 import { Text } from 'react-native-paper'
 

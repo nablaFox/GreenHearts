@@ -5,7 +5,6 @@ import auth from '@react-native-firebase/auth'
 import { create } from 'zustand'
 
 import { usePosts } from './usePosts'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
 interface UserStoreState {
   bunnyId: string | null
@@ -15,8 +14,8 @@ interface UserStoreState {
   setBunnyId: (bunnyId: string) => void
   setFirebaseCallback: (userId: string) => void
   fetchUser: () => Promise<void>
-  login: () => Promise<LoginStatus>
-  logout: () => Promise<LogoutStatus>
+  addUser: (data: { username: string; isOwl: boolean }) => void
+  reset: () => void
 }
 
 export const useUser = create<UserStoreState>((set, get) => ({
@@ -34,11 +33,11 @@ export const useUser = create<UserStoreState>((set, get) => ({
       previousCallback()
     }
 
-    const subscriber = firestore.user({ key: userId }).onSnapshot(
+    const subscriber = firestore.user({ userId }).onSnapshot(
       doc => {
-        // ...
-        set({ user: doc.data() })
+        const user = doc.data()
 
+        set({ user: { ...user, key: doc.id } })
         set({ fetchUserStatus: 'success' })
       },
       error => {
@@ -58,7 +57,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
       return set({ fetchUserStatus: 'first-time-user' })
     }
 
-    const userDoc = await firestore.user({ key: authUser.uid }).get()
+    const userDoc = await firestore.user({ userId: authUser.uid }).get()
 
     if (!userDoc.exists) {
       return set({ fetchUserStatus: 'not-found' })
@@ -87,55 +86,38 @@ export const useUser = create<UserStoreState>((set, get) => ({
     get().setBunnyId(bunnyId)
   },
 
-  login: async (): Promise<LoginStatus> => {
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
-
-    const signInResult = await GoogleSignin.signIn()
-
-    let idToken = signInResult.data?.idToken
-
-    if (!idToken) {
-      idToken = signInResult.data?.idToken
-    }
-
-    if (!idToken) {
-      return 'no-id-token'
-    }
-
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
-
-    const res = await auth()
-      .signInWithCredential(googleCredential)
-      .catch(() => null)
-
-    if (res === null) {
-      return 'auth-error'
-    }
-
-    get().fetchUser()
-
-    return 'success'
-  },
-
-  logout: async (): Promise<LogoutStatus> => {
-    // try logout
-
-    set({ bunnyId: null })
-    set({ user: null })
-    get().firebaseSubscriber?.()
-    return 'success'
-  },
-
   setBunnyId: (bunnyId: string) => {
     set({ bunnyId })
     get().setFirebaseCallback(bunnyId)
+  },
+
+  addUser: async params => {
+    const userId = auth().currentUser?.uid
+
+    if (!userId) return
+
+    await firestore.user({ userId }).set({
+      username: params.username,
+      isOwl: params.isOwl,
+      bunnies: []
+    })
+
+    get().fetchUser()
+  },
+
+  reset: () => {
+    get().firebaseSubscriber?.()
+
+    set({
+      bunnyId: null,
+      user: null,
+      fetchUserStatus: 'success',
+      firebaseSubscriber: null
+    })
   }
 }))
 
 export const useIsOwl = () => useUser(state => state.user?.isOwl ?? false)
-
-export const useAuthUserId = () =>
-  useUser(() => auth().currentUser?.uid ?? null)
 
 export const useBunnies = () => useUser(state => state.user?.bunnies ?? [])
 

@@ -4,7 +4,7 @@ import {
 } from 'react-native-paper'
 import colors from '@/theme.json'
 
-import { useColorScheme } from './useColorScheme'
+import { useColorScheme } from '@/libs/useColorScheme'
 
 export function useTheme() {
   const { isDark } = useColorScheme()

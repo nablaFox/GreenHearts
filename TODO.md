@@ -4,16 +4,13 @@ Make things work
 
 - typed API interface for backend endpoints ✅
 - useUser.ts ✅
-- login.tsx ❌
-- register.tsx ❌
-- nitrojs setup ❌
+- login, registration ❌
 
 - useStats.ts ❌
 
 - usePosts.ts ❌
 - PostCard/ ❌
 
-- nitrojs implementations ❌
 - real errors definition & handling ❌
 
 - translations ❌
@@ -33,6 +30,7 @@ Make things nice
 - ThemedTextareaInput.tsx
 - ImagePicker.tsx
 - PostsHeader.tsx
+- sign-in.tsx
 - PostListDivider.tsx
 - WavyDivider.tsx
 - Settings.tsx
@@ -54,6 +52,10 @@ Make things nicer
 # 0.2.1-alpha ❌
 
 - testing
+
+# 0.2.2-alpha ❌
+
+- no-login mode
 
 ## 0.3.0-alpha ❌
 

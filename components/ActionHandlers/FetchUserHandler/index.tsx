@@ -1,7 +1,4 @@
 import { useUser } from '@/hooks/useUser'
-import { showSnackBar } from '@/hooks/useSnackBar'
-
-import { useActionHandler } from '@/hooks/useActionHandler'
 
 import { LoadingUserHandler } from './LoadingUserHandler'
 import { NoBunniesHandler } from './NoBunniesHandler'

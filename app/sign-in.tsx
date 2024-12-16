@@ -3,29 +3,33 @@ import { Button } from 'react-native-paper'
 
 import { FetchUserHandler } from '@/components/ActionHandlers'
 import { useUser } from '@/hooks/useUser'
+import { useAuth } from '@/libs/useAuth'
+
+import { showSnackBar } from '@/hooks/useSnackBar'
 
 export default function SignIn() {
-  const { login, user } = useUser()
+  const { loginWithGoogle } = useAuth()
+  const { fetchUser } = useUser()
 
-  const onLogin = async () => {
-    const res = await login()
-
-    if (res === 'success') {
-      console.log('login success')
-      console.log(user)
-    }
+  const authenticateUser = async () => {
+    const res = await loginWithGoogle()
 
     if (res === 'no-id-token') {
-      console.log('no id token')
+      return showSnackBar({ description: 'No id token!' })
     }
+
+    fetchUser()
   }
 
   return (
     <View className="pt-16 px-8">
-      <Button mode="contained" onPress={onLogin}>
+      <Button mode="contained" onPress={authenticateUser}>
         Login
       </Button>
-      <Button>Register</Button>
+
+      <Button mode="outlined" onPress={authenticateUser}>
+        Register
+      </Button>
 
       <FetchUserHandler />
     </View>

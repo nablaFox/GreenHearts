@@ -1,7 +1,7 @@
 const FirestoreContract = {
   user: {
-    path: '/users/{key}',
-    params: {} as { key: string },
+    path: '/users/{userId}',
+    params: {} as { userId: string },
     docType: {} as User,
     type: 'doc'
   },

@@ -9,9 +9,8 @@ import { LoadingBar } from '@/components/LoadingBar'
 
 import { useTheme } from '@/hooks/useTheme'
 import { useIsLogged, useUser } from '@/hooks/useUser'
+import { useAuth } from '@/libs/useAuth'
 import { firestore } from '@/api'
-
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
 import '../global.css'
 
@@ -20,14 +19,15 @@ export default function Root() {
   const isLogged = useIsLogged()
 
   const { fetchUser } = useUser()
+  const { initAuth } = useAuth()
 
   // automatically try to get user; if it fails:
   // user will be inside <SignIn /> and have the possibility to call this again from login button
   useEffect(() => {
-    fetchUser()
     firestore.initialize()
-    GoogleSignin.configure({ webClientId: process.env.EXPO_WEB_CLIENT_ID })
-  }, [fetchUser])
+    initAuth()
+    fetchUser()
+  }, [fetchUser, initAuth])
 
   return (
     <PaperProvider theme={theme}>

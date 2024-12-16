@@ -43,10 +43,14 @@ declare global {
     grays: number
   }
 
-  interface User {
-    key: string
+  interface UserInDatabase {
     isOwl?: boolean
     bunnies?: string[]
+    username?: string
+  }
+
+  interface User extends UserInDatabase {
+    key: string
   }
 }
 
@@ -67,12 +71,4 @@ declare global {
     | 'first-time-user'
     | 'no-bunny'
     | 'no-bunnies'
-
-  type LoginStatus =
-    | ActionStatus
-    | FirebaseErrors.FirebaseAuthError
-    | 'no-id-token'
-    | 'auth-error'
-
-  type LogoutStatus = ActionStatus | FirebaseErrors.FirebaseAuthError
 }

@@ -8,7 +8,9 @@ export const client = {
   user: (params: ExtractParams<(typeof contract)['user']>) => {
     return firestore()
       .collection('users')
-      .doc(params.key) as FirebaseFirestoreTypes.DocumentReference<User>
+      .doc(
+        params.userId
+      ) as FirebaseFirestoreTypes.DocumentReference<UserInDatabase>
   },
 
   posts: (params: ExtractParams<(typeof contract)['posts']>) => {

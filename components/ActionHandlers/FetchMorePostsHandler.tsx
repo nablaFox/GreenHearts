@@ -2,7 +2,7 @@ import { usePosts } from '@/hooks/usePosts'
 import { showSnackBar } from '@/hooks/useSnackBar'
 import { showLoadingBar } from '@/hooks/useLoadingBar'
 
-import { useActionHandler } from '@/hooks/useActionHandler'
+import { useActionHandler } from '@/libs/useActionHandler'
 
 export function FetchMorePostsHandler() {
   const { fetchMorePostsStatus } = usePosts()

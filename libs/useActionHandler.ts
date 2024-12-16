@@ -9,4 +9,3 @@ export function useActionHandler<T extends string>(
     callback()
   }
 }
-
