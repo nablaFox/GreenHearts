@@ -6,10 +6,9 @@ Make things work
 - useUser.ts ✅
 - login, registration ✅
 
-- useStats.ts ❌
+- useStats.ts ✅
 
-- usePosts.ts ❌
-- PostCard/ ❌
+- usePosts.ts & posts correct visualization ❌
 
 - real errors definition & handling ❌
 
@@ -19,6 +18,7 @@ Make things work
 
 Make things nice
 
+- PostCard/
 - PostsList.tsx
 - ThisMonthStatsSection/
 - TodayStatsSection/
@@ -66,3 +66,5 @@ Make things nicer
 
 - change "wrapper" with the adequate react native component in component names
 - change default material fonts
+- fix logout crash and zustand not reactivity (maybe use react context API)
+- firestore client autogeneration

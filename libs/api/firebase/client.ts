@@ -33,7 +33,29 @@ export const client = {
       .collection('users')
       .doc(params.userId)
       .collection('stats')
-      .doc(params.date) as FirebaseFirestoreTypes.DocumentReference<Stats>
+      .doc(
+        `${params.year}-${params.month}-${params.day}`
+      ) as FirebaseFirestoreTypes.DocumentReference<Stats>
+  },
+
+  monthlyStats: (params: ExtractParams<(typeof contract)['monthlyStats']>) => {
+    return firestore()
+      .collection('users')
+      .doc(params.userId)
+      .collection('stats')
+      .doc(
+        `${params.year}-${params.month}`
+      ) as FirebaseFirestoreTypes.DocumentReference<Stats>
+  },
+
+  weeklyStats: (params: ExtractParams<(typeof contract)['weeklyStats']>) => {
+    return firestore()
+      .collection('users')
+      .doc(params.userId)
+      .collection('stats')
+      .doc(
+        `${params.year}-${params.week}`
+      ) as FirebaseFirestoreTypes.DocumentReference<Stats>
   },
 
   initialize: async () => {

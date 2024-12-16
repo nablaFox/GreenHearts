@@ -10,7 +10,7 @@ import { LoadingBar } from '@/components/LoadingBar'
 import { useTheme } from '@/hooks/useTheme'
 import { useIsLogged, useUser } from '@/hooks/useUser'
 import { useAuth } from '@/libs/useAuth'
-import { firestore } from '@/api'
+import { firestore } from '@/libs/api'
 
 import '../global.css'
 

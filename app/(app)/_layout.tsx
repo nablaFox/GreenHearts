@@ -6,15 +6,21 @@ import { useColorScheme } from '@/libs/useColorScheme'
 
 import { setDatetimePickerTheme } from '@/modules/datetime-picker'
 import { useUser } from '@/hooks/useUser'
+import { useStats } from '@/hooks/useStats'
 
 export default function AppLayout() {
   const { fetchPosts } = usePosts()
   const { isDark } = useColorScheme()
   const { bunnyId } = useUser()
+  const { fetchStats } = useStats()
 
   useEffect(() => {
     if (bunnyId !== null) fetchPosts(bunnyId)
   }, [fetchPosts, bunnyId])
+
+  useEffect(() => {
+    if (bunnyId !== null) fetchStats(bunnyId)
+  }, [fetchStats, bunnyId])
 
   useEffect(() => {
     setDatetimePickerTheme(isDark)

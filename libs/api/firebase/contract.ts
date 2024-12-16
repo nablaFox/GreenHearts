@@ -18,10 +18,18 @@ const FirestoreContract = {
     type: 'doc'
   },
   dailyStats: {
-    path: `/users/{userId}/stats/{date}`,
-    params: {} as { userId: string; date: `${number}-${number}-${number}` },
+    path: `/users/{userId}/stats/{year}-{month}-{day}`,
+    params: {} as { userId: string; year: number; month: number; day: number },
     docType: {} as Stats,
     type: 'doc'
+  },
+  monthlyStats: {
+    path: `/users/{userId}/stats/{year}-{month}`,
+    params: {} as { userId: string; year: number; month: number }
+  },
+  weeklyStats: {
+    path: `/users/{userId}/stats/{year}-{week}`,
+    params: {} as { userId: string; year: number; week: number }
   }
 }
 

@@ -1,5 +1,5 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import { FirebaseErrors } from '@/api'
+import { FirebaseErrors } from '@/libs/api'
 
 declare global {
   enum Heart {
