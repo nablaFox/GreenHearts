@@ -3,10 +3,15 @@ import { SectionList } from 'react-native'
 import PostCard from './PostCard'
 import { PostsListDivider } from './PostsListDivider'
 
-import { usePosts } from '@/hooks/usePosts'
+import { usePostsByDay, usePosts } from '@/hooks/usePosts'
 
 export default function PostsListSection() {
-  const { postsByDay, fetchMorePosts } = usePosts()
+  const { fetchMorePosts } = usePosts()
+  const postsByDay = usePostsByDay()
+
+  // FIX: DOES NOT WORK
+
+  return null
 
   return (
     <SectionList
