@@ -20,7 +20,7 @@ firestore.initialize()
 
 initAuth()
 
-initI18n('en')
+initI18n()
 
 export default function Root() {
   const { theme } = useTheme()
