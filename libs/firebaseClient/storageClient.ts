@@ -37,7 +37,6 @@ export function createStorageClient<
   for (const key in contract) {
     client[key] = (params: ExtractParams<T[K]>) => {
       const resolvedPath = getResolvedPath(contract[key].path, params)
-      console.log(resolvedPath)
       return storage().ref(resolvedPath)
     }
   }

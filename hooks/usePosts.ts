@@ -84,7 +84,12 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
   addPost: async (bunnyId: string, params: CreatePostParams) => {
     set({ addPostStatus: 'loading' })
 
-    let url: string | null = null
+    const toAdd: any = {
+      title: params.title,
+      notes: params.notes,
+      date: firestore.Timestamp.now(),
+      userDate: firestore.Timestamp.fromDate(params.date || new Date())
+    }
 
     if (params.imageUri) {
       const fileName = params.imageUri.split('/').pop()
@@ -109,20 +114,12 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
           return null
         })
 
-      if (downloadUrl === null) return
-
-      url = downloadUrl
+      if (downloadUrl !== null) toAdd.image = downloadUrl
     }
 
     const res = await firestore
       .posts({ userId: bunnyId })
-      .add({
-        title: params.title,
-        notes: params.notes,
-        image: url ?? undefined,
-        date: firestore.Timestamp.now(),
-        userDate: firestore.Timestamp.fromDate(params.date || new Date())
-      })
+      .add(toAdd)
       .catch((e: any) => {
         const code = e?.code as FirestoreError
         set({ addPostStatus: code })
