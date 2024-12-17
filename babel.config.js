@@ -9,6 +9,7 @@ module.exports = function (api) {
       production: {
         plugins: ['react-native-paper/babel']
       }
-    }
+    },
+    plugins: ['@lingui/babel-plugin-lingui-macro']
   }
 }
