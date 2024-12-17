@@ -13,6 +13,7 @@ import {
 
 import { usePosts } from '@/hooks/usePosts'
 import { router } from 'expo-router'
+import { useUser } from '@/hooks/useUser'
 
 export default function Maker() {
   const [imageUri, setImageUri] = useState<string>()
@@ -21,13 +22,14 @@ export default function Maker() {
   const [notes, setNotes] = useState('')
 
   const addPost = usePosts(state => state.addPost)
+  const bunnyId = useUser(state => state.bunnyId!)
 
   const canUpload = title || imageUri
 
   const handleUpload = () => {
     if (!canUpload) return
 
-    addPost({
+    addPost(bunnyId, {
       imageUri,
       date,
       title,

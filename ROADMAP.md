@@ -2,7 +2,7 @@
 
 Make things work
 
-- typed API interface for backend endpoints ✅
+- typed API: storage & firestore client ✅
 - useUser.ts ✅
 - login, registration ✅
 
@@ -13,8 +13,6 @@ Make things work
 - add posts vote ✅
 
 - real errors definition & handling ✅
-
-- firebase storage client ❌
 
 - translations ❌
 

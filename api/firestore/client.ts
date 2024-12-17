@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore'
 import contract from './contract'
-import { createFirestoreRef } from '@/libs/firestoreClient'
+import { createFirestoreRef } from '@/libs/firebaseClient'
 
 const client = {
   user: createFirestoreRef(contract, 'user', true),

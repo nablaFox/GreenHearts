@@ -1,6 +1,5 @@
-import { firestore } from '@/api'
+import { firestore, storage } from '@/api'
 import { create } from 'zustand'
-import storage from '@react-native-firebase/storage'
 import { type ActionStatus, type Post } from '@/types'
 import type { FirestoreError, FirebaseStorageError } from '@/api'
 
@@ -95,18 +94,20 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
         return
       }
 
-      const storageRef = storage().ref(`posts/${bunnyId}/${fileName}`)
+      const postStorageRef = storage.posts({ userId: bunnyId, fileName })
 
-      await storageRef.putFile(params.imageUri).catch((e: any) => {
+      await postStorageRef.putFile(params.imageUri).catch((e: any) => {
         const code = e?.code as FirebaseStorageError
         set({ addPostStatus: code })
       })
 
-      const downloadUrl = await storageRef.getDownloadURL().catch((e: any) => {
-        const code = e?.code as FirebaseStorageError
-        set({ addPostStatus: code })
-        return null
-      })
+      const downloadUrl = await postStorageRef
+        .getDownloadURL()
+        .catch((e: any) => {
+          const code = e?.code as FirebaseStorageError
+          set({ addPostStatus: code })
+          return null
+        })
 
       if (downloadUrl === null) return
 

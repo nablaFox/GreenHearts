@@ -3,6 +3,8 @@ import { usePosts } from '@/hooks/usePosts'
 import { showSnackBar } from '@/hooks/useSnackBar'
 import { useEffect } from 'react'
 
+import { Text } from 'react-native-paper'
+
 export function AddPostHandler() {
   const addPostStatus = usePosts(state => state.addPostStatus)
 
@@ -15,5 +17,5 @@ export function AddPostHandler() {
   }
 
   // some generic error handling
-  return null
+  return <Text>Some error has happened {addPostStatus}</Text>
 }

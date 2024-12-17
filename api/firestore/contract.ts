@@ -1,23 +1,21 @@
+import type { FirestoreContractType } from '@/libs/firestoreClient'
 import type { UserInDatabase, PostInDatabase, StatsInDatabase } from '@/types'
 
-const FirestoreContract = {
+const FirestoreContract: FirestoreContractType = {
   user: {
     path: 'users/{userId}',
     params: {} as { userId: string },
-    docType: {} as UserInDatabase,
-    type: 'doc'
+    docType: {} as UserInDatabase
   },
   posts: {
     path: 'users/{userId}/posts',
     params: {} as { userId: string },
-    docType: {} as PostInDatabase,
-    type: 'coll'
+    docType: {} as PostInDatabase
   },
   post: {
     path: 'users/{userId}/posts/{postId}',
     params: {} as { userId: string; postId: string },
-    docType: {} as PostInDatabase,
-    type: 'doc'
+    docType: {} as PostInDatabase
   },
 
   todayStats: {
@@ -30,15 +28,13 @@ const FirestoreContract = {
       return `users/{userId}/stats/${year}${month}${day}`
     },
     params: {} as { userId: string },
-    docType: {} as StatsInDatabase,
-    type: 'doc'
+    docType: {} as StatsInDatabase
   },
 
   stats: {
     path: 'users/{userId}/stats',
     params: {} as { userId: string },
-    docType: {} as StatsInDatabase,
-    type: 'doc'
+    docType: {} as StatsInDatabase
   }
 }
 
