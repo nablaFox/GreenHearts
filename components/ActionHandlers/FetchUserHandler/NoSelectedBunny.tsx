@@ -6,7 +6,7 @@ import { ThemedView } from '@/components/Themed'
 
 import { useShallow } from 'zustand/shallow'
 
-export function NoBunnySetHandler() {
+export function NoSelectedBunny() {
   const { setBunnyId } = useUser()
   const bunnies = useUser(useShallow(state => state.user?.bunnies ?? []))
 

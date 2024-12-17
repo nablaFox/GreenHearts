@@ -1,11 +1,15 @@
-import { firestore } from '@/api'
+import { type FirebaseErrors, firestore } from '@/api'
+import type { ActionStatus, User } from '@/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import auth from '@react-native-firebase/auth'
+import { authUserId } from '@/libs/nativeAuth'
 
 import { create } from 'zustand'
 
 type FetchUserStatus = ActionStatus<
-  'first-time-user' | 'no-bunny' | 'no-bunnies' | 'not-found' | 'firebase-error'
+  | 'unhautenticated-user'
+  | 'no-bunny-set'
+  | 'no-bunnies'
+  | FirebaseErrors.FirestoreError
 >
 
 interface UserStoreState {
@@ -16,7 +20,6 @@ interface UserStoreState {
   setBunnyId: (bunnyId: string) => void
   setFirebaseCallback: (userId: string) => void
   fetchUser: () => Promise<void>
-  addUser: (data: { username: string; isOwl: boolean }) => void
   reset: () => void
   isOwl: () => boolean
   areThereBunnies: () => boolean
@@ -36,7 +39,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
       previousCallback()
     }
 
-    const subscriber = firestore.user({ userId }).onSnapshot(
+    const unsubscribe = firestore.user({ userId }).onSnapshot(
       doc => {
         const user = doc?.data()
 
@@ -51,81 +54,71 @@ export const useUser = create<UserStoreState>((set, get) => ({
         }
 
         if (!get().bunnyId) {
-          return set({ fetchUserStatus: 'no-bunny' })
+          return set({ fetchUserStatus: 'no-bunny-set' })
         }
 
         set({ fetchUserStatus: 'success' })
       },
       error => {
-        set({ fetchUserStatus: 'firebase-error' })
+        // CHECK
+        // set({ fetchUserStatus: 'firebase-error' })
       }
     )
 
-    set({ firebaseSubscriber: subscriber })
+    set({ firebaseSubscriber: unsubscribe })
   },
 
   fetchUser: async () => {
     set({ fetchUserStatus: 'loading' })
 
-    const authUser = auth().currentUser
-
-    if (!authUser) {
-      return set({ fetchUserStatus: 'first-time-user' })
+    if (!authUserId) {
+      return set({ fetchUserStatus: 'unhautenticated-user' })
     }
 
-    const userDoc = await firestore.user({ userId: authUser.uid }).get()
+    try {
+      const userDoc = await firestore.user({ userId: authUserId }).get()
 
-    if (!userDoc.exists) {
-      return set({ fetchUserStatus: 'not-found' })
+      if (!userDoc.exists) {
+        return set({ fetchUserStatus: 'firestore/not-found' })
+      }
+
+      const userData = userDoc.data()!
+
+      get().setFirebaseCallback(authUserId)
+
+      if (!userData.isOwl) {
+        return get().setBunnyId(authUserId)
+      }
+
+      const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
+
+      if (bunnyId === null) {
+        return set({ fetchUserStatus: 'no-bunny-set' })
+      }
+
+      if (!userData.bunnies?.length) {
+        return set({ fetchUserStatus: 'no-bunnies' })
+      }
+
+      if (!bunnyId || !userData.bunnies.includes(bunnyId)) {
+        return set({ fetchUserStatus: 'no-bunny-set' })
+      }
+
+      get().setBunnyId(bunnyId)
+    } catch (e: any) {
+      const code = e?.code as FirebaseErrors.FirestoreError
+      set({ fetchUserStatus: code })
     }
-
-    const userData = userDoc.data()
-
-    if (!userData) {
-      return set({ fetchUserStatus: 'not-found' })
-    }
-
-    get().setFirebaseCallback(authUser.uid)
-
-    if (!userData.isOwl) {
-      return get().setBunnyId(authUser.uid)
-    }
-
-    const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
-
-    if (!userData.bunnies?.length) {
-      return set({ fetchUserStatus: 'no-bunnies' })
-    }
-
-    if (!bunnyId || !userData.bunnies.includes(bunnyId)) {
-      return set({ fetchUserStatus: 'no-bunny' })
-    }
-
-    get().setBunnyId(bunnyId)
   },
 
   setBunnyId: (bunnyId: string) => {
     const status = get().fetchUserStatus
 
-    if (status === 'no-bunny') set({ fetchUserStatus: 'success' })
+    if (status === 'no-bunny-set') set({ fetchUserStatus: 'success' })
+
+    // save the choosen bunny to local storage
 
     set({ bunnyId })
-  },
-
-  addUser: async params => {
-    const userId = auth().currentUser?.uid
-
-    if (!userId) return
-
-    set({ fetchUserStatus: 'loading' })
-
-    await firestore.user({ userId }).set({
-      username: params.username,
-      isOwl: params.isOwl,
-      bunnies: []
-    })
-
-    get().fetchUser()
   },
 
   reset: () => {

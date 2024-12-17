@@ -6,12 +6,14 @@ import { useEffect } from 'react'
 export function AddPostHandler() {
   const addPostStatus = usePosts(state => state.addPostStatus)
 
+  if (addPostStatus === 'success') {
+    return null
+  }
+
   if (addPostStatus === 'loading') {
     return null
   }
 
-  if (addPostStatus !== 'success') {
-    // some generic error handling
-    return null
-  }
+  // some generic error handling
+  return null
 }

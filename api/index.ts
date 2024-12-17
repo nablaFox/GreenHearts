@@ -1,2 +1,2 @@
-export * as FirebaseErrors from './firebase/errors'
-export { default as firestore } from './firebase/client'
+export * as FirebaseErrors from '@/libs/firebaseErrors'
+export { default as firestore } from './firestore/client'

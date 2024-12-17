@@ -1,22 +1,23 @@
 import { useUser } from '@/hooks/useUser'
 
-import { LoadingUserHandler } from './LoadingUserHandler'
-import { NoBunniesHandler } from './NoBunniesHandler'
-import { NoBunnySetHandler } from './NoBunnySetHandler'
-import { NoUserFoundHandler } from './NoUserFoundHandler'
+import { Loading } from './Loading'
+import { NoSelectedBunny } from './NoSelectedBunny'
+import { NoBunnyToChoose } from './NoBunnyToChoose'
+import { UserNotFound } from './UserNotFound'
 
 export default function FetchUserHandler() {
   const fetchUserStatus = useUser(state => state.fetchUserStatus)
 
-  if (fetchUserStatus === 'loading') return <LoadingUserHandler />
+  if (fetchUserStatus === 'success') return null
 
-  if (fetchUserStatus === 'no-bunny') return <NoBunnySetHandler />
+  if (fetchUserStatus === 'loading') return <Loading />
 
-  if (fetchUserStatus === 'no-bunnies') return <NoBunniesHandler />
+  if (fetchUserStatus === 'no-bunnies') return <NoBunnyToChoose />
 
-  if (fetchUserStatus === 'not-found') return <NoUserFoundHandler />
+  if (fetchUserStatus === 'no-bunny-set') return <NoSelectedBunny />
 
-  if (fetchUserStatus !== 'success') {
-    // some generic error handling
-  }
+  if (fetchUserStatus === 'firestore/not-found') return <UserNotFound />
+
+  // some generic error handling
+  return null
 }

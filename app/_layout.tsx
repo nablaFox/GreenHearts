@@ -9,7 +9,7 @@ import { LoadingBar } from '@/components/LoadingBar'
 
 import { useTheme } from '@/hooks/useTheme'
 import { useUser } from '@/hooks/useUser'
-import { useAuth } from '@/libs/useAuth'
+import { initAuth } from '@/libs/nativeAuth'
 import { firestore } from '@/api'
 
 import '../global.css'
@@ -21,7 +21,6 @@ export default function Root() {
   firestore.initialize()
 
   const fetchUser = useUser(state => state.fetchUser)
-  const { initAuth } = useAuth()
 
   useEffect(initAuth, [initAuth])
 

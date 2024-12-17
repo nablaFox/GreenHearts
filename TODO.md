@@ -12,11 +12,15 @@ Make things work
 
 - add posts vote ✅
 
+- user registration ✅
+
+- real errors definition & handling ❌
+
+- firebase storage client ❌
+
 - translations ❌
 
 - firestore rules ❌
-
-- real errors definition & handling ❌
 
 # 0.2.0-alpha ❌
 

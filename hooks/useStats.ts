@@ -56,7 +56,7 @@ export const useStats = create<StatsStoreState>((set, get) => ({
       })
     }
 
-    const unsubscribeToday = firestore
+    const unsubscribe = firestore
       .stats({ userId: bunnyId })
       .where('date', '>=', startOfMonth)
       .limit(31)
@@ -88,6 +88,6 @@ export const useStats = create<StatsStoreState>((set, get) => ({
         set({ todayStats, thisWeekStats, thisMonthStats })
       })
 
-    set({ prevCallback: unsubscribeToday })
+    set({ prevCallback: unsubscribe })
   }
 }))
