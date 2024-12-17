@@ -6,3 +6,10 @@ export enum Heart {
 }
 
 export const AssignableHearts: Heart[] = [Heart.Green, Heart.Blue, Heart.Red]
+
+export const HeartStringMap = {
+  [Heart.Red]: 'reds',
+  [Heart.Green]: 'greens',
+  [Heart.Blue]: 'blue',
+  [Heart.Gray]: 'grays'
+}

@@ -14,8 +14,16 @@ export function getIs24Hours() {
   return true
 }
 
-export function getWeek(date: Date) {
-  const day = date.getDay()
-  const diff = date.getDate() - day + (day === 0 ? -6 : 1)
-  return new Date(date.setDate(diff))
+export function getWeek(date: Date): Date {
+  const copiedDate = new Date(date)
+  const day = copiedDate.getDay()
+  const diff = copiedDate.getDate() - day + (day === 0 ? -6 : 1)
+  return new Date(copiedDate.setDate(diff))
+}
+
+export function getWeekEnds(date: Date): [Date, Date] {
+  const start = getWeek(date)
+  const end = new Date(start)
+  end.setDate(end.getDate() + 6)
+  return [start, end]
 }

@@ -31,7 +31,7 @@ export function HeartButton({
   }
 
   return (
-    <TouchableOpacity onPress={handlePress} disabled>
+    <TouchableOpacity onPress={handlePress} disabled={disabled}>
       <GlowingHeart color={color} glowFactor={glowFactor} />
     </TouchableOpacity>
   )

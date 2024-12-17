@@ -1,4 +1,4 @@
-import { getWeek } from 'date-fns'
+import type { UserInDatabase, PostInDatabase, StatsInDatabase } from '@/types'
 
 const FirestoreContract = {
   user: {
@@ -27,36 +27,17 @@ const FirestoreContract = {
       const month = today.getMonth() + 1
       const year = today.getFullYear()
 
-      return `users/{userId}/stats/${year}-${month}-${day}`
+      return `users/{userId}/stats/${year}${month}${day}`
     },
     params: {} as { userId: string },
-    docType: {} as Stats,
+    docType: {} as StatsInDatabase,
     type: 'doc'
   },
 
-  thisWeekStats: {
-    path: () => {
-      const today = new Date()
-      const week = getWeek(today)
-      const year = today.getFullYear()
-
-      return `users/{userId}/stats/${year}-${week}`
-    },
+  stats: {
+    path: 'users/{userId}/stats',
     params: {} as { userId: string },
-    docType: {} as Stats,
-    type: 'doc'
-  },
-
-  thisMonthStats: {
-    path: () => {
-      const today = new Date()
-      const month = today.getMonth() + 1
-      const year = today.getFullYear()
-
-      return `users/{userId}/stats/${year}-${month}`
-    },
-    params: {} as { userId: string },
-    docType: {} as Stats,
+    docType: {} as StatsInDatabase,
     type: 'doc'
   }
 }

@@ -1,3 +1,5 @@
+import type { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
+
 export interface Stats {
   meals: number
   kcal: number
@@ -7,4 +9,8 @@ export interface Stats {
   reds: number
   blue: number
   grays: number
+}
+
+export interface StatsInDatabase extends Stats {
+  date: FirebaseFirestoreTypes.Timestamp
 }

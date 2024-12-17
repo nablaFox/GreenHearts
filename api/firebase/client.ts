@@ -6,9 +6,8 @@ const client = {
   user: createFirestoreRef(contract, 'user', true),
   posts: createFirestoreRef(contract, 'posts', false),
   post: createFirestoreRef(contract, 'post', true),
+  stats: createFirestoreRef(contract, 'stats', false),
   todayStats: createFirestoreRef(contract, 'todayStats', true),
-  thisWeekStats: createFirestoreRef(contract, 'thisWeekStats', true),
-  thisMonthStats: createFirestoreRef(contract, 'thisMonthStats', true),
 
   initialize: async () => {
     firestore().settings({

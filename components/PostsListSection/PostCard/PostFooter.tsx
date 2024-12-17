@@ -15,14 +15,15 @@ export function PostFooter({
   postId: string
 }) {
   const isOwl = useUser(state => state.user?.isOwl ?? false)
-  const { votePost } = usePosts()
+  const votePost = usePosts(state => state.votePost)
+  const disVotePost = usePosts(state => state.disVotePost)
 
-  const handleVotePost = (heart: Heart) => {
-    if (heart === postHeart) {
-      return votePost(Heart.Gray, postId)
-    }
-
+  const onSelectedHeart = (heart: Heart) => {
     votePost(heart, postId)
+  }
+
+  const onDeSelectedHeart = (heart: Heart) => {
+    disVotePost(heart, postId)
   }
 
   return (
@@ -31,7 +32,8 @@ export function PostFooter({
         <HeartSelection
           assignableHearts={AssignableHearts}
           activeHeart={postHeart}
-          onSelectedHeart={handleVotePost}
+          onSelectedHeart={onSelectedHeart}
+          onDeSelectedHeart={onDeSelectedHeart}
         />
       ) : (
         postHeart !== Heart.Gray && <HeartButton heart={postHeart} disabled />

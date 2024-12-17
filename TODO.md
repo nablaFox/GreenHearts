@@ -10,13 +10,13 @@ Make things work
 
 - usePosts.ts ✅
 
-- add posts
-
-- real errors definition & handling ❌
+- add posts vote ✅
 
 - translations ❌
 
 - firestore rules ❌
+
+- real errors definition & handling ❌
 
 # 0.2.0-alpha ❌
 

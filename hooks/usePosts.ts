@@ -1,7 +1,13 @@
 import { firestore } from '@/api'
 import { create } from 'zustand'
 import storage from '@react-native-firebase/storage'
-import type { ActionResult, ActionStatus, Post, Heart } from '@/types'
+import {
+  type ActionResult,
+  type ActionStatus,
+  type Post,
+  Heart,
+  HeartStringMap
+} from '@/types'
 
 type VotePostResult = ActionResult<'error-1' | 'error-2' | 'error-3'>
 type AddPostStatus = ActionStatus<
@@ -29,6 +35,7 @@ interface PostsStoreState {
   fetchMorePosts: (num?: number) => void
   addPost: (params: CreatePostParams) => void
   votePost: (heart: Heart, id: string) => Promise<VotePostResult>
+  disVotePost: (heart: Heart, id: string) => Promise<VotePostResult>
   getPost: (id: string) => void
 }
 
@@ -123,7 +130,7 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
       .add({
         title: params.title,
         notes: params.notes,
-        image: url,
+        image: url ?? undefined,
         date: firestore.Timestamp.now(),
         userDate: firestore.Timestamp.fromDate(params.date || new Date())
       })
@@ -145,16 +152,26 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
         .post({ userId: get().bunnyId, postId: id })
         .update({ heart })
 
+      await firestore.todayStats({ userId: bunnyId }).update({
+        [HeartStringMap[heart]]: firestore.FieldValue.increment(1),
+        score: firestore.FieldValue.increment(heart)
+      })
+    } catch (e) {
+      return 'error-1'
+    }
+  },
+
+  disVotePost: async (heart: Heart, id: string) => {
+    const bunnyId = get().bunnyId
+
+    try {
+      await firestore
+        .post({ userId: get().bunnyId, postId: id })
+        .update({ heart: Heart.Gray })
+
       firestore.todayStats({ userId: bunnyId }).update({
-        score: firestore.FieldValue.increment(heart)
-      })
-
-      firestore.thisWeekStats({ userId: bunnyId }).update({
-        score: firestore.FieldValue.increment(heart)
-      })
-
-      firestore.thisMonthStats({ userId: bunnyId }).update({
-        score: firestore.FieldValue.increment(heart)
+        [HeartStringMap[heart]]: firestore.FieldValue.increment(-1),
+        score: firestore.FieldValue.increment(-heart)
       })
     } catch (e) {
       return 'error-1'
