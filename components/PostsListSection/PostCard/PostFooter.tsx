@@ -2,9 +2,10 @@ import { View } from 'react-native'
 
 import { HeartSelection } from './HeartSelection'
 import { HeartButton } from './HeartButton'
+import { AssignableHearts, Heart } from '@/types'
 
-import { useIsOwl } from '@/hooks/useUser'
 import { usePosts } from '@/hooks/usePosts'
+import { useUser } from '@/hooks/useUser'
 
 export function PostFooter({
   postHeart,
@@ -13,7 +14,7 @@ export function PostFooter({
   postHeart: Heart
   postId: string
 }) {
-  const isOwl = useIsOwl()
+  const isOwl = useUser(state => state.user?.isOwl ?? false)
   const { votePost } = usePosts()
 
   const handleVotePost = (heart: Heart) => {

@@ -2,6 +2,7 @@ import { TouchableOpacity } from 'react-native'
 
 import { GlowingHeart } from '@/components/GlowingHeart'
 import { useTheme } from '@/hooks/useTheme'
+import { Heart } from '@/types'
 
 export function HeartButton({
   heart,

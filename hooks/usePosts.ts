@@ -1,11 +1,7 @@
 import { firestore } from '@/api'
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import { create } from 'zustand'
-
-interface PostsByDay {
-  date: Date
-  data: Post[]
-}
+import type { ActionResult, ActionStatus, Post, Heart } from '@/types'
 
 type VotePostResult = ActionResult<'error-1' | 'error-2' | 'error-3'>
 type AddPostStatus = ActionStatus<'firebase-error'>
@@ -32,7 +28,6 @@ interface PostsStoreState {
   addPost: (params: CreatePostParams) => void
   votePost: (heart: Heart, id: string) => Promise<VotePostResult>
   getPost: (id: string) => void
-  postsByDay: () => PostsByDay[]
 }
 
 export const usePosts = create<PostsStoreState>((set, get) => ({
@@ -54,14 +49,17 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
       .posts({ userId: bunnyId })
       .orderBy('date', 'desc')
       .limit(get().postsLimit)
-      .onSnapshot(doc => {
-        const posts: Post[] = []
+      .onSnapshot(snapshot => {
+        let lastDate = new Date()
 
-        doc.forEach(post => {
-          const data = post.data()
-          const key = post.id
+        const posts: Post[] = snapshot.docs.map(doc => {
+          const data = doc.data()
+          const userDate = data.userDate?.toDate()
+          const isHeader = userDate && lastDate.getDate() !== userDate.getDate()
 
-          posts.push({ ...data, key })
+          if (isHeader) lastDate = userDate
+
+          return { ...data, key: doc.id, isHeader }
         })
 
         set({ posts })
@@ -128,27 +126,5 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
 
   getPost: (id: string) => {
     return get().posts.find(post => post.key === id)
-  },
-
-  postsByDay: () => {
-    const posts = get().posts
-
-    const postsByDayMap = new Map<string, { date: Date; data: Post[] }>()
-
-    posts.forEach(post => {
-      const date = post.date?.toDate()
-
-      if (!date) return
-
-      const dateKey = date.toDateString()
-
-      if (!postsByDayMap.has(dateKey)) {
-        postsByDayMap.set(dateKey, { date, data: [post] })
-      } else {
-        postsByDayMap.get(dateKey)?.data.push(post)
-      }
-    })
-
-    return Array.from(postsByDayMap.values())
   }
 }))

@@ -4,11 +4,11 @@ import { Button, Text } from 'react-native-paper'
 import { useUser } from '@/hooks/useUser'
 import { ThemedView } from '@/components/Themed'
 
-// full screen
-// provide a button to choose a bunny;
+import { useShallow } from 'zustand/shallow'
+
 export function NoBunnySetHandler() {
   const { setBunnyId } = useUser()
-  const bunnies = useUser(state => state.user?.bunnies ?? [])
+  const bunnies = useUser(useShallow(state => state.user?.bunnies ?? []))
 
   const onPress = (bunnyId: string) => {
     setBunnyId(bunnyId)
@@ -19,6 +19,7 @@ export function NoBunnySetHandler() {
       <Text>Welcome back! Please choose a bunny to continue</Text>
 
       <FlatList
+        keyExtractor={item => item}
         data={bunnies}
         renderItem={({ item }) => (
           <Button mode="outlined" onPress={() => onPress(item)}>

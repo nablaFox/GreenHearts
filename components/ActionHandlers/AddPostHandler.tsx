@@ -4,7 +4,7 @@ import { showSnackBar } from '@/hooks/useSnackBar'
 import { useEffect } from 'react'
 
 export function AddPostHandler() {
-  const { addPostStatus } = usePosts()
+  const addPostStatus = usePosts(state => state.addPostStatus)
 
   if (addPostStatus === 'loading') {
     return null

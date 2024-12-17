@@ -5,7 +5,7 @@ import { useActionHandler } from '@/libs/useActionHandler'
 import { Text } from 'react-native-paper'
 
 export function FetchPostsHandler() {
-  const { fetchPostsStatus } = usePosts()
+  const fetchPostsStatus = usePosts(state => state.fetchPostsStatus)
 
   if (fetchPostsStatus === 'loading') {
     return <Text>Loading posts...</Text>

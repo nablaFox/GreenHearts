@@ -9,10 +9,10 @@ import { useUser } from '@/hooks/useUser'
 import { useStats } from '@/hooks/useStats'
 
 export default function AppLayout() {
-  const { fetchPosts } = usePosts()
-  const { isDark } = useColorScheme()
-  const { bunnyId } = useUser()
-  const { fetchStats } = useStats()
+  const fetchPosts = usePosts(state => state.fetchPosts)
+  const isDark = useColorScheme(state => state.isDark)
+  const bunnyId = useUser(state => state.bunnyId)
+  const fetchStats = useStats(state => state.fetchStats)
 
   useEffect(() => {
     if (bunnyId !== null) fetchPosts(bunnyId)

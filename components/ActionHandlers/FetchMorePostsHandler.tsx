@@ -5,7 +5,7 @@ import { showLoadingBar } from '@/hooks/useLoadingBar'
 import { useActionHandler } from '@/libs/useActionHandler'
 
 export function FetchMorePostsHandler() {
-  const { fetchMorePostsStatus } = usePosts()
+  const fetchMorePostsStatus = usePosts(state => state.fetchMorePostsStatus)
 
   if (fetchMorePostsStatus === 'loading') {
     // loading state handling

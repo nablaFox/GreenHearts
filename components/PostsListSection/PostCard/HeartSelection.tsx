@@ -1,6 +1,7 @@
 import { View } from 'react-native'
 
 import { HeartButton } from './HeartButton'
+import { Heart } from '@/types'
 
 export function HeartSelection({
   assignableHearts,

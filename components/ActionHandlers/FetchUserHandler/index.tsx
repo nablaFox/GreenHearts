@@ -6,7 +6,7 @@ import { NoBunnySetHandler } from './NoBunnySetHandler'
 import { NoUserFoundHandler } from './NoUserFoundHandler'
 
 export default function FetchUserHandler() {
-  const { fetchUserStatus } = useUser()
+  const fetchUserStatus = useUser(state => state.fetchUserStatus)
 
   if (fetchUserStatus === 'loading') return <LoadingUserHandler />
 

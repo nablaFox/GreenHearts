@@ -104,7 +104,13 @@ export const useUser = create<UserStoreState>((set, get) => ({
     get().setBunnyId(bunnyId)
   },
 
-  setBunnyId: (bunnyId: string) => set({ bunnyId }),
+  setBunnyId: (bunnyId: string) => {
+    const status = get().fetchUserStatus
+
+    if (status === 'no-bunny') set({ fetchUserStatus: 'success' })
+
+    set({ bunnyId })
+  },
 
   addUser: async params => {
     const userId = auth().currentUser?.uid

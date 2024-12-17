@@ -20,7 +20,7 @@ export default function Root() {
 
   firestore.initialize()
 
-  const { fetchUser } = useUser()
+  const fetchUser = useUser(state => state.fetchUser)
   const { initAuth } = useAuth()
 
   useEffect(initAuth, [initAuth])

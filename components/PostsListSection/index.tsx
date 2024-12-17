@@ -1,26 +1,19 @@
-import { SectionList } from 'react-native'
+import { FlatList } from 'react-native'
 
 import PostCard from './PostCard'
-import { PostsListDivider } from './PostsListDivider'
 
-import { usePostsByDay, usePosts } from '@/hooks/usePosts'
+import { usePosts } from '@/hooks/usePosts'
 
 export default function PostsListSection() {
   const { fetchMorePosts } = usePosts()
-  const postsByDay = usePostsByDay()
-
-  // FIX: DOES NOT WORK
-
-  return null
+  const posts = usePosts(state => state.posts)
 
   return (
-    <SectionList
-      sections={postsByDay}
-      keyExtractor={item => item.key}
+    <FlatList
+      className="h-96"
+      data={posts}
       renderItem={({ item }) => <PostCard post={item} />}
-      renderSectionFooter={({ section }) => (
-        <PostsListDivider date={section.date} />
-      )}
+      keyExtractor={item => item.key}
       onEndReached={() => fetchMorePosts()}
     />
   )

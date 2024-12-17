@@ -8,7 +8,9 @@ Make things work
 
 - useStats.ts ✅
 
-- usePosts.ts & posts correct visualization ❌
+- usePosts.ts ✅
+
+- add posts
 
 - real errors definition & handling ❌
 
@@ -67,6 +69,5 @@ Make things nicer
 - change "wrapper" with the adequate react native component in component names
 - change default material fonts
 - fix logout crash
-- fix posts crash with SectionList
-- firestore client autogeneration
 - correct login structure and isLogged fix
+- firestore client autogeneration
