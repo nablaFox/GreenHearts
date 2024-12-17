@@ -47,6 +47,6 @@ export async function logout(): Promise<LoginResult> {
     .then(() => 'ok')
 }
 
-export const authUser = auth().currentUser
+export const getAuthUser = () => auth().currentUser
 
-export const authUserId = auth().currentUser?.uid
+export const getAuthUserId = () => auth().currentUser?.uid

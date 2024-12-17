@@ -1,7 +1,7 @@
 import { type FirestoreError, firestore } from '@/api'
 import type { ActionStatus, User } from '@/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { authUserId } from '@/libs/nativeAuth'
+import { getAuthUserId } from '@/libs/nativeAuth'
 
 import { create } from 'zustand'
 
@@ -68,6 +68,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
   fetchUser: async () => {
     set({ fetchUserStatus: 'loading' })
+    const authUserId = getAuthUserId()
 
     if (!authUserId) {
       return set({ fetchUserStatus: 'unhautenticated-user' })

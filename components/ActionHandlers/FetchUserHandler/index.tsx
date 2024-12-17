@@ -4,6 +4,7 @@ import { Loading } from './Loading'
 import { NoSelectedBunny } from './NoSelectedBunny'
 import { NoBunnyToChoose } from './NoBunnyToChoose'
 import { UserNotFound } from './UserNotFound'
+import { Text } from 'react-native-paper'
 
 export default function FetchUserHandler() {
   const fetchUserStatus = useUser(state => state.fetchUserStatus)
@@ -17,5 +18,5 @@ export default function FetchUserHandler() {
   if (fetchUserStatus === 'firestore/not-found') return <UserNotFound />
 
   // some generic error handling
-  return null
+  return <Text>fuck</Text>
 }
