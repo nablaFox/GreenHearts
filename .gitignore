@@ -41,4 +41,5 @@ app-example
 ios
 *.apk
 .idea
+android/
 
