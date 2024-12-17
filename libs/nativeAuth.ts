@@ -2,7 +2,7 @@ import auth from '@react-native-firebase/auth'
 import type { FirebaseAuthError } from './firebaseErrors'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
-type LoginResult = void | FirebaseAuthError
+type LoginResult = 'ok' | FirebaseAuthError
 
 export function initAuth() {
   GoogleSignin.configure({
@@ -32,19 +32,19 @@ export async function loginWithGoogle(): Promise<LoginResult> {
 export async function removeAuthUser(): Promise<LoginResult> {
   const currentUser = auth().currentUser
 
-  if (currentUser === null) return
+  if (currentUser === null) return 'ok'
 
   return currentUser
     .delete()
     .catch(e => e)
-    .then(() => undefined)
+    .then(() => 'ok')
 }
 
 export async function logout(): Promise<LoginResult> {
   return auth()
     .signOut()
     .catch(e => e)
-    .then(() => undefined)
+    .then(() => 'ok')
 }
 
 export const authUser = auth().currentUser

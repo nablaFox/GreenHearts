@@ -4,7 +4,7 @@ import { HeartSelection } from './HeartSelection'
 import { HeartButton } from './HeartButton'
 import { AssignableHearts, Heart } from '@/types'
 
-import { usePosts } from '@/hooks/usePosts'
+import { votePost, disVotePost } from '@/hooks/usePost'
 import { useUser } from '@/hooks/useUser'
 
 export function PostFooter({
@@ -15,15 +15,21 @@ export function PostFooter({
   postId: string
 }) {
   const isOwl = useUser(state => state.user?.isOwl ?? false)
-  const votePost = usePosts(state => state.votePost)
-  const disVotePost = usePosts(state => state.disVotePost)
+  const bunnyId = useUser(state => state.bunnyId!)
 
-  const onSelectedHeart = (heart: Heart) => {
-    votePost(heart, postId)
+  const onSelectedHeart = async (heart: Heart) => {
+    const res = await votePost(bunnyId, postId, heart)
+
+    if (res !== 'ok') {
+      // handle error
+    }
   }
 
-  const onDeSelectedHeart = (heart: Heart) => {
-    disVotePost(heart, postId)
+  const onDeSelectedHeart = async (heart: Heart) => {
+    const res = await disVotePost(bunnyId, postId, heart)
+
+    if (res !== 'ok') {
+    }
   }
 
   return (

@@ -12,9 +12,7 @@ Make things work
 
 - add posts vote ✅
 
-- user registration ✅
-
-- real errors definition & handling ❌
+- real errors definition & handling ✅
 
 - firebase storage client ❌
 
@@ -77,3 +75,4 @@ Make things nicer
 - fix logout crash
 - correct login structure and isLogged fix
 - firestore client autogeneration
+- for the chart: find a rn graphics library and a library to interpolate data

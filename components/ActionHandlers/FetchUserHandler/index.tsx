@@ -8,8 +8,6 @@ import { UserNotFound } from './UserNotFound'
 export default function FetchUserHandler() {
   const fetchUserStatus = useUser(state => state.fetchUserStatus)
 
-  if (fetchUserStatus === 'success') return null
-
   if (fetchUserStatus === 'loading') return <Loading />
 
   if (fetchUserStatus === 'no-bunnies') return <NoBunnyToChoose />

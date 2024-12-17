@@ -1,17 +1,11 @@
 import { firestore } from '@/api'
 import { create } from 'zustand'
 import storage from '@react-native-firebase/storage'
-import {
-  type ActionResult,
-  type ActionStatus,
-  type Post,
-  Heart,
-  HeartStringMap
-} from '@/types'
+import { type ActionStatus, type Post } from '@/types'
+import type { FirestoreError, FirebaseStorageError } from '@/api'
 
-type VotePostResult = ActionResult<'error-1' | 'error-2' | 'error-3'>
 type AddPostStatus = ActionStatus<
-  'firebase-error' | 'firebase-storage-error' | 'incorrect-filename'
+  FirestoreError | FirebaseStorageError | 'invalid-filename'
 >
 type FetchPostsStatus = ActionStatus<'error-1'>
 
@@ -28,14 +22,11 @@ interface PostsStoreState {
   fetchMorePostsStatus: FetchPostsStatus
   addPostStatus: AddPostStatus
   postsLimit: number
-  bunnyId: string
 
   firebaseCallback: (() => void) | null
   fetchPosts: (bunnyId: string) => void
-  fetchMorePosts: (num?: number) => void
-  addPost: (params: CreatePostParams) => void
-  votePost: (heart: Heart, id: string) => Promise<VotePostResult>
-  disVotePost: (heart: Heart, id: string) => Promise<VotePostResult>
+  fetchMorePosts: (bunnyId: string, num?: number) => void
+  addPost: (bunnyId: string, params: CreatePostParams) => void
   getPost: (id: string) => void
 }
 
@@ -46,13 +37,11 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
   addPostStatus: 'success',
   firebaseCallback: null,
   postsLimit: 10,
-  bunnyId: '',
 
   fetchPosts: (bunnyId: string) => {
     get().firebaseCallback?.()
 
     set({ fetchPostsStatus: 'loading' })
-    set({ bunnyId })
 
     const unsubscribe = firestore
       .posts({ userId: bunnyId })
@@ -83,17 +72,17 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
     set({ firebaseCallback: unsubscribe })
   },
 
-  fetchMorePosts: (num?: number) => {
+  fetchMorePosts: (bunnyId: string, num?: number) => {
     set({ fetchMorePostsStatus: 'loading' })
 
     const postsLimit = get().postsLimit
     const incrementedLimit = num || postsLimit + 10
 
     set({ postsLimit: incrementedLimit })
-    get().fetchPosts(get().bunnyId)
+    get().fetchPosts(bunnyId)
   },
 
-  addPost: async (params: CreatePostParams) => {
+  addPost: async (bunnyId: string, params: CreatePostParams) => {
     set({ addPostStatus: 'loading' })
 
     let url: string | null = null
@@ -102,31 +91,30 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
       const fileName = params.imageUri.split('/').pop()
 
       if (!fileName) {
-        set({ addPostStatus: 'incorrect-filename' })
+        set({ addPostStatus: 'invalid-filename' })
         return
       }
 
-      const storageRef = storage().ref(`posts/${get().bunnyId}/${fileName}`)
+      const storageRef = storage().ref(`posts/${bunnyId}/${fileName}`)
 
-      const res = await storageRef.putFile(params.imageUri).catch(() => null)
+      await storageRef.putFile(params.imageUri).catch((e: any) => {
+        const code = e?.code as FirebaseStorageError
+        set({ addPostStatus: code })
+      })
 
-      if (res === null) {
-        set({ addPostStatus: 'firebase-storage-error' })
-        return
-      }
+      const downloadUrl = await storageRef.getDownloadURL().catch((e: any) => {
+        const code = e?.code as FirebaseStorageError
+        set({ addPostStatus: code })
+        return null
+      })
 
-      const downloadUrl = await storageRef.getDownloadURL().catch(() => null)
-
-      if (downloadUrl === null) {
-        set({ addPostStatus: 'firebase-storage-error' })
-        return
-      }
+      if (downloadUrl === null) return
 
       url = downloadUrl
     }
 
     const res = await firestore
-      .posts({ userId: get().bunnyId })
+      .posts({ userId: bunnyId })
       .add({
         title: params.title,
         notes: params.notes,
@@ -134,48 +122,13 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
         date: firestore.Timestamp.now(),
         userDate: firestore.Timestamp.fromDate(params.date || new Date())
       })
-      .catch(() => null)
-
-    if (!res) {
-      set({ addPostStatus: 'firebase-error' })
-      return
-    }
-
-    set({ addPostStatus: 'success' })
-  },
-
-  votePost: async (heart: Heart, id: string) => {
-    const bunnyId = get().bunnyId
-
-    try {
-      await firestore
-        .post({ userId: get().bunnyId, postId: id })
-        .update({ heart })
-
-      await firestore.todayStats({ userId: bunnyId }).update({
-        [HeartStringMap[heart]]: firestore.FieldValue.increment(1),
-        score: firestore.FieldValue.increment(heart)
+      .catch((e: any) => {
+        const code = e?.code as FirestoreError
+        set({ addPostStatus: code })
+        return null
       })
-    } catch (e) {
-      return 'error-1'
-    }
-  },
 
-  disVotePost: async (heart: Heart, id: string) => {
-    const bunnyId = get().bunnyId
-
-    try {
-      await firestore
-        .post({ userId: get().bunnyId, postId: id })
-        .update({ heart: Heart.Gray })
-
-      firestore.todayStats({ userId: bunnyId }).update({
-        [HeartStringMap[heart]]: firestore.FieldValue.increment(-1),
-        score: firestore.FieldValue.increment(-heart)
-      })
-    } catch (e) {
-      return 'error-1'
-    }
+    if (res !== null) set({ addPostStatus: 'success' })
   },
 
   getPost: (id: string) => {

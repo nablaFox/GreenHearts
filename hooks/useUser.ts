@@ -1,15 +1,13 @@
-import { type FirebaseErrors, firestore } from '@/api'
+import { type FirestoreError, firestore } from '@/api'
 import type { ActionStatus, User } from '@/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { authUserId } from '@/libs/nativeAuth'
 
 import { create } from 'zustand'
 
+// QUESTION: if the user is unhathenticated maybe firebase will throw this error for us
 type FetchUserStatus = ActionStatus<
-  | 'unhautenticated-user'
-  | 'no-bunny-set'
-  | 'no-bunnies'
-  | FirebaseErrors.FirestoreError
+  'unhautenticated-user' | 'no-bunny-set' | 'no-bunnies' | FirestoreError
 >
 
 interface UserStoreState {
@@ -59,9 +57,9 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
         set({ fetchUserStatus: 'success' })
       },
-      error => {
-        // CHECK
-        // set({ fetchUserStatus: 'firebase-error' })
+      (e: any) => {
+        const code = e?.code as FirestoreError
+        set({ fetchUserStatus: code })
       }
     )
 
@@ -106,7 +104,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
       get().setBunnyId(bunnyId)
     } catch (e: any) {
-      const code = e?.code as FirebaseErrors.FirestoreError
+      const code = e?.code as FirestoreError
       set({ fetchUserStatus: code })
     }
   },
@@ -116,7 +114,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
     if (status === 'no-bunny-set') set({ fetchUserStatus: 'success' })
 
-    // save the choosen bunny to local storage
+    AsyncStorage.setItem('bunnyId', bunnyId).catch(() => null)
 
     set({ bunnyId })
   },
