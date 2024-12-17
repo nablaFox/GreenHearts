@@ -16,6 +16,8 @@ Make things work
 
 - translations ❌
 
+- firestore rules ❌
+
 # 0.2.0-alpha ❌
 
 Make things nice

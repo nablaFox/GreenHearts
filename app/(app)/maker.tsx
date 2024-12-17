@@ -20,14 +20,20 @@ export default function Maker() {
   const [title, setTitle] = useState('')
   const [notes, setNotes] = useState('')
 
-  const { addPost } = usePosts()
+  const addPost = usePosts(state => state.addPost)
 
   const canUpload = title || imageUri
 
   const handleUpload = () => {
     if (!canUpload) return
 
-    addPost({ imageUri, date, title, notes })
+    addPost({
+      imageUri,
+      date,
+      title,
+      notes
+    })
+
     router.back()
   }
 
@@ -51,7 +57,7 @@ export default function Maker() {
           placeholder="Notes"
           value={notes}
           onChangeText={setNotes}
-          icon="notes"
+          icon="text-box"
           rows={4}
         />
 

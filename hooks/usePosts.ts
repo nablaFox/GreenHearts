@@ -1,17 +1,19 @@
 import { firestore } from '@/api'
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import { create } from 'zustand'
+import storage from '@react-native-firebase/storage'
 import type { ActionResult, ActionStatus, Post, Heart } from '@/types'
 
 type VotePostResult = ActionResult<'error-1' | 'error-2' | 'error-3'>
-type AddPostStatus = ActionStatus<'firebase-error'>
+type AddPostStatus = ActionStatus<
+  'firebase-error' | 'firebase-storage-error' | 'incorrect-filename'
+>
 type FetchPostsStatus = ActionStatus<'error-1'>
 
 interface CreatePostParams {
   title?: string
   notes?: string
   imageUri?: string
-  date?: FirebaseFirestoreTypes.Timestamp
+  date?: Date
 }
 
 interface PostsStoreState {
@@ -47,7 +49,7 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
 
     const unsubscribe = firestore
       .posts({ userId: bunnyId })
-      .orderBy('date', 'desc')
+      .orderBy('userDate', 'desc')
       .limit(get().postsLimit)
       .onSnapshot(snapshot => {
         let lastDate = new Date()
@@ -87,9 +89,44 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
   addPost: async (params: CreatePostParams) => {
     set({ addPostStatus: 'loading' })
 
+    let url: string | null = null
+
+    if (params.imageUri) {
+      const fileName = params.imageUri.split('/').pop()
+
+      if (!fileName) {
+        set({ addPostStatus: 'incorrect-filename' })
+        return
+      }
+
+      const storageRef = storage().ref(`posts/${get().bunnyId}/${fileName}`)
+
+      const res = await storageRef.putFile(params.imageUri).catch(() => null)
+
+      if (res === null) {
+        set({ addPostStatus: 'firebase-storage-error' })
+        return
+      }
+
+      const downloadUrl = await storageRef.getDownloadURL().catch(() => null)
+
+      if (downloadUrl === null) {
+        set({ addPostStatus: 'firebase-storage-error' })
+        return
+      }
+
+      url = downloadUrl
+    }
+
     const res = await firestore
       .posts({ userId: get().bunnyId })
-      .add(params)
+      .add({
+        title: params.title,
+        notes: params.notes,
+        image: url,
+        date: firestore.Timestamp.now(),
+        userDate: firestore.Timestamp.fromDate(params.date || new Date())
+      })
       .catch(() => null)
 
     if (!res) {
