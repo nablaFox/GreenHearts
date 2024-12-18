@@ -7,9 +7,10 @@ import { removeAuthUser } from '@/libs/nativeAuth'
 import { useUsers } from '@/hooks/useUsers'
 import { useUser } from '@/hooks/useUser'
 
-import AddUserHandler from './AddUserHandler'
+import AddUserHandler from '../AddUserHandler'
 
 // to show also if the user tries login without being registered
+// full screen (covers sign-in)
 export function UserNotFound() {
   const addUser = useUsers(state => state.addUser)
   const resetUser = useUser(state => state.reset)

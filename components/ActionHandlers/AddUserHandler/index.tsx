@@ -4,7 +4,6 @@ import { Loading } from './Loading'
 import { Success } from './Success'
 import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 
-// full screen (covers UserNotFound)
 export default function AddUserHandler() {
   const addUserStatus = useUsers(state => state.addUserStatus)
 

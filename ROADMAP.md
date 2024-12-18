@@ -16,6 +16,8 @@ Make things work
 
 - translations ✅
 
+- testing ❌
+
 - firestore rules ❌
 
 ## 0.2.0-alpha ❌
@@ -57,10 +59,6 @@ Make things nicer
 ## 0.2.1-alpha ❌
 
 - firebase emulator
-
-## 0.2.2-alpha ❌
-
-- testing
 
 ## 0.3.0-alpha ❌
 

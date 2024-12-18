@@ -8,11 +8,18 @@ import { setDatetimePickerTheme } from '@/modules/datetime-picker'
 import { useUser } from '@/hooks/useUser'
 import { useStats } from '@/hooks/useStats'
 
+import { NoSelectedBunnyHandler } from '@/components/ActionHandlers'
+import { NoBunnyToChooseHandler } from '@/components/ActionHandlers'
+
 export default function AppLayout() {
   const fetchPosts = usePosts(state => state.fetchPosts)
   const isDark = useColorScheme(state => state.isDark)
   const bunnyId = useUser(state => state.bunnyId)
   const fetchStats = useStats(state => state.fetchStats)
+
+  const areThereBunnies = useUser(state => state.areThereBunnies())
+  const isBunnySet = useUser(state => state.isBunnySet())
+  const isOwl = useUser(state => state.isOwl())
 
   useEffect(() => {
     if (bunnyId !== null) fetchPosts(bunnyId)
@@ -31,6 +38,10 @@ export default function AppLayout() {
     presentation: 'modal',
     animation: 'fade_from_bottom'
   }
+
+  if (!areThereBunnies && isOwl) return <NoBunnyToChooseHandler />
+
+  if (!isBunnySet && isOwl) return <NoSelectedBunnyHandler />
 
   return (
     <Stack>

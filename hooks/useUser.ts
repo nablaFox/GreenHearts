@@ -6,9 +6,7 @@ import { getAuthUserId } from '@/libs/nativeAuth'
 import { create } from 'zustand'
 
 // QUESTION: if the user is unhathenticated maybe firebase will throw this error for us
-type FetchUserStatus = ActionStatus<
-  'unhautenticated-user' | 'no-bunny-set' | 'no-bunnies' | FirestoreError
->
+type FetchUserStatus = ActionStatus<'unauthenticated-user' | FirestoreError>
 
 interface UserStoreState {
   bunnyId: string | null
@@ -21,6 +19,7 @@ interface UserStoreState {
   reset: () => void
   isOwl: () => boolean
   areThereBunnies: () => boolean
+  isBunnySet: () => boolean
   isLogged: () => boolean
 }
 
@@ -43,19 +42,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
         if (!user) return
 
-        set({ user: { ...user, key: doc.id } })
-
-        if (!user.isOwl) set({ fetchUserStatus: 'success' })
-
-        if (!user.bunnies?.length) {
-          return set({ fetchUserStatus: 'no-bunnies' })
-        }
-
-        if (!get().bunnyId) {
-          return set({ fetchUserStatus: 'no-bunny-set' })
-        }
-
-        set({ fetchUserStatus: 'success' })
+        set({ fetchUserStatus: 'success', user: { ...user, key: doc.id } })
       },
       (e: any) => {
         const code = e?.code as FirestoreError
@@ -70,7 +57,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
     const authUserId = getAuthUserId()
 
     if (!authUserId) {
-      return set({ fetchUserStatus: 'unhautenticated-user' })
+      return set({ fetchUserStatus: 'unauthenticated-user' })
     }
 
     try {
@@ -91,20 +78,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
       }
 
       const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
-
-      if (bunnyId === null) {
-        return set({ fetchUserStatus: 'no-bunny-set' })
-      }
-
-      if (!userData.bunnies?.length) {
-        return set({ fetchUserStatus: 'no-bunnies' })
-      }
-
-      if (!bunnyId || !userData.bunnies.includes(bunnyId)) {
-        return set({ fetchUserStatus: 'no-bunny-set' })
-      }
-
-      get().setBunnyId(bunnyId)
+      if (bunnyId) get().setBunnyId(bunnyId)
     } catch (e: any) {
       const code = e?.code as FirestoreError
       set({ fetchUserStatus: code })
@@ -112,11 +86,9 @@ export const useUser = create<UserStoreState>((set, get) => ({
   },
 
   setBunnyId: (bunnyId: string) => {
-    const status = get().fetchUserStatus
-
-    if (status === 'no-bunny-set') set({ fetchUserStatus: 'success' })
-
-    AsyncStorage.setItem('bunnyId', bunnyId).catch(() => null)
+    if (!get().isBunnySet) {
+      AsyncStorage.setItem('bunnyId', bunnyId).catch(() => null)
+    }
 
     set({ bunnyId })
   },
@@ -136,5 +108,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
   areThereBunnies: () => (get().user?.bunnies?.length ?? 0) > 0,
 
-  isLogged: () => !!get().bunnyId && !!get().user
+  isLogged: () => !!get().user,
+
+  isBunnySet: () => !!get().bunnyId
 }))
