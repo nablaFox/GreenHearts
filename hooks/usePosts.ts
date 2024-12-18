@@ -6,7 +6,8 @@ import type { FirestoreError, FirebaseStorageError } from '@/api'
 type AddPostStatus = ActionStatus<
   FirestoreError | FirebaseStorageError | 'invalid-filename'
 >
-type FetchPostsStatus = ActionStatus<'error-1'>
+
+type FetchPostsStatus = ActionStatus<FirestoreError>
 
 interface CreatePostParams {
   title?: string
@@ -31,9 +32,9 @@ interface PostsStoreState {
 
 export const usePosts = create<PostsStoreState>((set, get) => ({
   posts: [],
-  fetchPostsStatus: 'loading',
-  fetchMorePostsStatus: 'success',
-  addPostStatus: 'success',
+  fetchPostsStatus: 'idle',
+  fetchMorePostsStatus: 'idle',
+  addPostStatus: 'idle',
   firebaseCallback: null,
   postsLimit: 10,
 
@@ -46,27 +47,34 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
       .posts({ userId: bunnyId })
       .orderBy('userDate', 'desc')
       .limit(get().postsLimit)
-      .onSnapshot(snapshot => {
-        let lastDate = new Date()
+      .onSnapshot(
+        snapshot => {
+          let lastDate = new Date()
 
-        const posts: Post[] = snapshot.docs.map(doc => {
-          const data = doc.data()
-          const userDate = data.userDate?.toDate()
-          const isHeader = userDate && lastDate.getDate() !== userDate.getDate()
+          const posts: Post[] = snapshot.docs.map(doc => {
+            const data = doc.data()
+            const userDate = data.userDate?.toDate()
+            const isHeader =
+              userDate && lastDate.getDate() !== userDate.getDate()
 
-          if (isHeader) lastDate = userDate
+            if (isHeader) lastDate = userDate
 
-          return { ...data, key: doc.id, isHeader }
-        })
+            return { ...data, key: doc.id, isHeader }
+          })
 
-        set({ posts })
-
-        if (get().fetchPostsStatus === 'loading') {
-          set({ fetchPostsStatus: 'success' })
+          set({
+            fetchMorePostsStatus: 'success',
+            fetchPostsStatus: 'success',
+            posts
+          })
+        },
+        (e: any) => {
+          const code = e?.code as FirestoreError
+          if (get().fetchPostsStatus === 'loading')
+            set({ fetchPostsStatus: code })
+          else set({ fetchMorePostsStatus: code })
         }
-
-        set({ fetchMorePostsStatus: 'success' })
-      })
+      )
 
     set({ firebaseCallback: unsubscribe })
   },

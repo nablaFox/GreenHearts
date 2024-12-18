@@ -7,11 +7,13 @@ import '@formatjs/intl-pluralrules/polyfill-force'
 import '@formatjs/intl-pluralrules/locale-data/en'
 
 import { messages as enMessages } from './locales/en/messages.po'
+import { messages as itMessages } from './locales/it/messages.po'
 
-type SupportedLocales = 'en'
+type SupportedLocales = 'en' | 'it'
 
 const locales: Record<SupportedLocales, any> = {
-  en: enMessages
+  en: enMessages,
+  it: itMessages
 }
 
 export async function setLocale(locale: SupportedLocales) {
@@ -24,7 +26,7 @@ export function initI18n() {
 
   i18n.loadAndActivate({
     locale,
-    messages: locales['en']
+    messages: locales[locale]
   })
 }
 

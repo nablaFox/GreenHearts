@@ -27,7 +27,7 @@ interface UserStoreState {
 export const useUser = create<UserStoreState>((set, get) => ({
   bunnyId: null,
   user: null,
-  fetchUserStatus: 'success',
+  fetchUserStatus: 'idle',
   firebaseSubscriber: null,
 
   setFirebaseCallback: (userId: string) => {
@@ -67,7 +67,6 @@ export const useUser = create<UserStoreState>((set, get) => ({
   },
 
   fetchUser: async () => {
-    set({ fetchUserStatus: 'loading' })
     const authUserId = getAuthUserId()
 
     if (!authUserId) {
@@ -75,6 +74,8 @@ export const useUser = create<UserStoreState>((set, get) => ({
     }
 
     try {
+      set({ fetchUserStatus: 'loading' })
+
       const userDoc = await firestore.user({ userId: authUserId }).get()
 
       if (!userDoc.exists) {
@@ -126,7 +127,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
     set({
       bunnyId: null,
       user: null,
-      fetchUserStatus: 'success',
+      fetchUserStatus: 'idle',
       firebaseSubscriber: null
     })
   },

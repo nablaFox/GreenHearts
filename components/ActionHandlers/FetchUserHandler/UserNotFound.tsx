@@ -7,18 +7,23 @@ import { removeAuthUser } from '@/libs/nativeAuth'
 import { useUsers } from '@/hooks/useUsers'
 import { useUser } from '@/hooks/useUser'
 
-// full screen
+import AddUserHandler from './AddUserHandler'
+
 // to show also if the user tries login without being registered
 export function UserNotFound() {
   const addUser = useUsers(state => state.addUser)
-  const fetchUser = useUser(state => state.fetchUser)
+  const resetUser = useUser(state => state.reset)
 
   const [username, setUsername] = useState('')
   const [isOwl, setIsOwl] = useState(false)
 
   const onAddUser = () => {
     addUser({ username, isOwl })
-    fetchUser()
+  }
+
+  const onCancelRegistration = async () => {
+    await removeAuthUser()
+    resetUser()
   }
 
   return (
@@ -36,7 +41,9 @@ export function UserNotFound() {
 
       <Button onPress={onAddUser}>Get on board!</Button>
 
-      <Button onPress={removeAuthUser}>Cancel registration</Button>
+      <Button onPress={onCancelRegistration}>Cancel registration</Button>
+
+      <AddUserHandler />
     </View>
   )
 }

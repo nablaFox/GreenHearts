@@ -1,6 +1,6 @@
 import { firestore } from '@/api'
 import { create } from 'zustand'
-import { authUserId } from '@/libs/nativeAuth'
+import { getAuthUserId } from '@/libs/nativeAuth'
 
 import type { FirestoreError } from '@/api'
 import type { ActionStatus } from '@/types'
@@ -18,9 +18,11 @@ interface UsersStoreState {
 }
 
 export const useUsers = create<UsersStoreState>((set, get) => ({
-  addUserStatus: 'success',
+  addUserStatus: 'idle',
 
   addUser: async (params: AddUserParams) => {
+    const authUserId = getAuthUserId()
+
     if (!authUserId) return
 
     set({ addUserStatus: 'loading' })

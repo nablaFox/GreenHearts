@@ -1,22 +1,15 @@
 import { usePosts } from '@/hooks/usePosts'
-import { showSnackBar } from '@/hooks/useSnackBar'
-import { showLoadingBar } from '@/hooks/useLoadingBar'
+import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 
-import { useActionHandler } from '@/libs/useActionHandler'
+import { LoadingBar } from '@/components/LoadingBar'
 
 export function FetchMorePostsHandler() {
   const fetchMorePostsStatus = usePosts(state => state.fetchMorePostsStatus)
 
-  if (fetchMorePostsStatus === 'success') {
-    return null
-  }
+  useErrorNotifier(fetchMorePostsStatus)
 
-  if (fetchMorePostsStatus === 'loading') {
-    // loading state handling
+  // skeleton loading
+  if (fetchMorePostsStatus === 'loading') return <LoadingBar />
 
-    return null
-  }
-
-  // some generic error handling
   return null
 }

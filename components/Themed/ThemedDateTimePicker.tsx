@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 import { openDateTimePicker, onDateChange } from '@/modules/datetime-picker'
 
-import { formatPickedDate, getIs24Hours } from '@/libs/date'
+import { formatPickedDate, getIs24Hours } from '@/libs/utils'
 
 export function ThemedDateTimePicker({
   date,

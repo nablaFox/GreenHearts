@@ -1,24 +1,24 @@
 import { create } from 'zustand'
 
+type SnackBarType = 'error' | 'success' | 'warning'
+
 interface SnackbarMessage {
   title?: string
   description: string
   icon?: string
   timeout?: number
+  type?: SnackBarType
 }
 
 interface SnackBarState {
-  message: SnackbarMessage
-  isVisible: boolean
-  showSnackBar: (message: SnackbarMessage) => void
-  hideSnackBar: () => void
+  messages: SnackbarMessage[]
+  addMessage: (message: SnackbarMessage) => void
+  popMessage: () => void
 }
 
 export const useSnackBar = create<SnackBarState>(set => ({
-  message: { description: '' },
-  isVisible: false,
-  showSnackBar: (message: SnackbarMessage) => set({ message, isVisible: true }),
-  hideSnackBar: () => set({ isVisible: false })
+  messages: [],
+  addMessage: message =>
+    set(state => ({ messages: [...state.messages, message] })),
+  popMessage: () => set(state => ({ messages: state.messages.slice(1) }))
 }))
-
-export const showSnackBar = useSnackBar.getState().showSnackBar

@@ -1,21 +1,18 @@
-import { useActionHandler } from '@/libs/useActionHandler'
+import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 import { usePosts } from '@/hooks/usePosts'
-import { showSnackBar } from '@/hooks/useSnackBar'
-import { useEffect } from 'react'
 
-import { Text } from 'react-native-paper'
+import { t } from '@lingui/core/macro'
+
+import { LoadingBar } from '@/components/LoadingBar'
 
 export function AddPostHandler() {
   const addPostStatus = usePosts(state => state.addPostStatus)
 
-  if (addPostStatus === 'success') {
-    return null
-  }
+  useErrorNotifier(addPostStatus, {
+    'firestore/invalid-argument': t`The post seems to be invalid`
+  })
 
-  if (addPostStatus === 'loading') {
-    return null
-  }
+  if (addPostStatus === 'loading') return <LoadingBar />
 
-  // some generic error handling
-  return <Text>Some error has happened {addPostStatus}</Text>
+  return null
 }

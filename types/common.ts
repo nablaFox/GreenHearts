@@ -1,2 +1,2 @@
-export type ActionStatus<T> = 'loading' | 'success' | T
+export type ActionStatus<T = string> = 'loading' | 'success' | 'idle' | T
 export type ActionResult<T> = 'ok' | T

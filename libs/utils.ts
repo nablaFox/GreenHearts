@@ -27,3 +27,7 @@ export function getWeekEnds(date: Date): [Date, Date] {
   end.setDate(end.getDate() + 6)
   return [start, end]
 }
+
+export function kebabToCamel(str: string) {
+  return str.replace(/-./g, x => x.toUpperCase()[1])
+}

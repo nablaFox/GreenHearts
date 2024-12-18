@@ -14,7 +14,7 @@ Make things work
 
 - real errors definition & handling ✅
 
-- translations ❌
+- translations ✅
 
 - firestore rules ❌
 
@@ -26,7 +26,6 @@ Make things nice
 - PostsList.tsx
 - ThisMonthStatsSection/
 - TodayStatsSection/
-- CollapsibleHeader.tsx
 - HomeHeader.tsx
 - MakerHeader.tsx
 - PostsHeader.tsx
@@ -44,10 +43,12 @@ Make things nice
 
 Make things nicer
 
+- CollapsibleHeader.tsx (animation)
 - Snackbar.tsx
 - LoadingBar.tsx
-- FetchMorePostsHandler.tsx
-- FetchPostsHandler.tsx
+- loading posts skeletons
+- FetchUserHandler/
+- AddUserHandler/
 - glowing heart animation
 - BottomBar hide animation on scroll
 - ThemedImagePicker animation

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { firestore } from '@/api'
-import { getWeekEnds } from '@/libs/date'
+import { getWeekEnds } from '@/libs/utils'
 import type { Stats } from '@/types'
 
 interface StatsStoreState {

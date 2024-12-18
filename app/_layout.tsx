@@ -6,7 +6,6 @@ import { I18nProvider } from '@lingui/react'
 
 import SignIn from './sign-in'
 import { SnackBar } from '@/components/SnackBar'
-import { LoadingBar } from '@/components/LoadingBar'
 
 import { i18n, initI18n } from '@/i18n'
 import { useTheme } from '@/hooks/useTheme'
@@ -38,7 +37,6 @@ export default function Root() {
         {isLogged ? <Slot /> : <SignIn />}
 
         <SnackBar />
-        <LoadingBar />
         <StatusBar style="light" />
       </I18nProvider>
     </PaperProvider>
