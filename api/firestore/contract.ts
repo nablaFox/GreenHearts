@@ -1,7 +1,6 @@
-import type { FirestoreContractType } from '@/libs/firestoreClient'
 import type { UserInDatabase, PostInDatabase, StatsInDatabase } from '@/types'
 
-const FirestoreContract: FirestoreContractType = {
+const FirestoreContract = {
   user: {
     path: 'users/{userId}',
     params: {} as { userId: string },

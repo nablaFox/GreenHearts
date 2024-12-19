@@ -42,7 +42,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
         if (!user) return
 
-        set({ fetchUserStatus: 'success', user: { ...user, key: doc.id } })
+        set({ user: { ...user, key: doc.id } })
       },
       (e: any) => {
         const code = e?.code as FirestoreError
@@ -71,6 +71,11 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
       const userData = userDoc.data()!
 
+      set({
+        user: { ...userData, key: userDoc.id },
+        fetchUserStatus: 'success'
+      })
+
       get().setFirebaseCallback(authUserId)
 
       if (!userData.isOwl) {
@@ -80,13 +85,14 @@ export const useUser = create<UserStoreState>((set, get) => ({
       const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
       if (bunnyId) get().setBunnyId(bunnyId)
     } catch (e: any) {
+      console.log(e)
       const code = e?.code as FirestoreError
       set({ fetchUserStatus: code })
     }
   },
 
   setBunnyId: (bunnyId: string) => {
-    if (!get().isBunnySet) {
+    if (get().isOwl()) {
       AsyncStorage.setItem('bunnyId', bunnyId).catch(() => null)
     }
 
