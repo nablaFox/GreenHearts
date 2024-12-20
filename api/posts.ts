@@ -15,8 +15,6 @@ interface CreatePostParams {
 
 type AddPostError = FirestoreError | FirebaseStorageError | 'invalid-filename'
 
-export async function addPostImage() {}
-
 export async function addPost(
   userId: string,
   params: CreatePostParams
@@ -53,7 +51,7 @@ export async function addPost(
   }
 }
 
-export function fetchPosts({
+export function setPostsListener({
   userId,
   limit,
   asc = false,

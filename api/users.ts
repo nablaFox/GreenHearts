@@ -1,6 +1,6 @@
 import type { FirestoreError } from '@/libs/firebaseErrors'
 import type { ActionResult, UserInDatabase } from '@/types'
-import { firestore } from './clients/firestore'
+import { firestore } from './index'
 
 type AddUserParams = {
   username: string

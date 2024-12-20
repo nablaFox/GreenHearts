@@ -1,7 +1,4 @@
-import {
-  addPost as addPostInFirestore,
-  fetchPosts as fetchPostsInFirestore
-} from '@/api/posts'
+import { addPost as addPostInFirestore, setPostsListener } from '@/api/posts'
 import { create } from 'zustand'
 import { type ActionStatus, type Post } from '@/types'
 import type { FirestoreError, FirebaseStorageError } from '@/api'
@@ -44,7 +41,7 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
 
     set({ fetchPostsStatus: 'loading' })
 
-    const unsubscribe = fetchPostsInFirestore({
+    const unsubscribe = setPostsListener({
       userId: bunnyId,
       limit: get().postsLimit,
       callback: posts => set({ posts, fetchPostsStatus: 'success' }),

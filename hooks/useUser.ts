@@ -1,11 +1,11 @@
-import { type FirestoreError, firestore } from '@/api'
+import { type FirestoreError } from '@/api'
 import type { ActionStatus, User } from '@/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getAuthUserId } from '@/libs/nativeAuth'
 
 import { create } from 'zustand'
+import { getUser, setUserCallback } from '@/api/user'
 
-// QUESTION: if the user is unhathenticated maybe firebase will throw this error for us
 type FetchUserStatus = ActionStatus<'unauthenticated-user' | FirestoreError>
 
 interface UserStoreState {
@@ -31,24 +31,13 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
   setFirebaseCallback: (userId: string) => {
     const previousCallback = get().firebaseSubscriber
+    if (previousCallback) previousCallback()
 
-    if (previousCallback) {
-      previousCallback()
-    }
-
-    const unsubscribe = firestore.user({ userId }).onSnapshot(
-      doc => {
-        const user = doc?.data()
-
-        if (!user) return
-
-        set({ user: { ...user, key: doc.id } })
-      },
-      (e: any) => {
-        const code = e?.code as FirestoreError
-        set({ fetchUserStatus: code })
-      }
-    )
+    const unsubscribe = setUserCallback({
+      userId,
+      callback: user => set({ user: { ...user, key: userId } }),
+      onError: code => set({ fetchUserStatus: code })
+    })
 
     set({ firebaseSubscriber: unsubscribe })
   },
@@ -60,34 +49,25 @@ export const useUser = create<UserStoreState>((set, get) => ({
       return set({ fetchUserStatus: 'unauthenticated-user' })
     }
 
-    try {
-      set({ fetchUserStatus: 'loading' })
+    set({ fetchUserStatus: 'loading' })
 
-      const userDoc = await firestore.user({ userId: authUserId }).get()
+    const [error, userData] = await getUser(authUserId)
 
-      if (!userDoc.exists) {
-        return set({ fetchUserStatus: 'firestore/not-found' })
-      }
+    if (error) return set({ fetchUserStatus: error })
 
-      const userData = userDoc.data()!
+    get().setFirebaseCallback(authUserId)
 
-      get().setFirebaseCallback(authUserId)
+    set({ user: { ...userData, key: authUserId } })
 
-      set({ user: { ...userData, key: userDoc.id } })
-
-      if (!userData.isOwl) {
-        set({ fetchUserStatus: 'success' })
-        return get().setBunnyId(authUserId)
-      }
-
-      const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
-      if (bunnyId) get().setBunnyId(bunnyId)
-
+    if (!userData!.isOwl) {
       set({ fetchUserStatus: 'success' })
-    } catch (e: any) {
-      const code = e?.code as FirestoreError
-      set({ fetchUserStatus: code })
+      return get().setBunnyId(authUserId)
     }
+
+    const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
+    if (bunnyId) get().setBunnyId(bunnyId)
+
+    set({ fetchUserStatus: 'success' })
   },
 
   setBunnyId: (bunnyId: string) => {
