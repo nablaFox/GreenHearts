@@ -4,11 +4,7 @@ import { PostsHeader } from '@/components/Headers/PostsHeader'
 
 import PostsListSection from '@/components/PostsListSection'
 
-import {
-  FetchMorePostsHandler,
-  FetchPostsHandler,
-  AddPostHandler
-} from '@/components/ActionHandlers'
+import { FetchPostsHandler, AddPostHandler } from '@/components/ActionHandlers'
 
 export default function Posts() {
   return (
@@ -17,7 +13,6 @@ export default function Posts() {
       <PostsListSection />
 
       <FetchPostsHandler />
-      <FetchMorePostsHandler />
       <AddPostHandler />
     </ThemedView>
   )

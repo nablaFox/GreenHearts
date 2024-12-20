@@ -19,7 +19,6 @@ interface CreatePostParams {
 interface PostsStoreState {
   posts: Post[]
   fetchPostsStatus: FetchPostsStatus
-  fetchMorePostsStatus: FetchPostsStatus
   addPostStatus: AddPostStatus
   postsLimit: number
 
@@ -33,7 +32,6 @@ interface PostsStoreState {
 export const usePosts = create<PostsStoreState>((set, get) => ({
   posts: [],
   fetchPostsStatus: 'idle',
-  fetchMorePostsStatus: 'idle',
   addPostStatus: 'idle',
   firebaseCallback: null,
   postsLimit: 10,
@@ -62,19 +60,11 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
             return { ...data, key: doc.id, isHeader }
           })
 
-          if (get().fetchPostsStatus === 'loading')
-            set({ fetchPostsStatus: 'success', posts })
-          else
-            set({
-              fetchMorePostsStatus: 'success',
-              posts
-            })
+          set({ fetchPostsStatus: 'success', posts })
         },
         (e: any) => {
           const code = e?.code as FirestoreError
-          if (get().fetchPostsStatus === 'loading')
-            set({ fetchPostsStatus: code })
-          else set({ fetchMorePostsStatus: code })
+          set({ fetchPostsStatus: code })
         }
       )
 
@@ -82,8 +72,6 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
   },
 
   fetchMorePosts: (bunnyId: string, num?: number) => {
-    set({ fetchMorePostsStatus: 'loading' })
-
     const postsLimit = get().postsLimit
     const incrementedLimit = num || postsLimit + 10
 
