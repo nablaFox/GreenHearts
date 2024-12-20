@@ -4,7 +4,7 @@ import { HeartSelection } from './HeartSelection'
 import { HeartButton } from './HeartButton'
 import { AssignableHearts, Heart } from '@/types'
 
-import { votePost, disVotePost } from '@/hooks/usePost'
+import { votePost, disVotePost } from '@/api/post'
 import { useUser } from '@/hooks/useUser'
 
 export function PostFooter({
@@ -21,7 +21,6 @@ export function PostFooter({
     const res = await votePost(bunnyId, postId, heart)
 
     if (res !== 'ok') {
-      // handle error
     }
   }
 

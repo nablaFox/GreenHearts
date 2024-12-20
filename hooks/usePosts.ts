@@ -1,4 +1,7 @@
-import { firestore, storage } from '@/api'
+import {
+  addPost as addPostInFirestore,
+  fetchPosts as fetchPostsInFirestore
+} from '@/api/posts'
 import { create } from 'zustand'
 import { type ActionStatus, type Post } from '@/types'
 import type { FirestoreError, FirebaseStorageError } from '@/api'
@@ -41,32 +44,12 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
 
     set({ fetchPostsStatus: 'loading' })
 
-    const unsubscribe = firestore
-      .posts({ userId: bunnyId })
-      .orderBy('userDate', 'desc')
-      .limit(get().postsLimit)
-      .onSnapshot(
-        snapshot => {
-          let lastDate = new Date()
-
-          const posts: Post[] = snapshot.docs.map(doc => {
-            const data = doc.data()
-            const userDate = data.userDate?.toDate()
-            const isHeader =
-              userDate && lastDate.getDate() !== userDate.getDate()
-
-            if (isHeader) lastDate = userDate
-
-            return { ...data, key: doc.id, isHeader }
-          })
-
-          set({ fetchPostsStatus: 'success', posts })
-        },
-        (e: any) => {
-          const code = e?.code as FirestoreError
-          set({ fetchPostsStatus: code })
-        }
-      )
+    const unsubscribe = fetchPostsInFirestore({
+      userId: bunnyId,
+      limit: get().postsLimit,
+      callback: posts => set({ posts, fetchPostsStatus: 'success' }),
+      onError: e => set({ fetchPostsStatus: e })
+    })
 
     set({ firebaseCallback: unsubscribe })
   },
@@ -82,49 +65,10 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
   addPost: async (bunnyId: string, params: CreatePostParams) => {
     set({ addPostStatus: 'loading' })
 
-    const toAdd: any = {
-      title: params.title,
-      notes: params.notes,
-      date: firestore.Timestamp.now(),
-      userDate: firestore.Timestamp.fromDate(params.date || new Date())
-    }
+    const res = await addPostInFirestore(bunnyId, params)
 
-    if (params.imageUri) {
-      const fileName = params.imageUri.split('/').pop()
-
-      if (!fileName) {
-        set({ addPostStatus: 'invalid-filename' })
-        return
-      }
-
-      const postStorageRef = storage.posts({ userId: bunnyId, fileName })
-
-      await postStorageRef.putFile(params.imageUri).catch((e: any) => {
-        const code = e?.code as FirebaseStorageError
-        set({ addPostStatus: code })
-      })
-
-      const downloadUrl = await postStorageRef
-        .getDownloadURL()
-        .catch((e: any) => {
-          const code = e?.code as FirebaseStorageError
-          set({ addPostStatus: code })
-          return null
-        })
-
-      if (downloadUrl !== null) toAdd.image = downloadUrl
-    }
-
-    const res = await firestore
-      .posts({ userId: bunnyId })
-      .add(toAdd)
-      .catch((e: any) => {
-        const code = e?.code as FirestoreError
-        set({ addPostStatus: code })
-        return null
-      })
-
-    if (res !== null) set({ addPostStatus: 'success' })
+    if (res === 'ok') set({ addPostStatus: 'success' })
+    else set({ addPostStatus: res })
   },
 
   getPost: (id: string) => {

@@ -1,6 +1,5 @@
-// if we need the votePost status shared across components we'll use a store
-
-import { firestore, type FirestoreError } from '@/api'
+import type { FirestoreError } from '@/libs/firebaseErrors'
+import { firestore } from './index'
 import { Heart, HeartStringMap, type ActionResult } from '@/types'
 
 type VotePostResult = ActionResult<FirestoreError>

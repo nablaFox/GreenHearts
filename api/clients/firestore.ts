@@ -1,6 +1,8 @@
 import type { UserInDatabase, PostInDatabase, StatsInDatabase } from '@/types'
+import Firestore from '@react-native-firebase/firestore'
+import { createFirestoreRef } from '@/libs/firebaseClient'
 
-const FirestoreContract = {
+const contract = {
   user: {
     path: 'users/{userId}',
     params: {} as { userId: string },
@@ -37,4 +39,29 @@ const FirestoreContract = {
   }
 }
 
-export default FirestoreContract
+export const firestore = {
+  user: createFirestoreRef(contract, 'user', true),
+  posts: createFirestoreRef(contract, 'posts', false),
+  post: createFirestoreRef(contract, 'post', true),
+  stats: createFirestoreRef(contract, 'stats', false),
+  todayStats: createFirestoreRef(contract, 'todayStats', true),
+
+  initialize: async () => {
+    if (__DEV__) {
+      Firestore().useEmulator(
+        process.env.EXPO_PUBLIC_FIRESTORE_EMULATOR_HOST!,
+        parseInt(process.env.EXPO_PUBLIC_FIRESTORE_EMULATOR_PORT!)
+      )
+
+      return
+    }
+
+    Firestore().settings({
+      persistence: true
+    })
+  },
+
+  FieldValue: Firestore.FieldValue,
+
+  Timestamp: Firestore.Timestamp
+}

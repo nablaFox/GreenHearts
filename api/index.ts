@@ -4,6 +4,5 @@ export type {
   FirestoreError
 } from '@/libs/firebaseErrors'
 
-export { default as firestore } from './firestore/client'
-
-export { default as storage } from './storage/client'
+export { firestore } from './clients/firestore'
+export { storage } from './clients/storage'
