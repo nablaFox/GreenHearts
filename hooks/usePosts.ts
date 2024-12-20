@@ -62,11 +62,13 @@ export const usePosts = create<PostsStoreState>((set, get) => ({
             return { ...data, key: doc.id, isHeader }
           })
 
-          set({
-            fetchMorePostsStatus: 'success',
-            fetchPostsStatus: 'success',
-            posts
-          })
+          if (get().fetchPostsStatus === 'loading')
+            set({ fetchPostsStatus: 'success', posts })
+          else
+            set({
+              fetchMorePostsStatus: 'success',
+              posts
+            })
         },
         (e: any) => {
           const code = e?.code as FirestoreError

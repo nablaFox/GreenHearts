@@ -44,14 +44,12 @@ describe('useUser store', () => {
 
   const getUseUser = () => renderHook(() => useUser()).result
 
-  describe('initial state', () => {
-    it('has the correct initial state', () => {
-      const { bunnyId, user, fetchUserStatus } = getUseUser().current
+  it('has the correct initial state', () => {
+    const { bunnyId, user, fetchUserStatus } = getUseUser().current
 
-      expect(bunnyId).toBeNull()
-      expect(user).toBeNull()
-      expect(fetchUserStatus).toBe('idle')
-    })
+    expect(bunnyId).toBeNull()
+    expect(user).toBeNull()
+    expect(fetchUserStatus).toBe('idle')
   })
 
   describe('fetchUser', () => {
