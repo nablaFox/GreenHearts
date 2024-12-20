@@ -2,17 +2,15 @@ import type { FirestoreError } from '@/libs/firebaseErrors'
 import { firestore } from './index'
 import { Heart, HeartStringMap, type ActionResult } from '@/types'
 
-type VotePostResult = ActionResult<FirestoreError>
-
 export async function votePost(
-  bunnyId: string,
+  userId: string,
   postId: string,
   heart: Heart
-): Promise<VotePostResult> {
+): Promise<ActionResult<FirestoreError>> {
   try {
-    await firestore.post({ userId: bunnyId, postId }).update({ heart })
+    await firestore.post({ userId: userId, postId }).update({ heart })
 
-    await firestore.todayStats({ userId: bunnyId }).update({
+    await firestore.todayStats({ userId: userId }).update({
       [HeartStringMap[heart]]: firestore.FieldValue.increment(1),
       score: firestore.FieldValue.increment(heart)
     })
@@ -24,16 +22,16 @@ export async function votePost(
 }
 
 export async function disVotePost(
-  bunnyId: string,
+  userId: string,
   postId: string,
   heart: Heart
-): Promise<VotePostResult> {
+): Promise<ActionResult<FirestoreError>> {
   try {
     await firestore
-      .post({ userId: bunnyId, postId })
+      .post({ userId: userId, postId })
       .update({ heart: Heart.Gray })
 
-    firestore.todayStats({ userId: bunnyId }).update({
+    firestore.todayStats({ userId: userId }).update({
       [HeartStringMap[heart]]: firestore.FieldValue.increment(-1),
       score: firestore.FieldValue.increment(-heart)
     })

@@ -1,9 +1,12 @@
-import { firestore } from '@/api'
+import {
+  addUser as addUserInFirestore,
+  deleteUser as deleteUserInFirestore
+} from '@/api/users'
 import { create } from 'zustand'
 import { getAuthUserId } from '@/libs/nativeAuth'
 
 import type { FirestoreError } from '@/api'
-import type { ActionStatus, UserInDatabase } from '@/types'
+import type { ActionResult, ActionStatus } from '@/types'
 
 type AddUserParams = {
   username: string
@@ -11,10 +14,10 @@ type AddUserParams = {
 }
 
 interface UsersStoreState {
-  addUserStatus: ActionStatus<FirestoreError>
+  addUserStatus: ActionStatus<FirestoreError | 'unhautenticated'>
 
   addUser: (params: AddUserParams) => Promise<void>
-  deleteUser: (userId: string) => Promise<ActionStatus<FirestoreError>>
+  deleteUser: (userId: string) => Promise<ActionResult<FirestoreError>>
 }
 
 export const useUsers = create<UsersStoreState>((set, get) => ({
@@ -23,29 +26,16 @@ export const useUsers = create<UsersStoreState>((set, get) => ({
   addUser: async (params: AddUserParams) => {
     const authUserId = getAuthUserId()
 
-    if (!authUserId) return
+    if (!authUserId) return set({ addUserStatus: 'unhautenticated' })
 
     set({ addUserStatus: 'loading' })
 
-    const toAdd: UserInDatabase = {
-      username: params.username,
-      isOwl: params.isOwl
-    }
+    const res = await addUserInFirestore(params, authUserId)
 
-    if (params.isOwl) {
-      toAdd.bunnies = []
-    }
+    if (res !== 'ok') set({ addUserStatus: res })
 
-    try {
-      await firestore.user({ userId: authUserId }).set(toAdd)
-      set({ addUserStatus: 'success' })
-    } catch (e: any) {
-      const code = e?.code as FirestoreError
-      set({ addUserStatus: code })
-    }
+    set({ addUserStatus: 'success' })
   },
 
-  deleteUser: async (userId: string) => {
-    return 'success'
-  }
+  deleteUser: async (userId: string) => deleteUserInFirestore(userId)
 }))

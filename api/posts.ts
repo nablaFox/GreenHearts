@@ -3,7 +3,8 @@ import type {
   FirebaseStorageError
 } from '@/libs/firebaseErrors'
 import type { ActionResult, Post } from '@/types'
-import { firestore, storage } from './index'
+import { uploadPostImage } from './storage'
+import { firestore } from './index'
 
 interface CreatePostParams {
   title?: string
@@ -13,6 +14,8 @@ interface CreatePostParams {
 }
 
 type AddPostError = FirestoreError | FirebaseStorageError | 'invalid-filename'
+
+export async function addPostImage() {}
 
 export async function addPost(
   userId: string,
@@ -27,15 +30,17 @@ export async function addPost(
 
   try {
     if (params.imageUri) {
-      const fileName = params.imageUri.split('/').pop()
+      const postName = params.imageUri.split('/').pop()
 
-      if (!fileName) throw 'invalid-filename'
+      if (!postName) throw 'invalid-filename'
 
-      const postStorageRef = storage.posts({ userId, fileName })
+      const [uploadError, downloadUrl] = await uploadPostImage(
+        userId,
+        params.imageUri,
+        postName
+      )
 
-      await postStorageRef.putFile(params.imageUri)
-
-      const downloadUrl = await postStorageRef.getDownloadURL()
+      if (uploadError) throw uploadError
 
       toAdd.image = downloadUrl
     }
