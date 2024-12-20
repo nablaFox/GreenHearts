@@ -14,11 +14,15 @@ Make things work
 
 - real errors definition & handling ✅
 
-- translations ✅
+- i18n ✅
 
 - testing ❌
 
-- firestore rules ❌
+- firebase emulator ✅
+
+- firestore & storage rules ❌
+
+- app translations & real notification messages ❌
 
 ## 0.2.0-alpha ❌
 
@@ -55,10 +59,6 @@ Make things nicer
 - BottomBar hide animation on scroll
 - ThemedImagePicker animation
 - Modern google login
-
-## 0.2.1-alpha ❌
-
-- firebase emulator
 
 ## 0.3.0-alpha ❌
 

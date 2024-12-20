@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { getAuthUserId } from '@/libs/nativeAuth'
 
 import type { FirestoreError } from '@/api'
-import type { ActionStatus } from '@/types'
+import type { ActionStatus, UserInDatabase } from '@/types'
 
 type AddUserParams = {
   username: string
@@ -27,18 +27,22 @@ export const useUsers = create<UsersStoreState>((set, get) => ({
 
     set({ addUserStatus: 'loading' })
 
-    const res = await firestore
-      .user({ userId: authUserId })
-      .set({
-        username: params.username,
-        isOwl: params.isOwl,
-        bunnies: []
-      })
-      .catch(e => e?.code as FirestoreError)
+    const toAdd: UserInDatabase = {
+      username: params.username,
+      isOwl: params.isOwl
+    }
 
-    res !== undefined && set({ addUserStatus: res })
+    if (params.isOwl) {
+      toAdd.bunnies = []
+    }
 
-    set({ addUserStatus: 'success' })
+    try {
+      await firestore.user({ userId: authUserId }).set(toAdd)
+      set({ addUserStatus: 'success' })
+    } catch (e: any) {
+      const code = e?.code as FirestoreError
+      set({ addUserStatus: code })
+    }
   },
 
   deleteUser: async (userId: string) => {

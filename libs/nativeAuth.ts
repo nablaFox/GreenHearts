@@ -8,6 +8,12 @@ export function initAuth() {
   GoogleSignin.configure({
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID
   })
+
+  if (__DEV__) {
+    auth().useEmulator(
+      `http://${process.env.EXPO_PUBLIC_AUTH_EMULATOR_HOST}:${process.env.EXPO_PUBLIC_AUTH_EMULATOR_PORT}`
+    )
+  }
 }
 
 export async function loginWithGoogle(): Promise<LoginResult> {

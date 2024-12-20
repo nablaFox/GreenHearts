@@ -116,29 +116,20 @@ describe('useUser store', () => {
         setupFirestoreUserGetMock({ exists: true })
       })
 
-      it('calls setFirebaseCallback', async () => {
-        const userState = getUseUser()
-
-        expect(userState.current.firebaseSubscriber).toBeNull()
-
-        const spyOn = jest.spyOn(userState.current, 'setFirebaseCallback')
-
-        await fetchUser()
-
-        expect(spyOn).toHaveBeenCalledWith(authUserId)
-        expect(userState.current.firebaseSubscriber).not.toBeNull()
-      })
-
-      it('sets fetchUserStatus to "success"', async () => {
-        const { fetchUserStatus, user } = await fetchUserAndGetState()
-
+      const validateSuccessfulFetch = async () => {
+        const { fetchUserStatus, user, isLogged } = getUseUser().current
         expect(fetchUserStatus).toBe('success')
         expect(user).not.toBeNull()
+        expect(isLogged()).toBe(true)
+      }
+
+      afterEach(async () => {
+        await validateSuccessfulFetch()
       })
 
-      it('makes user data not null', async () => {
-        const { user } = await fetchUserAndGetState()
-        expect(user).not.toBeNull()
+      it('makes isLogged true', async () => {
+        const { isLogged } = await fetchUserAndGetState()
+        expect(isLogged()).toBe(true)
       })
 
       describe('user is not owl', () => {

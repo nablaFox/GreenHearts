@@ -20,12 +20,13 @@ export function useErrorNotifier<T extends ActionStatus>(
 ): void {
   const addMessage = useSnackBar(state => state.addMessage)
   const messageToUse =
-    (providedMessages?.[status] ?? (defaultMessages as any)?.[status]) ||
-    'unknown error'
+    providedMessages?.[status] ?? (defaultMessages as any)?.[status]
 
   useEffect(() => {
     if (status === 'success' || status === 'loading' || status === 'idle')
       return
+
+    if (!messageToUse) return
 
     addMessage({ description: messageToUse })
   }, [status, messageToUse, addMessage])
