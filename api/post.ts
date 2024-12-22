@@ -1,6 +1,6 @@
 import type { FirestoreError } from '@/libs/firebaseErrors'
 import { firestore } from './index'
-import { Heart, HeartStringMap, type ActionResult } from '@/types'
+import { Heart, type ActionResult } from '@/types'
 
 export async function votePost(
   userId: string,
@@ -9,17 +9,9 @@ export async function votePost(
 ): Promise<ActionResult<FirestoreError>> {
   try {
     await firestore.post({ userId: userId, postId }).update({ heart })
-
-    // TODO: use cloud function
-    // (and btw could also not be todayStats; it depends on the post user date)
-    await firestore.todayStats({ userId: userId }).update({
-      [HeartStringMap[heart]]: firestore.FieldValue.increment(1),
-      score: firestore.FieldValue.increment(heart)
-    })
-
     return 'ok'
   } catch (e: any) {
-    return e?.code
+    return (e?.code || e) as FirestoreError
   }
 }
 
@@ -30,16 +22,8 @@ export async function disVotePost(
 ): Promise<ActionResult<FirestoreError>> {
   try {
     await firestore.post({ userId, postId }).update({ heart: Heart.Gray })
-
-    // TODO: use cloud function
-    // (and btw could also not be todayStats; it depends on the post user date)
-    firestore.todayStats({ userId: userId }).update({
-      [HeartStringMap[heart]]: firestore.FieldValue.increment(-1),
-      score: firestore.FieldValue.increment(-heart)
-    })
-
     return 'ok'
   } catch (e: any) {
-    return e?.code
+    return (e?.code || e) as FirestoreError
   }
 }
