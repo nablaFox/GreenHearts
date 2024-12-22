@@ -5,7 +5,7 @@ import { useStats } from '@/hooks/useStats'
 import { useTheme } from '@/hooks/useTheme'
 
 export function HeartsWrapper() {
-  const { todayStats } = useStats()
+  const todayStats = useStats(state => state.todayStats)
   const { greens, reds, blue, grays } = todayStats
   const { theme } = useTheme()
 

@@ -13,6 +13,7 @@ import { t } from '@lingui/core/macro'
 
 export default function AppLayout() {
   const fetchPosts = usePosts(state => state.fetchPosts)
+  const fetchBunny = useUser(state => state.fetchBunny)
   const fetchStats = useStats(state => state.fetchStats)
 
   const fetchPostsStatus = usePosts(state => state.fetchPostsStatus)
@@ -29,6 +30,10 @@ export default function AppLayout() {
   useEffect(() => {
     if (bunnyId !== null) fetchStats(bunnyId)
   }, [fetchStats, bunnyId])
+
+  useEffect(() => {
+    if (bunnyId !== null) fetchBunny(bunnyId)
+  }, [fetchBunny, bunnyId])
 
   useEffect(() => setDatetimePickerTheme(isDark), [isDark])
 

@@ -28,7 +28,7 @@ initI18n()
 export default function Root() {
   const { theme } = useTheme()
 
-  const fetchUser = useUser(state => state.fetchUser)
+  const fetchAuthUser = useUser(state => state.fetchAuthUser)
   const fetchUserStatus = useUser(state => state.fetchUserStatus)
 
   useErrorNotifier(fetchUserStatus, {
@@ -37,8 +37,8 @@ export default function Root() {
   })
 
   useEffect(() => {
-    fetchUser()
-  }, [fetchUser])
+    fetchAuthUser()
+  }, [fetchAuthUser])
 
   const renderSwitch = (fetchUserStatus: FetchUserStatus) => {
     if (fetchUserStatus === 'success') return <Slot />

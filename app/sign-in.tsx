@@ -7,7 +7,7 @@ import { useSnackBar } from '@/hooks/useSnackBar'
 import { t } from '@lingui/core/macro'
 
 export default function SignIn() {
-  const fetchUser = useUser(state => state.fetchUser)
+  const fetchAuthUser = useUser(state => state.fetchAuthUser)
   const addKnownError = useSnackBar(state => state.addKnownError)
 
   const authenticateUser = async () => {
@@ -17,7 +17,7 @@ export default function SignIn() {
       return addKnownError({ description: res }, t`authenticating user`)
     }
 
-    fetchUser()
+    fetchAuthUser()
   }
 
   return (

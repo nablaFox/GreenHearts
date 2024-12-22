@@ -3,7 +3,7 @@ import { useUser } from '@/hooks/useUser'
 import { Text } from 'react-native-paper'
 
 export function NoBunniesToChoose() {
-  const { fetchUser } = useUser()
+  const fetchAuthUser = useUser(state => state.fetchAuthUser)
 
   // TODO: provide a button to refetch the user data
 

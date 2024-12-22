@@ -12,10 +12,11 @@ interface UserStoreState {
   bunnyId: string | null
   fetchUserStatus: FetchUserStatus
   user: User | null
+  bunny: User | null
   firebaseSubscriber: (() => void) | null
   setBunnyId: (bunnyId: string) => void
-  setFirebaseCallback: (userId: string) => void
-  fetchUser: () => Promise<void>
+  fetchBunny: (userId: string) => void
+  fetchAuthUser: () => Promise<void>
   reset: () => void
   isOwl: () => boolean
   areThereBunnies: () => boolean
@@ -25,23 +26,24 @@ interface UserStoreState {
 export const useUser = create<UserStoreState>((set, get) => ({
   bunnyId: null,
   user: null,
+  bunny: null,
   fetchUserStatus: 'idle',
   firebaseSubscriber: null,
 
-  setFirebaseCallback: (userId: string) => {
+  fetchBunny: (bunnyId: string) => {
     const previousCallback = get().firebaseSubscriber
     if (previousCallback) previousCallback()
 
     const unsubscribe = setUserCallback({
-      userId,
-      callback: user => set({ user: { ...user, key: userId } }),
+      userId: bunnyId,
+      callback: user => set({ bunny: { ...user, key: bunnyId } }),
       onError: code => set({ fetchUserStatus: code })
     })
 
     set({ firebaseSubscriber: unsubscribe })
   },
 
-  fetchUser: async () => {
+  fetchAuthUser: async () => {
     const authUserId = getAuthUserId()
 
     if (!authUserId) {
@@ -54,17 +56,25 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
     if (error) return set({ fetchUserStatus: error })
 
-    get().setFirebaseCallback(authUserId)
-
     set({ user: { ...userData, key: authUserId } })
 
     if (!userData!.isOwl) {
-      set({ fetchUserStatus: 'success' })
+      set({
+        fetchUserStatus: 'success',
+        bunny: { ...userData, key: authUserId }
+      })
       return get().setBunnyId(authUserId)
     }
 
     const bunnyId = await AsyncStorage.getItem('bunnyId').catch(() => null)
     if (bunnyId) get().setBunnyId(bunnyId)
+
+    // callback for owl user
+    setUserCallback({
+      userId: authUserId,
+      callback: user => set({ user: { ...user, key: authUserId } }),
+      onError: code => set({ fetchUserStatus: code })
+    })
 
     set({ fetchUserStatus: 'success' })
   },

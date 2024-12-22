@@ -5,7 +5,7 @@ import { useStats } from '@/hooks/useStats'
 import { EmojiCard, MealsCard, KcalCard } from './StatCards'
 
 export function StatsWrapper() {
-  const { todayStats } = useStats()
+  const todayStats = useStats(state => state.todayStats)
   const { score, kcal, meals } = todayStats
 
   return (

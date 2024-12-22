@@ -4,12 +4,12 @@ import { Text, Button } from 'react-native-paper'
 import { View } from 'react-native'
 
 export function AddUserSuccess() {
-  const fetchUser = useUser(state => state.fetchUser)
+  const fetchAuthUser = useUser(state => state.fetchAuthUser)
 
   return (
     <View>
       <Text>Adding user is succesfull</Text>
-      <Button onPress={fetchUser}>Get in</Button>
+      <Button onPress={fetchAuthUser}>Get in</Button>
     </View>
   )
 }

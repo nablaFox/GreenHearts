@@ -54,7 +54,7 @@ describe('useUser store', () => {
 
   describe('fetchUser', () => {
     const fetchUser = async () => {
-      const fetch = getUseUser().current.fetchUser
+      const fetch = getUseUser().current.fetchAuthUser
       await act(async () => await fetch())
     }
 
@@ -70,7 +70,7 @@ describe('useUser store', () => {
 
         expect(userState.current.firebaseSubscriber).toBeNull()
 
-        const spyOn = jest.spyOn(userState.current, 'setFirebaseCallback')
+        const spyOn = jest.spyOn(userState.current, 'fetchBunny')
 
         await fetchUser()
 
