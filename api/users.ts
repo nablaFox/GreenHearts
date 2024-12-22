@@ -36,8 +36,7 @@ export async function deleteUser(
   try {
     await firestore.user({ userId }).delete()
   } catch (e: any) {
-    const code = e?.code as FirestoreError
-    if (code) return code
+    return (e?.code || e) as FirestoreError
   }
 
   return 'ok'

@@ -2,18 +2,47 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if true;
+  	function isSameUser(userId) {
+    	return request.auth != null && request.auth.uid == userId
+    }
+    
+    function isOwlFor(userId) {
+  		return request.auth.uid == get(/databases/$(database)/documents/users/$(userId)).data.owl;
+    }
+    
+    match /users/{userId} {
+      allow create, delete: if isSameUser(userId)
+      allow read: if isSameUser(userId) || request.auth.uid == resource.data.owl
+      
+      // The owner can update the doc, but they can't set `owl` to themselves
+      allow update: if isSameUser(userId) &&
+        !(
+          request.resource.data.keys().hasAny(['owl']) &&
+          request.resource.data.owl == userId
+        );
+    }
+    
+    match /users/{userId}/posts/{postId} {
+    	allow read: if isSameUser(userId) || isOwlFor(userId)
+    	allow delete: if isSameUser(userId)
+      allow create: if isSameUser(userId)
+			allow update: if 
+      (
+      	// owl can only update "score" field
+      	isOwlFor(userId) 
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['score']) 
+      ) 
+      || 
+      (
+      	// owner can update everything except for the score
+      	isSameUser(userId)
+        && !request.resource.data.diff(resource.data).changedKeys().hasAny(['score'])
+      )
+    }
+    
+    match /users/{userId}/stats/{statId} {
+    	allow read: if isSameUser(userId) || isOwlFor(userId)
+      allow create: if isSameUser(userId)
     }
   }
 }

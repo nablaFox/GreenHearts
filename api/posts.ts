@@ -15,6 +15,7 @@ interface CreatePostParams {
 
 type AddPostError = FirestoreError | FirebaseStorageError | 'invalid-filename'
 
+// TODO: use cloud function to update today stats
 export async function addPost(
   userId: string,
   params: CreatePostParams

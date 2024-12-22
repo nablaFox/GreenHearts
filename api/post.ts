@@ -10,6 +10,8 @@ export async function votePost(
   try {
     await firestore.post({ userId: userId, postId }).update({ heart })
 
+    // TODO: use cloud function
+    // (and btw could also not be todayStats; it depends on the post user date)
     await firestore.todayStats({ userId: userId }).update({
       [HeartStringMap[heart]]: firestore.FieldValue.increment(1),
       score: firestore.FieldValue.increment(heart)
@@ -29,6 +31,8 @@ export async function disVotePost(
   try {
     await firestore.post({ userId, postId }).update({ heart: Heart.Gray })
 
+    // TODO: use cloud function
+    // (and btw could also not be todayStats; it depends on the post user date)
     firestore.todayStats({ userId: userId }).update({
       [HeartStringMap[heart]]: firestore.FieldValue.increment(-1),
       score: firestore.FieldValue.increment(-heart)
