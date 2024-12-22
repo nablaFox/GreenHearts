@@ -18,5 +18,7 @@ export function SnackBar() {
 
   if (messages.length === 0) return null
 
-  return <Text>Snackbar message{messages[0].description}</Text>
+  return messages.map((message, index) => {
+    return <Text key={index}>Snackbar message{message.description}</Text>
+  })
 }

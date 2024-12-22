@@ -30,19 +30,19 @@ service cloud.firestore {
       (
       	// owl can only update "score" field
       	isOwlFor(userId) 
-        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['score']) 
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['heart']) 
       ) 
       || 
       (
       	// owner can update everything except for the score
       	isSameUser(userId)
-        && !request.resource.data.diff(resource.data).changedKeys().hasAny(['score'])
+        && !request.resource.data.diff(resource.data).changedKeys().hasAny(['heart'])
       )
     }
     
     match /users/{userId}/stats/{statId} {
-    	allow read: if isSameUser(userId) || isOwlFor(userId)
-      allow create: if isSameUser(userId)
+		// TEMP: with cloud functions owl will not need to create or update stats
+    	allow read, create, update: if isSameUser(userId) || isOwlFor(userId)
     }
   }
 }

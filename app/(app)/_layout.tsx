@@ -45,7 +45,7 @@ export default function AppLayout() {
 
   useErrorNotifier(fetchUserStatus, {
     exclude: ['firestore/not-found', 'firestore/permission-denied'],
-    origin: t`fetching user`
+    origin: t`fetching bunny user`
   })
 
   if (!areThereBunnies) return <NoBunniesToChoose />

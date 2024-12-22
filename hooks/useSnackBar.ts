@@ -33,8 +33,16 @@ const defaultMessages: Partial<Record<FirebaseErrors, string>> = {
 
 export const useSnackBar = create<SnackBarState>((set, get) => ({
   messages: [],
-  addMessage: message =>
-    set(state => ({ messages: [...state.messages, message] })),
+  addMessage: message => {
+    set(state => {
+      const alreadyExists = state.messages.some(
+        m => m.description === message.description && m.type === message.type
+      )
+      if (alreadyExists) return state
+
+      return { messages: [...state.messages, message] }
+    })
+  },
 
   addKnownError: (error, origin) => {
     const messageDescription =

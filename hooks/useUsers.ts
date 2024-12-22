@@ -20,7 +20,7 @@ interface UsersStoreState {
   deleteUser: (userId: string) => Promise<ActionResult<FirestoreError>>
 }
 
-export const useUsers = create<UsersStoreState>((set, get) => ({
+export const useUsers = create<UsersStoreState>(set => ({
   addUserStatus: 'idle',
 
   addUser: async (params: AddUserParams) => {

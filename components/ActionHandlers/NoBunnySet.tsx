@@ -1,13 +1,13 @@
 import { FlatList } from 'react-native'
 import { Button, Text } from 'react-native-paper'
-
-import { useUser } from '@/hooks/useUser'
-import { ThemedView } from '@/components/Themed'
-
 import { useShallow } from 'zustand/shallow'
 
+import { ThemedView } from '@/components/Themed'
+
+import { useUser } from '@/hooks/useUser'
+
 export function NoBunnySet() {
-  const { setBunnyId } = useUser()
+  const setBunnyId = useUser(state => state.setBunnyId)
   const bunnies = useUser(useShallow(state => state.user?.bunnies ?? []))
 
   const onPress = (bunnyId: string) => {
