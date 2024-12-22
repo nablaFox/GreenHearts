@@ -1,12 +1,15 @@
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 
 import PostCard from './PostCard'
+import { PostsSkeleton } from './PostsSkeleton'
 
 import { usePosts } from '@/hooks/usePosts'
 import { useUser } from '@/hooks/useUser'
 
 export default function PostsListSection() {
-  const { fetchMorePosts } = usePosts()
+  const fetchMorePosts = usePosts(state => state.fetchMorePosts)
+
+  const fetchPostsStatus = usePosts(state => state.fetchPostsStatus)
   const posts = usePosts(state => state.posts)
   const bunnyId = useUser(state => state.bunnyId!)
 
@@ -15,12 +18,16 @@ export default function PostsListSection() {
   }
 
   return (
-    <FlatList
-      className="h-96"
-      data={posts}
-      renderItem={({ item }) => <PostCard post={item} />}
-      keyExtractor={item => item.key}
-      onEndReached={onEndReached}
-    />
+    <View>
+      {fetchPostsStatus === 'loading' && <PostsSkeleton />}
+
+      <FlatList
+        className="h-96"
+        data={posts}
+        renderItem={({ item }) => <PostCard post={item} />}
+        keyExtractor={item => item.key}
+        onEndReached={onEndReached}
+      />
+    </View>
   )
 }

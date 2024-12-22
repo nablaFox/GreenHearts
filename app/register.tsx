@@ -3,18 +3,16 @@ import { View } from 'react-native'
 import { Checkbox, Button } from 'react-native-paper'
 
 import { ThemedTextInput } from '@/components/Themed'
+import { AddUserLoading, AddUserSuccess } from '@/components/ActionHandlers'
 import { removeAuthUser } from '@/libs/nativeAuth'
 import { useUsers } from '@/hooks/useUsers'
 import { useUser } from '@/hooks/useUser'
 
-import AddUserHandler from '../AddUserHandler'
-
-// to show also if the user tries login without being registered
-// full screen (covers sign-in)
-export function UserNotFound() {
+export default function Register() {
   const addUser = useUsers(state => state.addUser)
   const resetUser = useUser(state => state.reset)
 
+  const addUserStatus = useUsers(state => state.addUserStatus)
   const [username, setUsername] = useState('')
   const [isOwl, setIsOwl] = useState(false)
 
@@ -26,6 +24,12 @@ export function UserNotFound() {
     await removeAuthUser()
     resetUser()
   }
+
+  // TODO: handle addUserStatus errors
+
+  if (addUserStatus === 'success') return <AddUserSuccess />
+
+  if (addUserStatus === 'loading') return <AddUserLoading />
 
   return (
     <View>
@@ -43,8 +47,7 @@ export function UserNotFound() {
       <Button onPress={onAddUser}>Get on board!</Button>
 
       <Button onPress={onCancelRegistration}>Cancel registration</Button>
-
-      <AddUserHandler />
     </View>
   )
 }
+

@@ -2,7 +2,7 @@ import { useUser } from '@/hooks/useUser'
 
 import { Text } from 'react-native-paper'
 
-export function NoBunnyToChooseHandler() {
+export function NoBunniesToChoose() {
   const { fetchUser } = useUser()
 
   // TODO: provide a button to refetch the user data

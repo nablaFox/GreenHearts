@@ -14,9 +14,11 @@ const defaultMessages: Partial<Record<FirebaseErrors, string>> = {
   'firestore/permission-denied': t`You don't have permission to do this action`
 }
 
+type OnlyError<T> = Exclude<T, 'success' | 'loading' | 'idle'>
+
 export function useErrorNotifier<T extends ActionStatus>(
   status: T,
-  providedMessages?: Partial<Record<T, string>>
+  providedMessages?: Partial<Record<OnlyError<T>, string>>
 ): void {
   const addMessage = useSnackBar(state => state.addMessage)
   const messageToUse =

@@ -5,15 +5,18 @@ import { StatusBar } from 'expo-status-bar'
 import { I18nProvider } from '@lingui/react'
 
 import SignIn from './sign-in'
+import Register from './register'
 import { SnackBar } from '@/components/SnackBar'
+import { SplashScreen } from '@/components/SplashScreen'
 
 import { i18n, initI18n } from '@/i18n'
 import { useTheme } from '@/hooks/useTheme'
-import { useUser } from '@/hooks/useUser'
+import { useUser, type FetchUserStatus } from '@/hooks/useUser'
 import { initAuth } from '@/libs/nativeAuth'
 import { firestore } from '@/api'
 
 import '../global.css'
+import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 
 firestore.initialize()
 
@@ -23,21 +26,34 @@ initI18n()
 
 export default function Root() {
   const { theme } = useTheme()
-  const isLogged = useUser(state => state.isLogged())
 
   const fetchUser = useUser(state => state.fetchUser)
+  const fetchUserStatus = useUser(state => state.fetchUserStatus)
+
+  // TODO: handle fetchUserStatus errors
 
   useEffect(() => {
     fetchUser()
   }, [fetchUser])
 
+  const renderSwitch = (fetchUserStatus: FetchUserStatus) => {
+    if (fetchUserStatus === 'success') return <Slot />
+
+    if (fetchUserStatus === 'idle' || fetchUserStatus === 'loading')
+      return <SplashScreen />
+
+    if (fetchUserStatus === 'firestore/not-found') return <Register />
+
+    return <SignIn />
+  }
+
   return (
     <PaperProvider theme={theme}>
       <I18nProvider i18n={i18n}>
-        {isLogged ? <Slot /> : <SignIn />}
-
-        <SnackBar />
         <StatusBar style="light" />
+        <SnackBar />
+
+        {renderSwitch(fetchUserStatus)}
       </I18nProvider>
     </PaperProvider>
   )

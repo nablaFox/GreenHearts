@@ -7,19 +7,17 @@ import { useColorScheme } from '@/libs/useColorScheme'
 import { setDatetimePickerTheme } from '@/modules/datetime-picker'
 import { useUser } from '@/hooks/useUser'
 import { useStats } from '@/hooks/useStats'
-
-import { NoSelectedBunnyHandler } from '@/components/ActionHandlers'
-import { NoBunnyToChooseHandler } from '@/components/ActionHandlers'
+import { NoBunniesToChoose, NoBunnySet } from '@/components/ActionHandlers'
+import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 
 export default function AppLayout() {
   const fetchPosts = usePosts(state => state.fetchPosts)
-  const isDark = useColorScheme(state => state.isDark)
-  const bunnyId = useUser(state => state.bunnyId)
   const fetchStats = useStats(state => state.fetchStats)
 
+  const isDark = useColorScheme(state => state.isDark)
+  const bunnyId = useUser(state => state.bunnyId)
   const areThereBunnies = useUser(state => state.areThereBunnies())
   const isBunnySet = useUser(state => state.isBunnySet())
-  const isOwl = useUser(state => state.isOwl())
 
   useEffect(() => {
     if (bunnyId !== null) fetchPosts(bunnyId)
@@ -29,9 +27,10 @@ export default function AppLayout() {
     if (bunnyId !== null) fetchStats(bunnyId)
   }, [fetchStats, bunnyId])
 
-  useEffect(() => {
-    setDatetimePickerTheme(isDark)
-  }, [isDark])
+  useEffect(() => setDatetimePickerTheme(isDark), [isDark])
+
+  // useErrorNotifier(fetchPostsStatus, {})
+  // useErrorNotifier(fetchStatsStatus, {})
 
   const screenTransition = {
     headerShown: false,
@@ -39,9 +38,9 @@ export default function AppLayout() {
     animation: 'fade_from_bottom'
   }
 
-  if (!areThereBunnies && isOwl) return <NoBunnyToChooseHandler />
+  if (!areThereBunnies) return <NoBunniesToChoose />
 
-  if (!isBunnySet && isOwl) return <NoSelectedBunnyHandler />
+  if (!isBunnySet) return <NoBunnySet />
 
   return (
     <Stack>

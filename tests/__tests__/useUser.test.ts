@@ -89,9 +89,9 @@ describe('useUser store', () => {
           setupGetAuthUserIdMock({ userId: undefined })
         })
 
-        it('sets fetchUserStatus to "unauthenticated-user"', async () => {
+        it('sets fetchUserStatus to "firestore/permission-denied"', async () => {
           const { fetchUserStatus } = await fetchUserAndGetState()
-          expect(fetchUserStatus).toBe('unauthenticated-user')
+          expect(fetchUserStatus).toBe('firestore/permission-denied')
         })
       })
 
@@ -117,10 +117,9 @@ describe('useUser store', () => {
       })
 
       const validateSuccessfulFetch = async () => {
-        const { fetchUserStatus, user, isLogged } = getUseUser().current
+        const { fetchUserStatus, user } = getUseUser().current
         expect(fetchUserStatus).toBe('success')
         expect(user).not.toBeNull()
-        expect(isLogged()).toBe(true)
       }
 
       afterEach(async () => {
@@ -128,8 +127,8 @@ describe('useUser store', () => {
       })
 
       it('makes isLogged true', async () => {
-        const { isLogged } = await fetchUserAndGetState()
-        expect(isLogged()).toBe(true)
+        const { fetchUserStatus } = await fetchUserAndGetState()
+        expect(fetchUserStatus).toBe('success')
       })
 
       describe('user is not owl', () => {

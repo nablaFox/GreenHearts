@@ -6,7 +6,7 @@ import { getAuthUserId } from '@/libs/nativeAuth'
 import { create } from 'zustand'
 import { getUser, setUserCallback } from '@/api/user'
 
-type FetchUserStatus = ActionStatus<'unauthenticated-user' | FirestoreError>
+export type FetchUserStatus = ActionStatus<FirestoreError>
 
 interface UserStoreState {
   bunnyId: string | null
@@ -20,7 +20,6 @@ interface UserStoreState {
   isOwl: () => boolean
   areThereBunnies: () => boolean
   isBunnySet: () => boolean
-  isLogged: () => boolean
 }
 
 export const useUser = create<UserStoreState>((set, get) => ({
@@ -46,7 +45,7 @@ export const useUser = create<UserStoreState>((set, get) => ({
     const authUserId = getAuthUserId()
 
     if (!authUserId) {
-      return set({ fetchUserStatus: 'unauthenticated-user' })
+      return set({ fetchUserStatus: 'firestore/permission-denied' })
     }
 
     set({ fetchUserStatus: 'loading' })
@@ -91,9 +90,8 @@ export const useUser = create<UserStoreState>((set, get) => ({
 
   isOwl: () => get().user?.isOwl ?? false,
 
-  areThereBunnies: () => (get().user?.bunnies?.length ?? 0) > 0,
+  areThereBunnies: () =>
+    !get().isOwl() || (get().user?.bunnies?.length ?? 0) > 0,
 
-  isLogged: () => !!get().user && get().fetchUserStatus === 'success',
-
-  isBunnySet: () => !!get().bunnyId
+  isBunnySet: () => !get().isOwl() || !!get().bunnyId
 }))

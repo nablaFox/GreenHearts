@@ -1,7 +1,6 @@
 import { View } from 'react-native'
 import { Button } from 'react-native-paper'
 
-import { FetchUserHandler } from '@/components/ActionHandlers'
 import { useUser } from '@/hooks/useUser'
 import { loginWithGoogle } from '@/libs/nativeAuth'
 
@@ -9,7 +8,13 @@ export default function SignIn() {
   const fetchUser = useUser(state => state.fetchUser)
 
   const authenticateUser = async () => {
-    await loginWithGoogle()
+    const res = await loginWithGoogle()
+
+    // TEMP
+    if (res !== 'ok') {
+      return alert('Failed to authenticate user')
+    }
+
     fetchUser()
   }
 
@@ -22,8 +27,6 @@ export default function SignIn() {
       <Button mode="outlined" onPress={authenticateUser}>
         Register
       </Button>
-
-      <FetchUserHandler />
     </View>
   )
 }
