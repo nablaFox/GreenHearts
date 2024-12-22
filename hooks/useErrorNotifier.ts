@@ -1,35 +1,33 @@
 import { useSnackBar } from '@/hooks/useSnackBar'
 import { useEffect } from 'react'
-import { t } from '@lingui/core/macro'
 import type { ActionStatus } from '@/types'
-import type {
-  FirestoreError,
-  FirebaseAuthError,
-  FirebaseStorageError
-} from '@/api'
-
-type FirebaseErrors = FirestoreError | FirebaseAuthError | FirebaseStorageError
-
-const defaultMessages: Partial<Record<FirebaseErrors, string>> = {
-  'firestore/permission-denied': t`You don't have permission to do this action`
-}
 
 type OnlyError<T> = Exclude<T, 'success' | 'loading' | 'idle'>
 
+type ErrorNotifierOptions<T extends string> = {
+  origin: string
+  customMessages?: Partial<Record<OnlyError<T>, string>>
+  exclude?: OnlyError<T>[]
+}
+
 export function useErrorNotifier<T extends ActionStatus>(
   status: T,
-  providedMessages?: Partial<Record<OnlyError<T>, string>>
+  { origin, customMessages, exclude }: ErrorNotifierOptions<T>
 ): void {
+  const addKnownError = useSnackBar(state => state.addKnownError)
   const addMessage = useSnackBar(state => state.addMessage)
-  const messageToUse =
-    providedMessages?.[status] ?? (defaultMessages as any)?.[status]
 
   useEffect(() => {
-    if (status === 'success' || status === 'loading' || status === 'idle')
-      return
+    if (['success', 'loading', 'idle'].includes(status)) return
 
-    if (!messageToUse) return
+    if (exclude?.includes(status as OnlyError<T>)) return
 
-    addMessage({ description: messageToUse })
-  }, [status, messageToUse, addMessage])
+    const customMessage = customMessages?.[status as OnlyError<T>]
+
+    if (customMessage) {
+      return addMessage({ description: customMessage, type: 'error' })
+    }
+
+    addKnownError({ description: status }, origin)
+  }, [status, customMessages, origin, addKnownError, addMessage, exclude])
 }

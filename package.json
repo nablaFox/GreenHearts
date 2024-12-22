@@ -10,7 +10,8 @@
 		"web": "expo start --web",
 		"test": "jest --watchAll",
 		"lint": "expo lint",
-		"firebase-emulators": "firebase emulators:start --import=./tests/emulated"
+		"firebase-emulators": "firebase emulators:start --import=./tests/emulated",
+		"extract": "lingui extract"
 	},
 	"jest": {
 		"preset": "jest-expo"

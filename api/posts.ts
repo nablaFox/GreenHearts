@@ -66,7 +66,7 @@ export function setPostsListener({
 }) {
   return firestore
     .posts({ userId })
-    .orderBy('date', asc ? 'asc' : 'desc')
+    .orderBy('userDate', asc ? 'asc' : 'desc')
     .limit(limit)
     .onSnapshot(
       snapshot => {

@@ -19,8 +19,6 @@ export default function PostsListSection() {
 
   return (
     <View>
-      {fetchPostsStatus === 'loading' && <PostsSkeleton />}
-
       <FlatList
         className="h-96"
         data={posts}
@@ -28,6 +26,8 @@ export default function PostsListSection() {
         keyExtractor={item => item.key}
         onEndReached={onEndReached}
       />
+
+      {fetchPostsStatus === 'loading' && <PostsSkeleton />}
     </View>
   )
 }

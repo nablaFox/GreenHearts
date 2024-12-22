@@ -9,11 +9,14 @@ import { useUser } from '@/hooks/useUser'
 import { useStats } from '@/hooks/useStats'
 import { NoBunniesToChoose, NoBunnySet } from '@/components/ActionHandlers'
 import { useErrorNotifier } from '@/hooks/useErrorNotifier'
+import { t } from '@lingui/core/macro'
 
 export default function AppLayout() {
   const fetchPosts = usePosts(state => state.fetchPosts)
   const fetchStats = useStats(state => state.fetchStats)
 
+  const fetchPostsStatus = usePosts(state => state.fetchPostsStatus)
+  const fetchStatsStatus = useStats(state => state.fetchStatsStatus)
   const isDark = useColorScheme(state => state.isDark)
   const bunnyId = useUser(state => state.bunnyId)
   const areThereBunnies = useUser(state => state.areThereBunnies())
@@ -29,14 +32,14 @@ export default function AppLayout() {
 
   useEffect(() => setDatetimePickerTheme(isDark), [isDark])
 
-  // useErrorNotifier(fetchPostsStatus, {})
-  // useErrorNotifier(fetchStatsStatus, {})
+  useErrorNotifier(fetchPostsStatus, { origin: t`fetching posts` })
+  useErrorNotifier(fetchStatsStatus, { origin: t`fetching stats` })
 
   const screenTransition = {
     headerShown: false,
     presentation: 'modal',
     animation: 'fade_from_bottom'
-  }
+  } as const
 
   if (!areThereBunnies) return <NoBunniesToChoose />
 

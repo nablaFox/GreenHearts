@@ -1,12 +1,13 @@
 import { create } from 'zustand'
-import { firestore } from '@/api'
+import { firestore, type FirestoreError } from '@/api'
 import { getWeekEnds } from '@/libs/utils'
-import type { Stats } from '@/types'
+import type { ActionStatus, Stats } from '@/types'
 
 interface StatsStoreState {
   thisMonthStats: Stats
   thisWeekStats: Stats
   todayStats: Stats
+  fetchStatsStatus: ActionStatus<FirestoreError>
   fetchStats: (bunnyId: string) => Promise<void>
   prevCallback: (() => void) | null
 }
@@ -38,8 +39,10 @@ export const useStats = create<StatsStoreState>((set, get) => ({
   thisWeekStats: defaultStats,
   todayStats: defaultStats,
   prevCallback: null,
+  fetchStatsStatus: 'idle',
 
   fetchStats: async (bunnyId: string) => {
+    set({ fetchStatsStatus: 'loading' })
     get().prevCallback?.()
 
     const now = new Date()
@@ -60,33 +63,43 @@ export const useStats = create<StatsStoreState>((set, get) => ({
       .stats({ userId: bunnyId })
       .where('date', '>=', startOfMonth)
       .limit(31)
-      .onSnapshot(snapshot => {
-        const docs = snapshot.docs.map(doc => doc.data())
+      .onSnapshot(
+        snapshot => {
+          const docs = snapshot.docs.map(doc => doc.data())
 
-        let thisWeekStats = { ...defaultStats }
-        let thisMonthStats = { ...defaultStats }
-        let todayStats = { ...defaultStats }
+          let thisWeekStats = { ...defaultStats }
+          let thisMonthStats = { ...defaultStats }
+          let todayStats = { ...defaultStats }
 
-        docs.forEach(doc => {
-          const docDate = doc.date.toDate()
+          docs.forEach(doc => {
+            const docDate = doc.date.toDate()
 
-          thisMonthStats = accumulateStats(thisMonthStats, doc)
+            thisMonthStats = accumulateStats(thisMonthStats, doc)
 
-          if (docDate >= startOfWeek && docDate <= endOfWeek) {
-            thisWeekStats = accumulateStats(thisWeekStats, doc)
-          }
+            if (docDate >= startOfWeek && docDate <= endOfWeek) {
+              thisWeekStats = accumulateStats(thisWeekStats, doc)
+            }
 
-          if (
-            docDate.getDate() === now.getDate() &&
-            docDate.getMonth() === now.getMonth() &&
-            docDate.getFullYear() === now.getFullYear()
-          ) {
-            todayStats = accumulateStats(todayStats, doc)
-          }
-        })
+            if (
+              docDate.getDate() === now.getDate() &&
+              docDate.getMonth() === now.getMonth() &&
+              docDate.getFullYear() === now.getFullYear()
+            ) {
+              todayStats = accumulateStats(todayStats, doc)
+            }
+          })
 
-        set({ todayStats, thisWeekStats, thisMonthStats })
-      })
+          set({
+            todayStats,
+            thisWeekStats,
+            thisMonthStats,
+            fetchStatsStatus: 'success'
+          })
+        },
+        (e: any) => {
+          set({ fetchStatsStatus: (e?.code || e) as FirestoreError })
+        }
+      )
 
     set({ prevCallback: unsubscribe })
   }

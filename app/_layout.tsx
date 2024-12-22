@@ -12,11 +12,12 @@ import { SplashScreen } from '@/components/SplashScreen'
 import { i18n, initI18n } from '@/i18n'
 import { useTheme } from '@/hooks/useTheme'
 import { useUser, type FetchUserStatus } from '@/hooks/useUser'
+import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 import { initAuth } from '@/libs/nativeAuth'
 import { firestore } from '@/api'
+import { t } from '@lingui/core/macro'
 
 import '../global.css'
-import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 
 firestore.initialize()
 
@@ -30,7 +31,10 @@ export default function Root() {
   const fetchUser = useUser(state => state.fetchUser)
   const fetchUserStatus = useUser(state => state.fetchUserStatus)
 
-  // TODO: handle fetchUserStatus errors
+  useErrorNotifier(fetchUserStatus, {
+    exclude: ['firestore/not-found', 'firestore/permission-denied'],
+    origin: t`fetching user`
+  })
 
   useEffect(() => {
     fetchUser()
@@ -50,10 +54,10 @@ export default function Root() {
   return (
     <PaperProvider theme={theme}>
       <I18nProvider i18n={i18n}>
+        {renderSwitch(fetchUserStatus)}
+
         <StatusBar style="light" />
         <SnackBar />
-
-        {renderSwitch(fetchUserStatus)}
       </I18nProvider>
     </PaperProvider>
   )

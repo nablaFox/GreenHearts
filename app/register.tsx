@@ -7,6 +7,8 @@ import { AddUserLoading, AddUserSuccess } from '@/components/ActionHandlers'
 import { removeAuthUser } from '@/libs/nativeAuth'
 import { useUsers } from '@/hooks/useUsers'
 import { useUser } from '@/hooks/useUser'
+import { useErrorNotifier } from '@/hooks/useErrorNotifier'
+import { t } from '@lingui/core/macro'
 
 export default function Register() {
   const addUser = useUsers(state => state.addUser)
@@ -25,7 +27,7 @@ export default function Register() {
     resetUser()
   }
 
-  // TODO: handle addUserStatus errors
+  useErrorNotifier(addUserStatus, { origin: t`registering user` })
 
   if (addUserStatus === 'success') return <AddUserSuccess />
 

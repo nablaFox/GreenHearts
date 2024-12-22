@@ -13,14 +13,46 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: components/ActionHandlers/AddPostHandler.tsx:13
-msgid "That's a test"
-msgstr "That's a test"
+#: app/(app)/(tabs)/posts.tsx:15
+msgid "adding post"
+msgstr "adding post"
 
-#: components/ActionHandlers/AddPostHandler.tsx:12
-msgid "The post seems to be invalid"
-msgstr "The post seems to be invalid"
+#: hooks/useSnackBar.ts:42
+msgid "An error occured"
+msgstr "An error occured"
 
-#: hooks/useErrorNotifier.ts:14
+#: app/sign-in.tsx:17
+msgid "authenticating user"
+msgstr "authenticating user"
+
+#: components/PostsListSection/PostCard/PostFooter.tsx:32
+msgid "disvoting post"
+msgstr "disvoting post"
+
+#: app/(app)/_layout.tsx:35
+msgid "fetching posts"
+msgstr "fetching posts"
+
+#: app/(app)/_layout.tsx:36
+msgid "fetching stats"
+msgstr "fetching stats"
+
+#: app/_layout.tsx:36
+msgid "fetching user"
+msgstr "fetching user"
+
+#: app/register.tsx:30
+msgid "registering user"
+msgstr "registering user"
+
+#: hooks/useSnackBar.ts:31
+msgid "The requested resource was not found"
+msgstr "The requested resource was not found"
+
+#: components/PostsListSection/PostCard/PostFooter.tsx:26
+msgid "voting post"
+msgstr "voting post"
+
+#: hooks/useSnackBar.ts:30
 msgid "You don't have permission to do this action"
 msgstr "You don't have permission to do this action"

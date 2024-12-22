@@ -6,6 +6,8 @@ import { AssignableHearts, Heart } from '@/types'
 
 import { votePost, disVotePost } from '@/api/post'
 import { useUser } from '@/hooks/useUser'
+import { useSnackBar } from '@/hooks/useSnackBar'
+import { t } from '@lingui/core/macro'
 
 export function PostFooter({
   postHeart,
@@ -16,19 +18,18 @@ export function PostFooter({
 }) {
   const isOwl = useUser(state => state.user?.isOwl ?? false)
   const bunnyId = useUser(state => state.bunnyId!)
+  const addKnownError = useSnackBar(state => state.addKnownError)
 
   const onSelectedHeart = async (heart: Heart) => {
     const res = await votePost(bunnyId, postId, heart)
 
-    if (res !== 'ok') {
-    }
+    if (res !== 'ok') addKnownError({ description: res }, t`voting post`)
   }
 
   const onDeSelectedHeart = async (heart: Heart) => {
     const res = await disVotePost(bunnyId, postId, heart)
 
-    if (res !== 'ok') {
-    }
+    if (res !== 'ok') addKnownError({ description: res }, t`disvoting post`)
   }
 
   return (
