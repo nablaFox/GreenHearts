@@ -48,12 +48,10 @@ export const firestore = {
 
   initialize: async () => {
     if (__DEV__) {
-      Firestore().useEmulator(
+      return Firestore().useEmulator(
         process.env.EXPO_PUBLIC_FIRESTORE_EMULATOR_HOST!,
         parseInt(process.env.EXPO_PUBLIC_FIRESTORE_EMULATOR_PORT!)
       )
-
-      return
     }
 
     Firestore().settings({

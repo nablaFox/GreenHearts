@@ -10,9 +10,10 @@ export default function SignIn() {
   const authenticateUser = async () => {
     const res = await loginWithGoogle()
 
-    // TEMP
     if (res !== 'ok') {
-      return alert('Failed to authenticate user')
+      alert('Failed to authenticate user')
+      alert(res)
+      return
     }
 
     fetchUser()

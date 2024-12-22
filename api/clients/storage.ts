@@ -9,7 +9,10 @@ const contract = {
 }
 
 if (__DEV__) {
-  Storage().useEmulator('192.168.1.100', 9199)
+  Storage().useEmulator(
+    process.env.EXPO_PUBLIC_STORAGE_EMULATOR_HOST!,
+    parseInt(process.env.EXPO_PUBLIC_STORAGE_EMULATOR_PORT!)
+  )
 }
 
 export const storage = createStorageClient(contract)
