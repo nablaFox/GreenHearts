@@ -16,4 +16,4 @@ config.resolver = {
   sourceExts: [...resolver.sourceExts, 'po', 'pot']
 }
 
-module.exports = withNativeWind(config, { input: './global.css' })
+module.exports = withNativeWind(config, { input: './assets/global.css' })

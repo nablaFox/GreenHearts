@@ -27,9 +27,7 @@ export async function disVotePost(
   heart: Heart
 ): Promise<ActionResult<FirestoreError>> {
   try {
-    await firestore
-      .post({ userId: userId, postId })
-      .update({ heart: Heart.Gray })
+    await firestore.post({ userId, postId }).update({ heart: Heart.Gray })
 
     firestore.todayStats({ userId: userId }).update({
       [HeartStringMap[heart]]: firestore.FieldValue.increment(-1),

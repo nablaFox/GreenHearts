@@ -17,7 +17,7 @@ import { initAuth } from '@/libs/nativeAuth'
 import { firestore } from '@/api'
 import { t } from '@lingui/core/macro'
 
-import '../global.css'
+import '@/assets/global.css'
 
 firestore.initialize()
 

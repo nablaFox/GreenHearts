@@ -5,15 +5,10 @@ Make things work
 - typed API: storage & firestore client ✅
 - useUser.ts ✅
 - login, registration ✅
-
 - useStats.ts ✅
-
 - usePosts.ts ✅
-
 - add posts vote ✅
-
 - real errors definition & handling ✅
-
 - i18n ✅
 
 - testing ❌
@@ -24,12 +19,13 @@ Make things work
 
 - app translations & real notification messages ❌
 
+- expo splash screen configuration ❌
+
 ## 0.2.0-alpha ❌
 
 Make things nice
 
-- PostCard/
-- PostsList.tsx
+- PostsListSection/
 - ThisMonthStatsSection/
 - TodayStatsSection/
 - HomeHeader.tsx
@@ -38,9 +34,8 @@ Make things nice
 - ThemedTextInput.tsx
 - ThemedTextareaInput.tsx
 - ImagePicker.tsx
-- PostsHeader.tsx
 - sign-in.tsx
-- PostListDivider.tsx
+- register.tsx
 - WavyDivider.tsx
 - Settings.tsx
 - chart placeholder
@@ -50,17 +45,20 @@ Make things nice
 Make things nicer
 
 - CollapsibleHeader.tsx (animation)
-- Snackbar.tsx
+- SnackBar.tsx
 - LoadingBar.tsx
-- loading posts skeletons
-- FetchUserHandler/
-- AddUserHandler/
+- AddUserLoading.tsx
+- AddUserSuccess.tsx
+- SplashScreen.tsx
 - glowing heart animation
 - BottomBar hide animation on scroll
 - ThemedImagePicker animation
 - Modern google login
+- app icon
 
-## 0.3.0-alpha ❌
+## 0.4.0-alpha ❌
+
+Additional features
 
 - ChartSection/
 - app rules
