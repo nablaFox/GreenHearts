@@ -8,7 +8,7 @@ import { useUser } from '@/hooks/useUser'
 
 export default function Settings() {
   const { isDark, toggleTheme } = useColorScheme()
-  const { reset } = useUser()
+  const reset = useUser(state => state.reset)
 
   const onLogout = async () => {
     await logout()

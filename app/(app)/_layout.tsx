@@ -1,5 +1,6 @@
-import { Stack } from 'expo-router'
+import { Redirect, Stack } from 'expo-router'
 import React, { useEffect } from 'react'
+import { t } from '@lingui/core/macro'
 
 import { usePosts } from '@/hooks/usePosts'
 import { useColorScheme } from '@/libs/useColorScheme'
@@ -7,9 +8,9 @@ import { useColorScheme } from '@/libs/useColorScheme'
 import { setDatetimePickerTheme } from '@/modules/datetime-picker'
 import { useUser } from '@/hooks/useUser'
 import { useStats } from '@/hooks/useStats'
-import { NoBunniesToChoose, NoBunnySet } from '@/components/ActionHandlers'
 import { useErrorNotifier } from '@/hooks/useErrorNotifier'
-import { t } from '@lingui/core/macro'
+
+import { NoBunniesToChoose, NoBunnySet } from '@/components/ActionHandlers'
 
 export default function AppLayout() {
   const fetchPosts = usePosts(state => state.fetchPosts)
@@ -18,6 +19,7 @@ export default function AppLayout() {
 
   const fetchPostsStatus = usePosts(state => state.fetchPostsStatus)
   const fetchStatsStatus = useStats(state => state.fetchStatsStatus)
+  const fetchUserStatus = useUser(state => state.fetchUserStatus)
   const isDark = useColorScheme(state => state.isDark)
   const bunnyId = useUser(state => state.bunnyId)
   const areThereBunnies = useUser(state => state.areThereBunnies())
@@ -38,17 +40,28 @@ export default function AppLayout() {
   useEffect(() => setDatetimePickerTheme(isDark), [isDark])
 
   useErrorNotifier(fetchPostsStatus, { origin: t`fetching posts` })
+
   useErrorNotifier(fetchStatsStatus, { origin: t`fetching stats` })
+
+  useErrorNotifier(fetchUserStatus, {
+    exclude: ['firestore/not-found', 'firestore/permission-denied'],
+    origin: t`fetching user`
+  })
+
+  if (!areThereBunnies) return <NoBunniesToChoose />
+
+  if (!isBunnySet) return <NoBunnySet />
+
+  if (fetchUserStatus === 'firestore/not-found')
+    return <Redirect href="/sign-up" />
+
+  if (fetchUserStatus !== 'success') return <Redirect href="/sign-in" />
 
   const screenTransition = {
     headerShown: false,
     presentation: 'modal',
     animation: 'fade_from_bottom'
   } as const
-
-  if (!areThereBunnies) return <NoBunniesToChoose />
-
-  if (!isBunnySet) return <NoBunnySet />
 
   return (
     <Stack>

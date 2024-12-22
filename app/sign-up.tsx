@@ -11,7 +11,7 @@ import { useUser } from '@/hooks/useUser'
 import { useErrorNotifier } from '@/hooks/useErrorNotifier'
 import { t } from '@lingui/core/macro'
 
-export default function Register() {
+export default function SignUp() {
   const addUser = useUsers(state => state.addUser)
   const resetUser = useUser(state => state.reset)
 

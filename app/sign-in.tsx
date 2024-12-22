@@ -5,6 +5,7 @@ import { useUser } from '@/hooks/useUser'
 import { loginWithGoogle } from '@/libs/nativeAuth'
 import { useSnackBar } from '@/hooks/useSnackBar'
 import { t } from '@lingui/core/macro'
+import { router } from 'expo-router'
 
 export default function SignIn() {
   const fetchAuthUser = useUser(state => state.fetchAuthUser)
@@ -17,7 +18,8 @@ export default function SignIn() {
       return addKnownError({ description: res }, t`authenticating user`)
     }
 
-    fetchAuthUser()
+    await fetchAuthUser()
+    router.replace('/(app)/(tabs)')
   }
 
   return (
