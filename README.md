@@ -36,7 +36,7 @@ Currently, only Android is supported due to custom native modules not yet being
 fully implemented for iOS and Web.
 
 This project relies on Firebase, so you'll need the [Firebase
-CLI](https://github.com/firebase/firebase-tools) along with the Storage and
+CLI](https://github.com/firebase/firebase-tools) along with the Storage, Functions and
 [Firestore emulators](https://firebase.google.com/docs/emulator-suite).
 
 > [!TIP]
@@ -51,11 +51,11 @@ CLI](https://github.com/firebase/firebase-tools) along with the Storage and
 > EXPO_PUBLIC_AUTH_EMULATOR_PORT=9099
 > ```
 
-## Developing Build Options
+### Developing Build Options
 
 You have two main options for obtaining the required development build:
 
-1. Using [EAS CLI]():
+1. Using [EAS CLI](https://github.com/expo/eas-cli):
    Run the following command:
 
    ```sh
@@ -72,7 +72,7 @@ You have two main options for obtaining the required development build:
 
    Then, open the `android` folder in Android Studio and build the APK from there.
 
-## Starting Development Servers
+### Starting Development Servers
 
 Once you've installed the dev build APK on your device, you can start the development servers:
 
